@@ -15,13 +15,15 @@ class MenuBar {
 	private MenuBar() {
 		parent = Bar.newInstance();
 
-		settings = Button.newInstance(MenuBar.class.getResource("/settings.png"));
+		settings = Button.newInstance(MenuBar.class
+				.getResource("/settings.png"));
 		parent.getLeft().add(settings);
 
 		searchBar = SearchBar.newInstance();
 		parent.getRight().add(searchBar.getPanel());
 
-		advSearch = Button.newInstance(MenuBar.class.getResource("/advsearch.png"));
+		advSearch = Button.newInstance(MenuBar.class
+				.getResource("/advsearch.png"));
 		parent.getRight().add(advSearch);
 	}
 

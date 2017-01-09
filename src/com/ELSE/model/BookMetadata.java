@@ -57,7 +57,8 @@ public class BookMetadata implements Serializable {
 
 	@Override
 	public String toString() {
-		return checksum + ":" + titolo + ":" + autore + ":" + anno + ":" + npagine;
+		return checksum + ":" + titolo + ":" + autore + ":" + anno + ":"
+				+ npagine;
 	}
 
 }

@@ -18,8 +18,8 @@ class CentralPage {
 	static JPanel newInstance(CentralProperties components) {
 		JPanel container = new JPanel();
 		container.setBackground(Color.white);
-		container.setBorder(
-				BorderFactory.createCompoundBorder(new LineBorder(Color.BLACK), new EmptyBorder(10, 10, 10, 10)));
+		container.setBorder(BorderFactory.createCompoundBorder(new LineBorder(
+				Color.BLACK), new EmptyBorder(10, 10, 10, 10)));
 		container.setMinimumSize(new Dimension(960, 400));
 		container.setPreferredSize(new Dimension(960, 400));
 		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));

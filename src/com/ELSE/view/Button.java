@@ -13,8 +13,8 @@ class Button {
 	}
 
 	static JButton newInstance(URL url) {
-		JButton button = new JButton(
-				new ImageIcon(new ImageIcon(url).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
+		JButton button = new JButton(new ImageIcon(new ImageIcon(url)
+				.getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
 		button.setBackground(null);
 		button.setBorder(null);
 		button.setContentAreaFilled(false);

@@ -28,8 +28,10 @@ public class FileSearcher extends Thread {
 		try {
 			Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
 				@Override
-				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-					if (file.toString().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
+				public FileVisitResult visitFile(Path file,
+						BasicFileAttributes attrs) throws IOException {
+					if (file.toString().toLowerCase(Locale.ROOT)
+							.endsWith(".pdf")) {
 						alreadyfound++; // ++already?
 						if (alreadyfound >= 10) {
 							try {

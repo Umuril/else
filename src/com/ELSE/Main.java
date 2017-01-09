@@ -6,7 +6,7 @@ import com.ELSE.view.View;
 
 /**
  * @author Eduard Rubio Cholbi
- *
+ * 
  */
 
 public class Main {

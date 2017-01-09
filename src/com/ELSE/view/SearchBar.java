@@ -20,7 +20,8 @@ class SearchBar {
 		panel = new JPanel();
 		panel.setBackground(Color.white);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		panel.setBorder(new CompoundBorder(new LineBorder(Color.black, 1), new EmptyBorder(5, 5, 5, 5)));
+		panel.setBorder(new CompoundBorder(new LineBorder(Color.black, 1),
+				new EmptyBorder(5, 5, 5, 5)));
 
 		testo = new JTextField(15);
 		testo.setBorder(new EmptyBorder(0, 20, 0, 20));

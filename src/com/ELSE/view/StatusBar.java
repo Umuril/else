@@ -71,6 +71,6 @@ class StatusBar {
 
 	public void setPresenter(Presenter presenter) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

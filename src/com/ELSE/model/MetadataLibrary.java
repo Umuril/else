@@ -29,7 +29,8 @@ public class MetadataLibrary {
 
 	// Throws?
 	public void createFile() {
-		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+		try (ObjectOutputStream oos = new ObjectOutputStream(
+				new FileOutputStream(filename))) {
 
 			for (BookMetadata book : database.values()) {
 				System.out.println(book);
@@ -43,7 +44,8 @@ public class MetadataLibrary {
 
 	// Need to check this one in the future
 	private void readFromFile() {
-		try (ObjectInputStream oos = new ObjectInputStream(new FileInputStream(filename))) {
+		try (ObjectInputStream oos = new ObjectInputStream(new FileInputStream(
+				filename))) {
 
 			database = new HashMap<String, BookMetadata>();
 
@@ -55,12 +57,13 @@ public class MetadataLibrary {
 						BookMetadata tmp = (BookMetadata) obj;
 						System.out.println("READING: " + tmp);
 						database.put(tmp.getChecksum(), tmp);
-						System.out.println("READ: " + database.get(tmp.getChecksum()));
+						System.out.println("READ: "
+								+ database.get(tmp.getChecksum()));
 					}
 			} catch (EOFException e) {
 
 			}
-			
+
 		} catch (FileNotFoundException e) {
 			// TODO e.printStackTrace();
 			System.err.println("File " + filename + " not found.");

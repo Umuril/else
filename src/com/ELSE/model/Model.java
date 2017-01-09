@@ -33,8 +33,9 @@ public class Model {
 		setPathbase(new Pathbase());
 
 		// Read from the stored file
-		try (BufferedReader reader = new BufferedReader(
-				new InputStreamReader(new FileInputStream(new File("db.txt")), Charset.defaultCharset()))) {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+				new FileInputStream(new File("db.txt")),
+				Charset.defaultCharset()))) {
 
 			String line;
 			while ((line = reader.readLine()) != null) {
@@ -44,8 +45,9 @@ public class Model {
 		} catch (IOException e) {
 		}
 
-		try (BufferedWriter writer = new BufferedWriter(
-				new OutputStreamWriter(new FileOutputStream(new File("db.txt")), Charset.defaultCharset()))) {
+		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(new File("db.txt")),
+				Charset.defaultCharset()))) {
 
 			for (String p : getPathbase().getPathsList()) {
 				writer.append(p);
@@ -59,30 +61,38 @@ public class Model {
 			File path = new File(s);
 			try {
 				if (path.isDirectory())
-					Files.walkFileTree(Paths.get(s), new SimpleFileVisitor<Path>() {
-						@Override
-						public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-							if (file.toString().endsWith(".pdf")) {
-								BookMetadata book = new BookMetadata();
-								// book.setPercorso(file.toString());
-								try {
-									book.setChecksum(MD5Checksum.getMD5Checksum(file.toString()));
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
+					Files.walkFileTree(Paths.get(s),
+							new SimpleFileVisitor<Path>() {
+								@Override
+								public FileVisitResult visitFile(Path file,
+										BasicFileAttributes attrs)
+										throws IOException {
+									if (file.toString().endsWith(".pdf")) {
+										BookMetadata book = new BookMetadata();
+										// book.setPercorso(file.toString());
+										try {
+											book.setChecksum(MD5Checksum
+													.getMD5Checksum(file
+															.toString()));
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
 
-								if (library.getDatabase().get(book.getChecksum()) == null)
-									library.getDatabase().put(book.getChecksum(), book);
-								// library.getDatabase().add(book);
-							}
-							return FileVisitResult.CONTINUE;
-						}
-					});
+										if (library.getDatabase().get(
+												book.getChecksum()) == null)
+											library.getDatabase().put(
+													book.getChecksum(), book);
+										// library.getDatabase().add(book);
+									}
+									return FileVisitResult.CONTINUE;
+								}
+							});
 				else {
 					BookMetadata book = new BookMetadata();
 					// book.setPercorso(path.toString());
 					try {
-						book.setChecksum(MD5Checksum.getMD5Checksum(path.toString()));
+						book.setChecksum(MD5Checksum.getMD5Checksum(path
+								.toString()));
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

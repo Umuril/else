@@ -1,8 +1,3 @@
-##### PROJECT #####
-
-.metadata
-*.txt
-
 ##### JAVA #####
 
 *.class
@@ -70,3 +65,11 @@ local.properties
 # Code Recommenders
 .recommenders/
 
+##### PROJECT #####
+
+# Generated files
+.metadata
+*.txt
+
+# Libraries
+!lib/*.jar 

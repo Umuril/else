@@ -1,3 +1,8 @@
+##### PROJECT #####
+
+.metadata
+*.txt
+
 ##### JAVA #####
 
 *.class
@@ -15,7 +20,6 @@ hs_err_pid*
 
 ##### ECLIPSE #####
 
-.metadata
 bin/
 tmp/
 *.tmp

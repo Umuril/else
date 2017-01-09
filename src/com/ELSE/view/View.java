@@ -3,10 +3,13 @@ package com.ELSE.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
 
 import javax.swing.Box;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
+import com.ELSE.model.BookMetadata;
 import com.ELSE.presenter.Presenter;
 
 /**
@@ -59,7 +62,52 @@ public class View {
 	}
 
 	public void setPresenter(Presenter presenter) {
-		// TODO Auto-generated method stub
+		menuBar.setPresenter(presenter);
+		center.getBookDetails().setPresenter(presenter);
+		statusBar.setPresenter(presenter);
+		presenter.getCenterPresenter().loadFromFile("db.txt");
+		presenter.getCenterPresenter().aggiorna();
+	}
 
+	/*************************************
+	 ********** API STARTS HERE **********
+	 *************************************/
+
+	public JPanel getUpSlider() {
+		return center.getSlider().getUp();
+	}
+
+	public JPanel getStatusBar() {
+		return statusBar.getBar().getBarContainer();
+	}
+
+	public JFrame getFrame() {
+		return framePrincipale;
+	}
+
+	public void change(Image image, BookMetadata book) {
+		center.change(image, book);
+	}
+
+	public void setStatusText(String s) {
+		statusBar.setStatusText(s);
+	}
+
+	public void setBookPageEditable(boolean b) {
+		center.getBookDetails().setEditable(b);
+		center.getBookDetails().update();
+	}
+
+	public void changeBookPageEditable() {
+		center.getBookDetails().setEditable(!center.getBookDetails().isEditable());
+		center.getBookDetails().update();
+	}
+
+	public String getBookDetailTitolo() {
+		return center.getBookDetails().getMetadataPanel().getTitolo().getText();
+	}
+
+	public String getBookDetailAutore() {
+		return center.getBookDetails().getMetadataPanel().getAutore().getText();
 	}
 }

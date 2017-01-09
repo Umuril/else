@@ -60,8 +60,9 @@ public class CenterPresenter {
 	}
 
 	public void loadFromFile(String filename) {
-		try (BufferedReader reader = new BufferedReader(
-				new InputStreamReader(new FileInputStream(new File("db.txt")), Charset.defaultCharset()))) {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+				new FileInputStream(new File("db.txt")),
+				Charset.defaultCharset()))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				Path path = Paths.get(line).toRealPath();
@@ -80,19 +81,24 @@ public class CenterPresenter {
 			File path = new File(s);
 			try {
 				if (path.isDirectory())
-					Files.walkFileTree(Paths.get(s), new SimpleFileVisitor<Path>() {
-						@Override
-						public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-							if (view.getUpSlider().getComponentCount() >= 14) {
-								return FileVisitResult.TERMINATE;
-							}
-							if (file.toString().endsWith(".pdf")) {
-								view.setStatusText("Adding image: " + file.toFile());
-								addImage(view.getUpSlider(), file.toFile());
-							}
-							return FileVisitResult.CONTINUE;
-						}
-					});
+					Files.walkFileTree(Paths.get(s),
+							new SimpleFileVisitor<Path>() {
+								@Override
+								public FileVisitResult visitFile(Path file,
+										BasicFileAttributes attrs)
+										throws IOException {
+									if (view.getUpSlider().getComponentCount() >= 14) {
+										return FileVisitResult.TERMINATE;
+									}
+									if (file.toString().endsWith(".pdf")) {
+										view.setStatusText("Adding image: "
+												+ file.toFile());
+										addImage(view.getUpSlider(),
+												file.toFile());
+									}
+									return FileVisitResult.CONTINUE;
+								}
+							});
 				else if (view.getUpSlider().getParent().getComponentCount() < 14)
 					addImage(view.getUpSlider(), path);
 			} catch (IOException e) {
@@ -107,7 +113,8 @@ public class CenterPresenter {
 
 	private void addImage(JPanel internalPanel, File file) throws IOException {
 
-		String filename = System.getProperty("user.home") + File.separator + ".else" + File.separator
+		String filename = System.getProperty("user.home") + File.separator
+				+ ".else" + File.separator
 				+ MD5Checksum.getMD5Checksum(file.toString()) + ".jpg";
 
 		File imageFile = new File(filename);
@@ -159,8 +166,9 @@ public class CenterPresenter {
 	private BufferedImage saveImage(Path file) throws IOException {
 		view.setStatusText("Creating image of " + file.toFile());
 
-		String s = System.getProperty("user.home") + File.separator + ".else" + File.separator
-				+ MD5Checksum.getMD5Checksum(file.toString()) + ".jpg";
+		String s = System.getProperty("user.home") + File.separator + ".else"
+				+ File.separator + MD5Checksum.getMD5Checksum(file.toString())
+				+ ".jpg";
 
 		final File outputfile = new File(s);
 

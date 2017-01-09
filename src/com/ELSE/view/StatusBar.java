@@ -70,10 +70,15 @@ class StatusBar {
 	}
 
 	void setPresenter(Presenter presenter) {
-		add.addActionListener(presenter.getStatusBarPresenter().addMainPageButton());
-		update.addActionListener(presenter.getStatusBarPresenter().updateMainPageButton());
-		save.addActionListener(presenter.getStatusBarPresenter().saveMainPageButton());
-		load.addActionListener(presenter.getStatusBarPresenter().loadMainPageButton());
-		print.addActionListener(presenter.getStatusBarPresenter().printMainPageButton());
+		add.addActionListener(presenter.getStatusBarPresenter()
+				.addMainPageButton());
+		update.addActionListener(presenter.getStatusBarPresenter()
+				.updateMainPageButton());
+		save.addActionListener(presenter.getStatusBarPresenter()
+				.saveMainPageButton());
+		load.addActionListener(presenter.getStatusBarPresenter()
+				.loadMainPageButton());
+		print.addActionListener(presenter.getStatusBarPresenter()
+				.printMainPageButton());
 	}
 }

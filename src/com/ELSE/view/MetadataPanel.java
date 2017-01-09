@@ -40,9 +40,8 @@ class MetadataPanel {
 		System.out.println("CHANGING TO " + book + " - " + editable);
 
 		parent.removeAll();
-		parent.add(
-				new JLabel(
-						new ImageIcon(new ImageIcon(image).getImage().getScaledInstance(-1, 300, Image.SCALE_DEFAULT))),
+		parent.add(new JLabel(new ImageIcon(new ImageIcon(image).getImage()
+				.getScaledInstance(-1, 300, Image.SCALE_DEFAULT))),
 				BorderLayout.WEST);
 		JPanel things = JInvisiblePanel.newInstance(parent);
 		things.setLayout(new FlowLayout());

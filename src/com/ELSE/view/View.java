@@ -99,7 +99,8 @@ public class View {
 	}
 
 	public void changeBookPageEditable() {
-		center.getBookDetails().setEditable(!center.getBookDetails().isEditable());
+		center.getBookDetails().setEditable(
+				!center.getBookDetails().isEditable());
 		center.getBookDetails().update();
 	}
 

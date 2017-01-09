@@ -70,7 +70,8 @@ class BookDetailsPage implements CentralProperties {
 		this.image = image;
 		this.book = book;
 		metadataPanel.change(image, book, editable);
-		save.addActionListener(presenter.getCenterPresenter().saveBookDetailPageChanges(book));
+		save.addActionListener(presenter.getCenterPresenter()
+				.saveBookDetailPageChanges(book));
 	}
 
 	@Override
@@ -88,8 +89,10 @@ class BookDetailsPage implements CentralProperties {
 
 	void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
-		back.addActionListener(presenter.getCenterPresenter().backFromBookDetail());
-		edit.addActionListener(presenter.getCenterPresenter().setBookDetailPageEditable());
+		back.addActionListener(presenter.getCenterPresenter()
+				.backFromBookDetail());
+		edit.addActionListener(presenter.getCenterPresenter()
+				.setBookDetailPageEditable());
 
 	}
 

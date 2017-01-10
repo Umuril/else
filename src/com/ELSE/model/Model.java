@@ -45,18 +45,6 @@ public class Model {
 		} catch (IOException e) {
 		}
 
-		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-				new FileOutputStream(new File("db.txt")),
-				Charset.defaultCharset()))) {
-
-			for (String p : getPathbase().getPathsList()) {
-				writer.append(p);
-				writer.newLine();
-			}
-
-		} catch (IOException e) {
-		}
-
 		for (String s : pathbase.getPathsList()) {
 			File path = new File(s);
 			try {
@@ -120,6 +108,21 @@ public class Model {
 
 	public void setLibrary(MetadataLibrary library) {
 		this.library = library;
+	}
+
+	public void createPathbaseFile() {
+		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(new File("db.txt")),
+				Charset.defaultCharset()))) {
+
+			for (String p : pathbase.getPathsList()) {
+				writer.append(p);
+				writer.newLine();
+			}
+
+		} catch (IOException e) {
+			// TODO
+		}
 	}
 
 }

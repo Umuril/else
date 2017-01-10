@@ -1,9 +1,11 @@
 package com.ELSE.view;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -11,12 +13,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.ELSE.model.BookMetadata;
+import com.ELSE.presenter.Presenter;
 
 class MetadataPanel {
 
 	private JPanel parent;
-
+	private JLabel bookPreview;
 	private JTextField titolo, autore;
+	private BookMetadata book;
 
 	JTextField getTitolo() {
 		return titolo;
@@ -38,6 +42,8 @@ class MetadataPanel {
 	void change(Image image, BookMetadata book, boolean editable) {
 
 		System.out.println("CHANGING TO " + book + " - " + editable);
+
+		this.book = book;
 
 		parent.removeAll();
 		parent.add(new JLabel(new ImageIcon(new ImageIcon(image).getImage()
@@ -78,4 +84,10 @@ class MetadataPanel {
 		parent.repaint();
 	}
 
+	void setPresenter(Presenter presenter) {
+		for (MouseListener ml : bookPreview.getMouseListeners())
+			bookPreview.removeMouseListener(ml);
+		bookPreview.addMouseListener(presenter.getCenterPresenter().openBook(
+				book));
+	}
 }

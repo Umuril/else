@@ -71,6 +71,8 @@ class BookDetailsPage implements CentralProperties {
 		this.image = image;
 		this.book = book;
 		metadataPanel.change(image, book, editable);
+		// Needs further checks
+		metadataPanel.setPresenter(presenter);
 		for (ActionListener al : save.getActionListeners())
 			save.removeActionListener(al);
 		save.addActionListener(presenter.getCenterPresenter()
@@ -96,6 +98,7 @@ class BookDetailsPage implements CentralProperties {
 				.backFromBookDetail());
 		edit.addActionListener(presenter.getCenterPresenter()
 				.setBookDetailPageEditable());
+		// metadataPanel.setPresenter(presenter);
 
 	}
 

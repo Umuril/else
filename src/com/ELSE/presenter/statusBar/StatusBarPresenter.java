@@ -51,6 +51,7 @@ public class StatusBarPresenter {
 
 	public void createMetadataFile() {
 		model.getLibrary().createFile();
+		model.createPathbaseFile();
 	}
 
 }

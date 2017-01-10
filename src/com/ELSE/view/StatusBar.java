@@ -1,5 +1,8 @@
 package com.ELSE.view;
 
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
@@ -67,6 +70,17 @@ class StatusBar {
 
 	void setStatusText(String s) {
 		statusText.setText(s);
+	}
+
+	public void needToSave(boolean need) {
+		if (need)
+			save.setIcon(new ImageIcon(new ImageIcon(StatusBar.class
+					.getResource("/save_red.png")).getImage()
+					.getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
+		else
+			save.setIcon(new ImageIcon(new ImageIcon(StatusBar.class
+					.getResource("/save.png")).getImage().getScaledInstance(32,
+					32, Image.SCALE_DEFAULT)));
 	}
 
 	void setPresenter(Presenter presenter) {

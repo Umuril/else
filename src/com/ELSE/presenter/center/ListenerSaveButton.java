@@ -32,6 +32,7 @@ public class ListenerSaveButton implements ActionListener {
 		// book.setTitolo(view.getBookDetailTitolo());
 		// book.setAutore(view.getBookDetailAutore());
 		view.setBookPageEditable(false);
+		view.needToSave(true);
 
 	}
 }

@@ -48,5 +48,11 @@ class MenuBar {
 	}
 
 	void setPresenter(Presenter presenter) {
+		settings.addActionListener(presenter.getMenuBarPresenter().settings());
+		searchBar.getTesto().addActionListener(
+				presenter.getMenuBarPresenter().search(searchBar.getTesto()));
+		searchBar.getIcona().addActionListener(
+				presenter.getMenuBarPresenter().search(searchBar.getTesto()));
+		advSearch.addActionListener(presenter.getMenuBarPresenter().advSearch());
 	}
 }

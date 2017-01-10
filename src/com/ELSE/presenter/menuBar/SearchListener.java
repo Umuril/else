@@ -16,7 +16,8 @@ public class SearchListener implements ActionListener {
 	private CenterPresenter centerPresenter;
 	private JTextField testo;
 
-	public SearchListener(Model model, CenterPresenter centerPresenter , JTextField testo) {
+	public SearchListener(Model model, CenterPresenter centerPresenter,
+			JTextField testo) {
 		this.model = model;
 		this.centerPresenter = centerPresenter;
 		this.testo = testo;
@@ -25,7 +26,7 @@ public class SearchListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String text = testo.getText();
-		if(text.isEmpty()){
+		if (text.isEmpty()) {
 			centerPresenter.aggiorna();
 			return;
 		}
@@ -46,7 +47,7 @@ public class SearchListener implements ActionListener {
 			if (book.getTitolo() != null)
 				if (book.getTitolo().contains(text))
 					found = true;
-			if (found){
+			if (found) {
 				System.out.println("Found: " + book);
 				try {
 					centerPresenter.addImage(book);
@@ -54,7 +55,7 @@ public class SearchListener implements ActionListener {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-			}else
+			} else
 				System.out.println("Book not found: " + book);
 		}
 	}

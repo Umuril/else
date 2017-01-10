@@ -53,6 +53,7 @@ class MenuBar {
 				presenter.getMenuBarPresenter().search(searchBar.getTesto()));
 		searchBar.getIcona().addActionListener(
 				presenter.getMenuBarPresenter().search(searchBar.getTesto()));
-		advSearch.addActionListener(presenter.getMenuBarPresenter().advSearch());
+		advSearch
+				.addActionListener(presenter.getMenuBarPresenter().advSearch());
 	}
 }

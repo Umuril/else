@@ -197,12 +197,11 @@ public class CenterPresenter {
 		return image;
 
 	}
-	
+
 	public void addImage(BookMetadata book) throws IOException {
 
 		String filename = System.getProperty("user.home") + File.separator
-				+ ".else" + File.separator
-				+ book.getChecksum() + ".jpg";
+				+ ".else" + File.separator + book.getChecksum() + ".jpg";
 
 		File imageFile = new File(filename);
 
@@ -220,7 +219,7 @@ public class CenterPresenter {
 			System.out.println("The book is not null (already present)");
 			System.out.println(book);
 		}
-		 
+
 		picLabel.addActionListener(new ListenerBookClick(view, image, book));
 		picLabel.setBorder(null);
 
@@ -229,11 +228,11 @@ public class CenterPresenter {
 		picLabel.revalidate();
 		picLabel.repaint();
 	}
-	
+
 	public void emptyOfBooks() {
 		view.getUpSlider().removeAll();
 		view.getUpSlider().revalidate();
 		view.getUpSlider().repaint();
 	}
-	
+
 }

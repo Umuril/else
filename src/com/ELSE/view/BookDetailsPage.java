@@ -2,10 +2,10 @@ package com.ELSE.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Image;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import com.ELSE.model.BookMetadata;
@@ -47,7 +47,7 @@ class BookDetailsPage implements CentralProperties {
 		back = Button.newInstance(SliderPage.class.getResource("/back.png"));
 
 		down.add(back);
-		back.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+		back.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 		JPanel dcenter = JInvisiblePanel.newInstance(container);
 
@@ -56,12 +56,12 @@ class BookDetailsPage implements CentralProperties {
 		dcenter.add(edit);
 
 		down.add(dcenter);
-		dcenter.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		dcenter.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		save = Button.newInstance(SliderPage.class.getResource("/save.png"));
 
 		down.add(save);
-		save.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
+		save.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
 		return down;
 	}

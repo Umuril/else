@@ -53,7 +53,7 @@ public class CenterPresenter {
 	}
 
 	public ActionListener saveBookDetailPageChanges(BookMetadata book) {
-		return new ListenerSaveButton(view, book);
+		return new ListenerSaveButton(view, model, book);
 	}
 
 	public MouseListener openBook(BookMetadata book) {
@@ -146,7 +146,7 @@ public class CenterPresenter {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		BookMetadata book = model.getLibrary().getDatabase().get(checksum);
+		BookMetadata book = model.getLibrary().getDatabase().get(file.toString());
 
 		if (book == null) {
 			System.out.println("The book is null (doesn't exist before)");

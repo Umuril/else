@@ -1,7 +1,6 @@
 package com.ELSE.view;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -32,7 +31,8 @@ class MetadataPanel {
 
 	private MetadataPanel(JPanel parent) {
 		this.parent = parent;
-
+		// I don't like it but seems to work
+		bookPreview = new JLabel();
 	}
 
 	static MetadataPanel newInstance(JPanel parent) {
@@ -46,9 +46,9 @@ class MetadataPanel {
 		this.book = book;
 
 		parent.removeAll();
-		parent.add(new JLabel(new ImageIcon(new ImageIcon(image).getImage()
-				.getScaledInstance(-1, 300, Image.SCALE_DEFAULT))),
-				BorderLayout.WEST);
+		bookPreview.setIcon(new ImageIcon(new ImageIcon(image).getImage()
+				.getScaledInstance(-1, 300, Image.SCALE_DEFAULT)));
+		parent.add(bookPreview, BorderLayout.WEST);
 		JPanel things = JInvisiblePanel.newInstance(parent);
 		things.setLayout(new FlowLayout());
 		JPanel panel = JInvisiblePanel.newInstance(things);

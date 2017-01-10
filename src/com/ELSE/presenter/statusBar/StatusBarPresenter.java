@@ -21,7 +21,7 @@ public class StatusBarPresenter {
 	}
 
 	public ActionListener addMainPageButton() {
-		return new AddMainPageButtonListener(view, model.getPathbase());
+		return new AddMainPageButtonListener(view, model.getPathbase(),presenter.getCenterPresenter());
 	}
 
 	public ActionListener loadMainPageButton() {

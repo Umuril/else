@@ -65,12 +65,6 @@ public class Model {
 										} catch (Exception e) {
 											e.printStackTrace();
 										}
-
-										if (library.getDatabase().get(
-												book.getChecksum()) == null)
-											library.getDatabase().put(
-													book.getChecksum(), book);
-										// library.getDatabase().add(book);
 									}
 									return FileVisitResult.CONTINUE;
 								}

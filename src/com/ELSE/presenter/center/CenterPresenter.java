@@ -19,7 +19,6 @@ import java.nio.file.attribute.BasicFileAttributes;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JPanel;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
@@ -93,14 +92,13 @@ public class CenterPresenter {
 									if (file.toString().endsWith(".pdf")) {
 										view.setStatusText("Adding image: "
 												+ file.toFile());
-										addImage(view.getUpSlider(),
-												file.toFile());
+										addImage(file.toFile());
 									}
 									return FileVisitResult.CONTINUE;
 								}
 							});
 				else if (view.getUpSlider().getParent().getComponentCount() < 14)
-					addImage(view.getUpSlider(), path);
+					addImage(path);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -111,7 +109,7 @@ public class CenterPresenter {
 		// internalPanel.repaint();
 	}
 
-	private void addImage(JPanel internalPanel, File file) throws IOException {
+	private void addImage(File file) throws IOException {
 
 		String filename = System.getProperty("user.home") + File.separator
 				+ ".else" + File.separator
@@ -140,11 +138,12 @@ public class CenterPresenter {
 		BookMetadata book = model.getLibrary().getDatabase().get(checksum);
 
 		if (book == null) {
-			System.out.println("The book is null");
+			System.out.println("The book is null (doesn't exist before)");
 			book = new BookMetadata();
 			book.setChecksum(checksum);
+			model.getLibrary().getDatabase().put(file.toString(), book);
 		} else {
-			System.out.println("The book is not null");
+			System.out.println("The book is not null (already present)");
 			System.out.println(book);
 		}
 
@@ -156,7 +155,7 @@ public class CenterPresenter {
 
 		picLabel.setBorder(null);
 
-		internalPanel.add(picLabel);
+		view.getUpSlider().add(picLabel);
 
 		picLabel.revalidate();
 		picLabel.repaint();
@@ -198,5 +197,43 @@ public class CenterPresenter {
 		return image;
 
 	}
+	
+	public void addImage(BookMetadata book) throws IOException {
 
+		String filename = System.getProperty("user.home") + File.separator
+				+ ".else" + File.separator
+				+ book.getChecksum() + ".jpg";
+
+		File imageFile = new File(filename);
+
+		BufferedImage image = null;
+
+		if (imageFile.exists())
+			image = ImageIO.read(imageFile);
+		else
+			System.err.println("Error 404");
+
+		Image img = image.getScaledInstance(-1, 180, Image.SCALE_DEFAULT);
+		JButton picLabel = new JButton(new ImageIcon(img));
+
+		if (book != null) {
+			System.out.println("The book is not null (already present)");
+			System.out.println(book);
+		}
+		 
+		picLabel.addActionListener(new ListenerBookClick(view, image, book));
+		picLabel.setBorder(null);
+
+		view.getUpSlider().add(picLabel);
+
+		picLabel.revalidate();
+		picLabel.repaint();
+	}
+	
+	public void emptyOfBooks() {
+		view.getUpSlider().removeAll();
+		view.getUpSlider().revalidate();
+		view.getUpSlider().repaint();
+	}
+	
 }

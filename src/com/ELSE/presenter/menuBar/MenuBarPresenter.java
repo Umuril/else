@@ -5,16 +5,19 @@ import java.awt.event.ActionListener;
 import javax.swing.JTextField;
 
 import com.ELSE.model.Model;
+import com.ELSE.presenter.Presenter;
 import com.ELSE.view.View;
 
 public class MenuBarPresenter {
 
 	private View view;
 	private Model model;
+	private Presenter presenter;
 
-	public MenuBarPresenter(View view, Model model) {
+	public MenuBarPresenter(View view, Model model, Presenter presenter) {
 		this.view = view;
 		this.model = model;
+		this.presenter = presenter;
 	}
 
 	public ActionListener settings() {
@@ -22,7 +25,7 @@ public class MenuBarPresenter {
 	}
 
 	public ActionListener search(JTextField testo) {
-		return new SearchListener(model, testo);
+		return new SearchListener(model, presenter.getCenterPresenter(), testo);
 	}
 
 	public ActionListener advSearch() {

@@ -2,6 +2,7 @@ package com.ELSE.presenter.center;
 
 import java.awt.Image;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -52,6 +54,15 @@ public class CenterPresenter {
 
 	public ActionListener saveBookDetailPageChanges(BookMetadata book) {
 		return new ListenerSaveButton(view, book);
+	}
+
+	public MouseListener openBook(BookMetadata book) {
+		for (Entry<String, BookMetadata> entry : model.getLibrary()
+				.getDatabase().entrySet()) {
+			if (entry.getValue().equals(book))
+				return new ListenerBookPreviewClick(entry.getKey());
+		}
+		return null;
 	}
 
 	public void change(Image image, BookMetadata book) {

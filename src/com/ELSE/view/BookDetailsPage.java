@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -70,6 +71,8 @@ class BookDetailsPage implements CentralProperties {
 		this.image = image;
 		this.book = book;
 		metadataPanel.change(image, book, editable);
+		for (ActionListener al : save.getActionListeners())
+			save.removeActionListener(al);
 		save.addActionListener(presenter.getCenterPresenter()
 				.saveBookDetailPageChanges(book));
 	}

@@ -32,10 +32,10 @@ class StatusBar {
 
 		bar.getRight().add(save);
 
-		load = Button.newInstance(StatusBar.class.getResource("/load.png"));
+		load = Button.newInstance(StatusBar.class.getResource("/load_gray.png"));
 		bar.getRight().add(load);
 
-		print = Button.newInstance(StatusBar.class.getResource("/print.png"));
+		print = Button.newInstance(StatusBar.class.getResource("/print_gray.png"));
 
 		bar.getRight().add(print);
 	}

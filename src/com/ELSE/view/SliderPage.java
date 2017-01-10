@@ -32,25 +32,25 @@ class SliderPage implements CentralProperties {
 		down = SubSizePanel.newInstance(container);
 
 		JButton back = Button.newInstance(SliderPage.class
-				.getResource("/back.png"));
+				.getResource("/back_gray.png"));
 		down.add(back);
 		back.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 		JPanel dcenter = JInvisiblePanel.newInstance(down);
 
 		JButton grid = Button.newInstance(SliderPage.class
-				.getResource("/grid.png"));
+				.getResource("/grid_gray.png"));
 		dcenter.add(grid);
 
 		JButton list = Button.newInstance(SliderPage.class
-				.getResource("/list.png"));
+				.getResource("/list_gray.png"));
 		dcenter.add(list);
 
 		down.add(dcenter);
 		dcenter.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		JButton forward = Button.newInstance(SliderPage.class
-				.getResource("/forward.png"));
+				.getResource("/forward_gray.png"));
 		down.add(forward);
 		forward.setAlignmentX(Component.RIGHT_ALIGNMENT);
 

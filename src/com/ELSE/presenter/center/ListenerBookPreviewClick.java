@@ -1,10 +1,9 @@
 package com.ELSE.presenter.center;
 
-import java.awt.Desktop;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
-import java.io.IOException;
+
+import com.ELSE.view.PDFReader;
 
 public class ListenerBookPreviewClick implements MouseListener {
 
@@ -16,15 +15,15 @@ public class ListenerBookPreviewClick implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		try {
+		/*try {
 			Desktop.getDesktop().open(new File(path));
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
+		}*/
+		new PDFReader(path);
 	}
-
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub

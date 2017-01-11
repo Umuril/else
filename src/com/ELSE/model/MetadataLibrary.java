@@ -52,7 +52,8 @@ public class MetadataLibrary {
 			try {
 				while ((obj = oos.readObject()) != null)
 					if (obj instanceof HashMap<?, ?>) {
-						for (Entry<?, ?> entry : ((HashMap<?, ?>) obj).entrySet()) {
+						for (Entry<?, ?> entry : ((HashMap<?, ?>) obj)
+								.entrySet()) {
 							if (entry.getKey() instanceof String
 									&& entry.getValue() instanceof BookMetadata) {
 								database.put((String) entry.getKey(),

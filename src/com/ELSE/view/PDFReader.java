@@ -14,11 +14,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.WindowConstants;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
-@SuppressWarnings("serial")
 public class PDFReader extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -63,7 +63,7 @@ public class PDFReader extends JFrame {
 		forward = new JButton("Forward");
 
 		back.setEnabled(false);
-		
+
 		back.addActionListener(new ActionListener() {
 
 			@Override
@@ -99,7 +99,7 @@ public class PDFReader extends JFrame {
 
 		frame.getContentPane().add(lower, BorderLayout.SOUTH);
 
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.setVisible(true);
 	}
 
@@ -118,6 +118,6 @@ public class PDFReader extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 }

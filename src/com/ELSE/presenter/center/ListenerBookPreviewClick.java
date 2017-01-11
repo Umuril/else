@@ -15,15 +15,13 @@ public class ListenerBookPreviewClick implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		/*try {
-			Desktop.getDesktop().open(new File(path));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}*/
+		/*
+		 * try { Desktop.getDesktop().open(new File(path)); } catch (IOException
+		 * e1) { // TODO Auto-generated catch block e1.printStackTrace(); }
+		 */
 		new PDFReader(path);
 	}
-	
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub

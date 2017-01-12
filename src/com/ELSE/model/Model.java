@@ -32,18 +32,7 @@ public class Model {
 
 		setPathbase(new Pathbase());
 
-		// Read from the stored file
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-				new FileInputStream(new File("db.txt")),
-				Charset.defaultCharset()))) {
-
-			String line;
-			while ((line = reader.readLine()) != null) {
-				Path path = Paths.get(line).toRealPath();
-				getPathbase().add(path.toString());
-			}
-		} catch (IOException e) {
-		}
+		loadPathbaseFile();
 
 		for (String s : pathbase.getPathsList()) {
 			File path = new File(s);
@@ -116,6 +105,22 @@ public class Model {
 
 		} catch (IOException e) {
 			// TODO
+		}
+	}
+
+	public void loadPathbaseFile() {
+		getPathbase().clear();
+		// Read from the stored file
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+				new FileInputStream(new File("db.txt")),
+				Charset.defaultCharset()))) {
+
+			String line;
+			while ((line = reader.readLine()) != null) {
+				Path path = Paths.get(line).toRealPath();
+				getPathbase().add(path.toString());
+			}
+		} catch (IOException e) {
 		}
 	}
 

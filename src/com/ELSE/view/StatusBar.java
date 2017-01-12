@@ -12,7 +12,7 @@ class StatusBar {
 
 	private Bar bar;
 	private JLabel statusText;
-	private JButton add, update, save, load, print;
+	private JButton add, remove, update, save, load, print;
 
 	private StatusBar() {
 		bar = Bar.newInstance();
@@ -23,6 +23,10 @@ class StatusBar {
 		add = Button.newInstance(StatusBar.class.getResource("/add.png"));
 
 		bar.getRight().add(add);
+
+		remove = Button.newInstance(StatusBar.class.getResource("/remove.png"));
+
+		bar.getRight().add(remove);
 
 		update = Button.newInstance(StatusBar.class.getResource("/update.png"));
 
@@ -48,6 +52,10 @@ class StatusBar {
 
 	JButton getAddButton() {
 		return add;
+	}
+
+	JButton getRemoveButton() {
+		return remove;
 	}
 
 	JButton getUpdateButton() {
@@ -88,6 +96,8 @@ class StatusBar {
 	void setPresenter(Presenter presenter) {
 		add.addActionListener(presenter.getStatusBarPresenter()
 				.addMainPageButton());
+		remove.addActionListener(presenter.getStatusBarPresenter()
+				.removeMainPageButton());
 		update.addActionListener(presenter.getStatusBarPresenter()
 				.updateMainPageButton());
 		save.addActionListener(presenter.getStatusBarPresenter()

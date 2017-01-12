@@ -25,6 +25,11 @@ public class StatusBarPresenter {
 				presenter.getCenterPresenter());
 	}
 
+	public ActionListener removeMainPageButton() {
+		return new RemoveMainPageButtonListener(view, model.getPathbase(),
+				presenter.getCenterPresenter());
+	}
+
 	public ActionListener loadMainPageButton() {
 		return new LoadMainPageButtonListener();
 	}

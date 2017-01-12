@@ -13,6 +13,13 @@ public class Pathbase {
 		root.add(Arrays.asList(p.split("\\\\|/")), 0);
 	}
 
+	public void remove(String p) {
+		ArrayList<String> list = new ArrayList<String>();
+		list.addAll(Arrays.asList(p.split("\\\\|/")));
+		while (root.remove(list, 0))
+			list.remove(list.size() - 1);
+	}
+
 	public void clear() {
 		root.clear();
 	}
@@ -77,6 +84,20 @@ public class Pathbase {
 				else
 					child.listPaths(list, prefix + child.name + File.separator);
 			}
+		}
+
+		private boolean remove(List<String> path, int i) {
+			PathNode child = children.get(path.get(i));
+			if (!child.isLeaf() && i + 1 < path.size()) {
+				if (child.children.get(path.get(i + 1)).isLeaf()) {
+					child.children.remove(path.get(i + 1));
+					System.out.println("true");
+					return true;
+				} else {
+					return child.remove(path, i + 1);
+				}
+			}
+			return false;
 		}
 
 	}

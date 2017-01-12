@@ -116,8 +116,9 @@ public class CenterPresenter {
 
 		}
 
-		// internalPanel.revalidate();
-		// internalPanel.repaint();
+		// Needed on delete
+		view.getUpSlider().revalidate();
+		view.getUpSlider().repaint();
 	}
 
 	private void addImage(File file) throws IOException {

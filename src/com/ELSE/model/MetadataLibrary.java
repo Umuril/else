@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class MetadataLibrary {
 
@@ -32,10 +33,7 @@ public class MetadataLibrary {
 		try (ObjectOutputStream oos = new ObjectOutputStream(
 				new FileOutputStream(filename))) {
 
-			for (BookMetadata book : database.values()) {
-				System.out.println(book);
-				oos.writeObject(book);
-			}
+			oos.writeObject(database);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -53,12 +51,15 @@ public class MetadataLibrary {
 
 			try {
 				while ((obj = oos.readObject()) != null)
-					if (obj instanceof BookMetadata) {
-						BookMetadata tmp = (BookMetadata) obj;
-						System.out.println("READING: " + tmp);
-						database.put(tmp.getChecksum(), tmp);
-						System.out.println("READ: "
-								+ database.get(tmp.getChecksum()));
+					if (obj instanceof HashMap<?, ?>) {
+						for (Entry<?, ?> entry : ((HashMap<?, ?>) obj)
+								.entrySet()) {
+							if (entry.getKey() instanceof String
+									&& entry.getValue() instanceof BookMetadata) {
+								database.put((String) entry.getKey(),
+										(BookMetadata) entry.getValue());
+							}
+						}
 					}
 			} catch (EOFException e) {
 

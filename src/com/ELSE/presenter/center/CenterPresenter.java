@@ -2,6 +2,7 @@ package com.ELSE.presenter.center;
 
 import java.awt.Image;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,11 +16,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JPanel;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
@@ -52,7 +53,16 @@ public class CenterPresenter {
 	}
 
 	public ActionListener saveBookDetailPageChanges(BookMetadata book) {
-		return new ListenerSaveButton(view, book);
+		return new ListenerSaveButton(view, model, book);
+	}
+
+	public MouseListener openBook(BookMetadata book) {
+		for (Entry<String, BookMetadata> entry : model.getLibrary()
+				.getDatabase().entrySet()) {
+			if (entry.getValue().equals(book))
+				return new ListenerBookPreviewClick(entry.getKey());
+		}
+		return null;
 	}
 
 	public void change(Image image, BookMetadata book) {
@@ -60,8 +70,9 @@ public class CenterPresenter {
 	}
 
 	public void loadFromFile(String filename) {
-		try (BufferedReader reader = new BufferedReader(
-				new InputStreamReader(new FileInputStream(new File("db.txt")), Charset.defaultCharset()))) {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+				new FileInputStream(new File("db.txt")),
+				Charset.defaultCharset()))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				Path path = Paths.get(line).toRealPath();
@@ -80,21 +91,25 @@ public class CenterPresenter {
 			File path = new File(s);
 			try {
 				if (path.isDirectory())
-					Files.walkFileTree(Paths.get(s), new SimpleFileVisitor<Path>() {
-						@Override
-						public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-							if (view.getUpSlider().getComponentCount() >= 14) {
-								return FileVisitResult.TERMINATE;
-							}
-							if (file.toString().endsWith(".pdf")) {
-								view.setStatusText("Adding image: " + file.toFile());
-								addImage(view.getUpSlider(), file.toFile());
-							}
-							return FileVisitResult.CONTINUE;
-						}
-					});
+					Files.walkFileTree(Paths.get(s),
+							new SimpleFileVisitor<Path>() {
+								@Override
+								public FileVisitResult visitFile(Path file,
+										BasicFileAttributes attrs)
+										throws IOException {
+									if (view.getUpSlider().getComponentCount() >= 14) {
+										return FileVisitResult.TERMINATE;
+									}
+									if (file.toString().endsWith(".pdf")) {
+										view.setStatusText("Adding image: "
+												+ file.toFile());
+										addImage(file.toFile());
+									}
+									return FileVisitResult.CONTINUE;
+								}
+							});
 				else if (view.getUpSlider().getParent().getComponentCount() < 14)
-					addImage(view.getUpSlider(), path);
+					addImage(path);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -105,9 +120,10 @@ public class CenterPresenter {
 		// internalPanel.repaint();
 	}
 
-	private void addImage(JPanel internalPanel, File file) throws IOException {
+	private void addImage(File file) throws IOException {
 
-		String filename = System.getProperty("user.home") + File.separator + ".else" + File.separator
+		String filename = System.getProperty("user.home") + File.separator
+				+ ".else" + File.separator
 				+ MD5Checksum.getMD5Checksum(file.toString()) + ".jpg";
 
 		File imageFile = new File(filename);
@@ -130,14 +146,16 @@ public class CenterPresenter {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		BookMetadata book = model.getLibrary().getDatabase().get(checksum);
+		BookMetadata book = model.getLibrary().getDatabase()
+				.get(file.toString());
 
 		if (book == null) {
-			System.out.println("The book is null");
+			System.out.println("The book is null (doesn't exist before)");
 			book = new BookMetadata();
 			book.setChecksum(checksum);
+			model.getLibrary().getDatabase().put(file.toString(), book);
 		} else {
-			System.out.println("The book is not null");
+			System.out.println("The book is not null (already present)");
 			System.out.println(book);
 		}
 
@@ -149,7 +167,7 @@ public class CenterPresenter {
 
 		picLabel.setBorder(null);
 
-		internalPanel.add(picLabel);
+		view.getUpSlider().add(picLabel);
 
 		picLabel.revalidate();
 		picLabel.repaint();
@@ -159,8 +177,9 @@ public class CenterPresenter {
 	private BufferedImage saveImage(Path file) throws IOException {
 		view.setStatusText("Creating image of " + file.toFile());
 
-		String s = System.getProperty("user.home") + File.separator + ".else" + File.separator
-				+ MD5Checksum.getMD5Checksum(file.toString()) + ".jpg";
+		String s = System.getProperty("user.home") + File.separator + ".else"
+				+ File.separator + MD5Checksum.getMD5Checksum(file.toString())
+				+ ".jpg";
 
 		final File outputfile = new File(s);
 
@@ -189,6 +208,43 @@ public class CenterPresenter {
 
 		return image;
 
+	}
+
+	public void addImage(BookMetadata book) throws IOException {
+
+		String filename = System.getProperty("user.home") + File.separator
+				+ ".else" + File.separator + book.getChecksum() + ".jpg";
+
+		File imageFile = new File(filename);
+
+		BufferedImage image = null;
+
+		if (imageFile.exists())
+			image = ImageIO.read(imageFile);
+		else
+			System.err.println("Error 404");
+
+		Image img = image.getScaledInstance(-1, 180, Image.SCALE_DEFAULT);
+		JButton picLabel = new JButton(new ImageIcon(img));
+
+		if (book != null) {
+			System.out.println("The book is not null (already present)");
+			System.out.println(book);
+		}
+
+		picLabel.addActionListener(new ListenerBookClick(view, image, book));
+		picLabel.setBorder(null);
+
+		view.getUpSlider().add(picLabel);
+
+		picLabel.revalidate();
+		picLabel.repaint();
+	}
+
+	public void emptyOfBooks() {
+		view.getUpSlider().removeAll();
+		view.getUpSlider().revalidate();
+		view.getUpSlider().repaint();
 	}
 
 }

@@ -1,5 +1,8 @@
 package com.ELSE.view;
 
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
@@ -29,10 +32,12 @@ class StatusBar {
 
 		bar.getRight().add(save);
 
-		load = Button.newInstance(StatusBar.class.getResource("/load.png"));
+		load = Button
+				.newInstance(StatusBar.class.getResource("/load_gray.png"));
 		bar.getRight().add(load);
 
-		print = Button.newInstance(StatusBar.class.getResource("/print.png"));
+		print = Button.newInstance(StatusBar.class
+				.getResource("/print_gray.png"));
 
 		bar.getRight().add(print);
 	}
@@ -69,11 +74,27 @@ class StatusBar {
 		statusText.setText(s);
 	}
 
+	public void needToSave(boolean need) {
+		if (need)
+			save.setIcon(new ImageIcon(new ImageIcon(StatusBar.class
+					.getResource("/save_red.png")).getImage()
+					.getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
+		else
+			save.setIcon(new ImageIcon(new ImageIcon(StatusBar.class
+					.getResource("/save.png")).getImage().getScaledInstance(32,
+					32, Image.SCALE_DEFAULT)));
+	}
+
 	void setPresenter(Presenter presenter) {
-		add.addActionListener(presenter.getStatusBarPresenter().addMainPageButton());
-		update.addActionListener(presenter.getStatusBarPresenter().updateMainPageButton());
-		save.addActionListener(presenter.getStatusBarPresenter().saveMainPageButton());
-		load.addActionListener(presenter.getStatusBarPresenter().loadMainPageButton());
-		print.addActionListener(presenter.getStatusBarPresenter().printMainPageButton());
+		add.addActionListener(presenter.getStatusBarPresenter()
+				.addMainPageButton());
+		update.addActionListener(presenter.getStatusBarPresenter()
+				.updateMainPageButton());
+		save.addActionListener(presenter.getStatusBarPresenter()
+				.saveMainPageButton());
+		load.addActionListener(presenter.getStatusBarPresenter()
+				.loadMainPageButton());
+		print.addActionListener(presenter.getStatusBarPresenter()
+				.printMainPageButton());
 	}
 }

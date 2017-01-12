@@ -17,7 +17,7 @@ class Center {
 	private Center(Component parent) {
 		slider = SliderPage.newInstance();
 		bookDetails = BookDetailsPage.newInstance();
-		
+
 		panel = JInvisiblePanel.newInstance(parent);
 		panel.add(slider.getContainerPanel());
 	}

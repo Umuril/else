@@ -6,16 +6,20 @@ import java.awt.event.ActionListener;
 import javax.swing.JFileChooser;
 
 import com.ELSE.model.Pathbase;
+import com.ELSE.presenter.center.CenterPresenter;
 import com.ELSE.view.View;
 
 public class AddMainPageButtonListener implements ActionListener {
 
 	private View view;
 	private Pathbase pathbase;
+	private CenterPresenter centerPresenter;
 
-	public AddMainPageButtonListener(View view, Pathbase pathbase) {
+	public AddMainPageButtonListener(View view, Pathbase pathbase,
+			CenterPresenter centerPresenter) {
 		this.view = view;
 		this.pathbase = pathbase;
+		this.centerPresenter = centerPresenter;
 	}
 
 	@Override
@@ -26,17 +30,8 @@ public class AddMainPageButtonListener implements ActionListener {
 		int result = jfc.showOpenDialog(view.getFrame());
 		if (result == JFileChooser.APPROVE_OPTION)
 			pathbase.add(jfc.getSelectedFile().getAbsolutePath());
-		// add.addActionListener(new AbstractAction() {
-		//
-		// private static final long serialVersionUID = 1L;
-		//
-		// @Override
-		// public void actionPerformed(ActionEvent e) {
-		// //
-		// presenter.getStatusBarPresenter().aggiungiFile();
-		// }
-		//
-		// });
+		centerPresenter.aggiorna();
+		view.needToSave(true);
 	}
 
 }

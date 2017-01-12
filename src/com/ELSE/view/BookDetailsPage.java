@@ -2,10 +2,11 @@ package com.ELSE.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Image;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import com.ELSE.model.BookMetadata;
@@ -47,7 +48,7 @@ class BookDetailsPage implements CentralProperties {
 		back = Button.newInstance(SliderPage.class.getResource("/back.png"));
 
 		down.add(back);
-		back.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+		back.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 		JPanel dcenter = JInvisiblePanel.newInstance(container);
 
@@ -56,12 +57,12 @@ class BookDetailsPage implements CentralProperties {
 		dcenter.add(edit);
 
 		down.add(dcenter);
-		dcenter.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		dcenter.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		save = Button.newInstance(SliderPage.class.getResource("/save.png"));
 
 		down.add(save);
-		save.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
+		save.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
 		return down;
 	}
@@ -70,7 +71,12 @@ class BookDetailsPage implements CentralProperties {
 		this.image = image;
 		this.book = book;
 		metadataPanel.change(image, book, editable);
-		save.addActionListener(presenter.getCenterPresenter().saveBookDetailPageChanges(book));
+		// Needs further checks
+		metadataPanel.setPresenter(presenter);
+		for (ActionListener al : save.getActionListeners())
+			save.removeActionListener(al);
+		save.addActionListener(presenter.getCenterPresenter()
+				.saveBookDetailPageChanges(book));
 	}
 
 	@Override
@@ -88,8 +94,11 @@ class BookDetailsPage implements CentralProperties {
 
 	void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
-		back.addActionListener(presenter.getCenterPresenter().backFromBookDetail());
-		edit.addActionListener(presenter.getCenterPresenter().setBookDetailPageEditable());
+		back.addActionListener(presenter.getCenterPresenter()
+				.backFromBookDetail());
+		edit.addActionListener(presenter.getCenterPresenter()
+				.setBookDetailPageEditable());
+		// metadataPanel.setPresenter(presenter);
 
 	}
 

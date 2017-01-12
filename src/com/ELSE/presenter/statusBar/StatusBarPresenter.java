@@ -21,7 +21,8 @@ public class StatusBarPresenter {
 	}
 
 	public ActionListener addMainPageButton() {
-		return new AddMainPageButtonListener(view, model.getPathbase());
+		return new AddMainPageButtonListener(view, model.getPathbase(),
+				presenter.getCenterPresenter());
 	}
 
 	public ActionListener loadMainPageButton() {
@@ -29,7 +30,7 @@ public class StatusBarPresenter {
 	}
 
 	public ActionListener saveMainPageButton() {
-		return new SaveMainPageButtonListener(this);
+		return new SaveMainPageButtonListener(view, this);
 	}
 
 	public ActionListener updateMainPageButton() {
@@ -51,6 +52,7 @@ public class StatusBarPresenter {
 
 	public void createMetadataFile() {
 		model.getLibrary().createFile();
+		model.createPathbaseFile();
 	}
 
 }

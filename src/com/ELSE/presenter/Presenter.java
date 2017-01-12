@@ -13,7 +13,7 @@ public class Presenter {
 	private StatusBarPresenter statusBarPresenter;
 
 	public Presenter(View view, Model model) {
-		menuBarPresenter = new MenuBarPresenter(view, model);
+		menuBarPresenter = new MenuBarPresenter(view, model, this);
 		centerPresenter = new CenterPresenter(view, model);
 		statusBarPresenter = new StatusBarPresenter(view, model, this);
 	}

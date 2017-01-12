@@ -1,9 +1,9 @@
 package com.ELSE.view;
 
+import java.awt.Component;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 class SliderPage implements CentralProperties {
@@ -32,27 +32,27 @@ class SliderPage implements CentralProperties {
 		down = SubSizePanel.newInstance(container);
 
 		JButton back = Button.newInstance(SliderPage.class
-				.getResource("/back.png"));
+				.getResource("/back_gray.png"));
 		down.add(back);
-		back.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+		back.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 		JPanel dcenter = JInvisiblePanel.newInstance(down);
 
 		JButton grid = Button.newInstance(SliderPage.class
-				.getResource("/grid.png"));
+				.getResource("/grid_gray.png"));
 		dcenter.add(grid);
 
 		JButton list = Button.newInstance(SliderPage.class
-				.getResource("/list.png"));
+				.getResource("/list_gray.png"));
 		dcenter.add(list);
 
 		down.add(dcenter);
-		dcenter.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		dcenter.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		JButton forward = Button.newInstance(SliderPage.class
-				.getResource("/forward.png"));
+				.getResource("/forward_gray.png"));
 		down.add(forward);
-		forward.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
+		forward.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
 		return down;
 	}

@@ -99,7 +99,8 @@ public class View {
 	}
 
 	public void changeBookPageEditable() {
-		center.getBookDetails().setEditable(!center.getBookDetails().isEditable());
+		center.getBookDetails().setEditable(
+				!center.getBookDetails().isEditable());
 		center.getBookDetails().update();
 	}
 
@@ -109,5 +110,9 @@ public class View {
 
 	public String getBookDetailAutore() {
 		return center.getBookDetails().getMetadataPanel().getAutore().getText();
+	}
+
+	public void needToSave(boolean need) {
+		statusBar.needToSave(need);
 	}
 }

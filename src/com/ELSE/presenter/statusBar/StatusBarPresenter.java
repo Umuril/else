@@ -31,7 +31,7 @@ public class StatusBarPresenter {
 	}
 
 	public ActionListener loadMainPageButton() {
-		return new LoadMainPageButtonListener(model,
+		return new LoadMainPageButtonListener(view, model,
 				presenter.getCenterPresenter());
 	}
 

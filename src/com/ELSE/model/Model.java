@@ -32,7 +32,7 @@ public class Model {
 
 		setPathbase(new Pathbase());
 
-		loadPathbaseFile();
+		loadPathbaseFile("db.txt");
 
 		for (String s : pathbase.getPathsList()) {
 			File path = new File(s);
@@ -108,11 +108,11 @@ public class Model {
 		}
 	}
 
-	public void loadPathbaseFile() {
+	public void loadPathbaseFile(String filename) {
 		getPathbase().clear();
 		// Read from the stored file
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-				new FileInputStream(new File("db.txt")),
+				new FileInputStream(new File(filename)),
 				Charset.defaultCharset()))) {
 
 			String line;

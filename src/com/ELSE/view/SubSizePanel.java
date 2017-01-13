@@ -7,7 +7,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 class SubSizePanel {
-
 	private SubSizePanel() {
 		throw new AssertionError();
 	}

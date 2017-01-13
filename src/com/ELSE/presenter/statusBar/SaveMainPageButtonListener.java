@@ -6,12 +6,10 @@ import java.awt.event.ActionListener;
 import com.ELSE.view.View;
 
 public class SaveMainPageButtonListener implements ActionListener {
-
 	private View view;
 	private StatusBarPresenter statusBarPresenter;
 
-	public SaveMainPageButtonListener(View view,
-			StatusBarPresenter statusBarPresenter) {
+	public SaveMainPageButtonListener(View view, StatusBarPresenter statusBarPresenter) {
 		this.view = view;
 		this.statusBarPresenter = statusBarPresenter;
 	}
@@ -21,5 +19,4 @@ public class SaveMainPageButtonListener implements ActionListener {
 		statusBarPresenter.createMetadataFile();
 		view.needToSave(false);
 	}
-
 }

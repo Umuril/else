@@ -9,7 +9,6 @@ import com.ELSE.presenter.Presenter;
 import com.ELSE.view.View;
 
 public class StatusBarPresenter {
-
 	private View view;
 	private Model model;
 	private Presenter presenter;
@@ -21,13 +20,11 @@ public class StatusBarPresenter {
 	}
 
 	public ActionListener addMainPageButton() {
-		return new AddMainPageButtonListener(view, model.getPathbase(),
-				presenter.getCenterPresenter());
+		return new AddMainPageButtonListener(view, model.getPathbase(), presenter.getCenterPresenter());
 	}
 
 	public ActionListener removeMainPageButton() {
-		return new RemoveMainPageButtonListener(view, model.getPathbase(),
-				presenter.getCenterPresenter());
+		return new RemoveMainPageButtonListener(view, model.getPathbase(), presenter.getCenterPresenter());
 	}
 
 	public ActionListener loadMainPageButton() {
@@ -59,5 +56,4 @@ public class StatusBarPresenter {
 		model.getLibrary().createFile();
 		model.createPathbaseFile();
 	}
-
 }

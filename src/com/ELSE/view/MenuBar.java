@@ -5,25 +5,18 @@ import javax.swing.JButton;
 import com.ELSE.presenter.Presenter;
 
 class MenuBar {
-
 	private Bar parent;
-
 	private JButton settings;
 	private SearchBar searchBar;
 	private JButton advSearch;
 
 	private MenuBar() {
 		parent = Bar.newInstance();
-
-		settings = Button.newInstance(MenuBar.class
-				.getResource("/settings_gray.png"));
+		settings = Button.newInstance(MenuBar.class.getResource("/settings_gray.png"));
 		parent.getLeft().add(settings);
-
 		searchBar = SearchBar.newInstance();
 		parent.getRight().add(searchBar.getPanel());
-
-		advSearch = Button.newInstance(MenuBar.class
-				.getResource("/advsearch_gray.png"));
+		advSearch = Button.newInstance(MenuBar.class.getResource("/advsearch_gray.png"));
 		parent.getRight().add(advSearch);
 	}
 
@@ -49,11 +42,8 @@ class MenuBar {
 
 	void setPresenter(Presenter presenter) {
 		settings.addActionListener(presenter.getMenuBarPresenter().settings());
-		searchBar.getTesto().addActionListener(
-				presenter.getMenuBarPresenter().search(searchBar.getTesto()));
-		searchBar.getIcona().addActionListener(
-				presenter.getMenuBarPresenter().search(searchBar.getTesto()));
-		advSearch
-				.addActionListener(presenter.getMenuBarPresenter().advSearch());
+		searchBar.getTesto().addActionListener(presenter.getMenuBarPresenter().search(searchBar.getTesto()));
+		searchBar.getIcona().addActionListener(presenter.getMenuBarPresenter().search(searchBar.getTesto()));
+		advSearch.addActionListener(presenter.getMenuBarPresenter().advSearch());
 	}
 }

@@ -11,13 +11,11 @@ import com.ELSE.model.Model;
 import com.ELSE.presenter.center.CenterPresenter;
 
 public class SearchListener implements ActionListener {
-
 	private Model model;
 	private CenterPresenter centerPresenter;
 	private JTextField testo;
 
-	public SearchListener(Model model, CenterPresenter centerPresenter,
-			JTextField testo) {
+	public SearchListener(Model model, CenterPresenter centerPresenter, JTextField testo) {
 		this.model = model;
 		this.centerPresenter = centerPresenter;
 		this.testo = testo;
@@ -59,5 +57,4 @@ public class SearchListener implements ActionListener {
 				System.out.println("Book not found: " + book);
 		}
 	}
-
 }

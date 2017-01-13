@@ -13,7 +13,6 @@ import com.ELSE.model.BookMetadata;
 import com.ELSE.presenter.Presenter;
 
 class BookDetailsPage implements CentralProperties {
-
 	private JPanel parent;
 	private JPanel up, down;
 	private MetadataPanel metadataPanel;
@@ -44,26 +43,17 @@ class BookDetailsPage implements CentralProperties {
 	@Override
 	public JPanel initDown(JPanel container) {
 		down = SubSizePanel.newInstance(container);
-
 		back = Button.newInstance(SliderPage.class.getResource("/back.png"));
-
 		down.add(back);
 		back.setAlignmentX(Component.LEFT_ALIGNMENT);
-
 		JPanel dcenter = JInvisiblePanel.newInstance(container);
-
 		edit = Button.newInstance(SliderPage.class.getResource("/edit.png"));
-
 		dcenter.add(edit);
-
 		down.add(dcenter);
 		dcenter.setAlignmentX(Component.CENTER_ALIGNMENT);
-
 		save = Button.newInstance(SliderPage.class.getResource("/save.png"));
-
 		down.add(save);
 		save.setAlignmentX(Component.RIGHT_ALIGNMENT);
-
 		return down;
 	}
 
@@ -75,8 +65,7 @@ class BookDetailsPage implements CentralProperties {
 		metadataPanel.setPresenter(presenter);
 		for (ActionListener al : save.getActionListeners())
 			save.removeActionListener(al);
-		save.addActionListener(presenter.getCenterPresenter()
-				.saveBookDetailPageChanges(book));
+		save.addActionListener(presenter.getCenterPresenter().saveBookDetailPageChanges(book));
 	}
 
 	@Override
@@ -94,12 +83,9 @@ class BookDetailsPage implements CentralProperties {
 
 	void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
-		back.addActionListener(presenter.getCenterPresenter()
-				.backFromBookDetail());
-		edit.addActionListener(presenter.getCenterPresenter()
-				.setBookDetailPageEditable());
+		back.addActionListener(presenter.getCenterPresenter().backFromBookDetail());
+		edit.addActionListener(presenter.getCenterPresenter().setBookDetailPageEditable());
 		// metadataPanel.setPresenter(presenter);
-
 	}
 
 	public void setEditable(boolean editable) {

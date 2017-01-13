@@ -9,7 +9,6 @@ import com.ELSE.model.Model;
 import com.ELSE.view.View;
 
 public class ListenerSaveButton implements ActionListener {
-
 	private View view;
 	private Model model;
 	private BookMetadata book;
@@ -22,8 +21,7 @@ public class ListenerSaveButton implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		for (Entry<String, BookMetadata> entry : model.getLibrary()
-				.getDatabase().entrySet()) {
+		for (Entry<String, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
 			if (entry.getValue().equals(book)) {
 				entry.getValue().setTitolo(view.getBookDetailTitolo());
 				entry.getValue().setAutore(view.getBookDetailAutore());
@@ -33,6 +31,5 @@ public class ListenerSaveButton implements ActionListener {
 		// book.setAutore(view.getBookDetailAutore());
 		view.setBookPageEditable(false);
 		view.needToSave(true);
-
 	}
 }

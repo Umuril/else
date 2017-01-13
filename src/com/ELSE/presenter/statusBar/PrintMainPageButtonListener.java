@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PrintMainPageButtonListener implements ActionListener {
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// print.addActionListener(new AbstractAction() {
@@ -19,5 +18,4 @@ public class PrintMainPageButtonListener implements ActionListener {
 		//
 		// });
 	}
-
 }

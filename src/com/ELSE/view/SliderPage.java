@@ -7,7 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 class SliderPage implements CentralProperties {
-
 	private JPanel parent;
 	private JPanel up;
 	private JPanel down;
@@ -30,30 +29,19 @@ class SliderPage implements CentralProperties {
 	@Override
 	public JPanel initDown(JPanel container) {
 		down = SubSizePanel.newInstance(container);
-
-		JButton back = Button.newInstance(SliderPage.class
-				.getResource("/back_gray.png"));
+		JButton back = Button.newInstance(SliderPage.class.getResource("/back_gray.png"));
 		down.add(back);
 		back.setAlignmentX(Component.LEFT_ALIGNMENT);
-
 		JPanel dcenter = JInvisiblePanel.newInstance(down);
-
-		JButton grid = Button.newInstance(SliderPage.class
-				.getResource("/grid_gray.png"));
+		JButton grid = Button.newInstance(SliderPage.class.getResource("/grid_gray.png"));
 		dcenter.add(grid);
-
-		JButton list = Button.newInstance(SliderPage.class
-				.getResource("/list_gray.png"));
+		JButton list = Button.newInstance(SliderPage.class.getResource("/list_gray.png"));
 		dcenter.add(list);
-
 		down.add(dcenter);
 		dcenter.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-		JButton forward = Button.newInstance(SliderPage.class
-				.getResource("/forward_gray.png"));
+		JButton forward = Button.newInstance(SliderPage.class.getResource("/forward_gray.png"));
 		down.add(forward);
 		forward.setAlignmentX(Component.RIGHT_ALIGNMENT);
-
 		return down;
 	}
 
@@ -69,5 +57,4 @@ class SliderPage implements CentralProperties {
 	JPanel getDown() {
 		return down;
 	}
-
 }

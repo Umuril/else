@@ -9,7 +9,6 @@ import com.ELSE.presenter.Presenter;
 import com.ELSE.view.View;
 
 public class MenuBarPresenter {
-
 	private View view;
 	private Model model;
 	private Presenter presenter;
@@ -31,5 +30,4 @@ public class MenuBarPresenter {
 	public ActionListener advSearch() {
 		return new AdvanceSearchListener(view);
 	}
-
 }

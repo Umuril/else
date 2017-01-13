@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import com.ELSE.view.View;
 
 public class ListenerBackButton implements ActionListener {
-
 	private CenterPresenter centerPresenter;
 	private View view;
 
@@ -17,10 +16,7 @@ public class ListenerBackButton implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
 		centerPresenter.change(null, null);
 		view.setBookPageEditable(false);
-
 	}
-
 }

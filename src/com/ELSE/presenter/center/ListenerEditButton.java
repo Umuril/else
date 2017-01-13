@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import com.ELSE.view.View;
 
 public class ListenerEditButton implements ActionListener {
-
 	private View view;
 
 	public ListenerEditButton(View view) {
@@ -17,5 +16,4 @@ public class ListenerEditButton implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		view.changeBookPageEditable();
 	}
-
 }

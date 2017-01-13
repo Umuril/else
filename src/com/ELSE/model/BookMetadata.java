@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.time.Year;
 
 public class BookMetadata implements Serializable {
-
 	private static final long serialVersionUID = 1L;
-
 	private String checksum;
 	private String titolo;
 	private String autore;
@@ -57,8 +55,6 @@ public class BookMetadata implements Serializable {
 
 	@Override
 	public String toString() {
-		return checksum + ":" + titolo + ":" + autore + ":" + anno + ":"
-				+ npagine;
+		return checksum + ":" + titolo + ":" + autore + ":" + anno + ":" + npagine;
 	}
-
 }

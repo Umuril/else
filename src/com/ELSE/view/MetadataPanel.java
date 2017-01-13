@@ -15,7 +15,6 @@ import com.ELSE.model.BookMetadata;
 import com.ELSE.presenter.Presenter;
 
 class MetadataPanel {
-
 	private JPanel parent;
 	private JLabel bookPreview;
 	private JTextField titolo, autore;
@@ -40,21 +39,16 @@ class MetadataPanel {
 	}
 
 	void change(Image image, BookMetadata book, boolean editable) {
-
 		System.out.println("CHANGING TO " + book + " - " + editable);
-
 		this.book = book;
-
 		parent.removeAll();
-		bookPreview.setIcon(new ImageIcon(new ImageIcon(image).getImage()
-				.getScaledInstance(-1, 300, Image.SCALE_DEFAULT)));
+		bookPreview.setIcon(new ImageIcon(new ImageIcon(image).getImage().getScaledInstance(-1, 300, Image.SCALE_DEFAULT)));
 		parent.add(bookPreview, BorderLayout.WEST);
 		JPanel things = JInvisiblePanel.newInstance(parent);
 		things.setLayout(new FlowLayout());
 		JPanel panel = JInvisiblePanel.newInstance(things);
 		panel.setLayout(new GridLayout(0, 2));
 		if (editable) {
-
 			JLabel ltitolo = new JLabel("Titolo: ");
 			panel.add(ltitolo);
 			titolo = new JTextField(15);
@@ -65,9 +59,7 @@ class MetadataPanel {
 			autore = new JTextField(15);
 			autore.setText(book.getAutore());
 			panel.add(autore);
-
 		} else {
-
 			JLabel ltitolo = new JLabel("Titolo: ");
 			panel.add(ltitolo);
 			JLabel titolo = new JLabel(book.getTitolo());
@@ -76,7 +68,6 @@ class MetadataPanel {
 			panel.add(lautore);
 			JLabel autore = new JLabel(book.getAutore());
 			panel.add(autore);
-
 		}
 		things.add(panel);
 		parent.add(things, BorderLayout.CENTER);
@@ -87,7 +78,6 @@ class MetadataPanel {
 	void setPresenter(Presenter presenter) {
 		for (MouseListener ml : bookPreview.getMouseListeners())
 			bookPreview.removeMouseListener(ml);
-		bookPreview.addMouseListener(presenter.getCenterPresenter().openBook(
-				book));
+		bookPreview.addMouseListener(presenter.getCenterPresenter().openBook(book));
 	}
 }

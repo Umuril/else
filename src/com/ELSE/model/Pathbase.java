@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Pathbase {
-
 	public void add(String p) {
 		root.add(Arrays.asList(p.split("\\\\|/")), 0);
 	}
@@ -33,7 +32,6 @@ public class Pathbase {
 	private PathNode root = new PathNode("");
 
 	private static class PathNode {
-
 		private final String name;
 		private Map<String, PathNode> children = new HashMap<>();
 
@@ -61,7 +59,6 @@ public class Pathbase {
 		private void add(List<String> path, int i) {
 			String childName = path.get(i);
 			PathNode child = children.get(childName);
-
 			if (child != null) {
 				if (path.size() - i <= 1)
 					child.children.clear();
@@ -99,7 +96,5 @@ public class Pathbase {
 			}
 			return false;
 		}
-
 	}
-
 }

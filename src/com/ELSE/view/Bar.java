@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 class Bar {
-
 	private JPanel barContainer, left, right;
 
 	private Bar() {
@@ -15,10 +14,8 @@ class Bar {
 		barContainer.setBackground(Color.decode("#cbc4a7"));
 		barContainer.setBorder(new EmptyBorder(5, 5, 5, 5));
 		barContainer.setLayout(new BorderLayout());
-
 		left = JInvisiblePanel.newInstance(barContainer);
 		right = JInvisiblePanel.newInstance(barContainer);
-
 		barContainer.add(left, BorderLayout.WEST);
 		barContainer.add(right, BorderLayout.EAST);
 	}
@@ -38,5 +35,4 @@ class Bar {
 	JPanel getRight() {
 		return right;
 	}
-
 }

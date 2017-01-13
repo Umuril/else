@@ -7,7 +7,6 @@ import com.ELSE.presenter.statusBar.StatusBarPresenter;
 import com.ELSE.view.View;
 
 public class Presenter {
-
 	private MenuBarPresenter menuBarPresenter;
 	private CenterPresenter centerPresenter;
 	private StatusBarPresenter statusBarPresenter;

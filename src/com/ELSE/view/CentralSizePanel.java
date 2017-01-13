@@ -5,7 +5,6 @@ import java.awt.Component;
 import javax.swing.JPanel;
 
 class CentralSizePanel {
-
 	private CentralSizePanel() {
 		throw new AssertionError();
 	}

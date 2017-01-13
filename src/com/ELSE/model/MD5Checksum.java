@@ -8,23 +8,18 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MD5Checksum {
-
 	public static byte[] createChecksum(String filename) {
 		MessageDigest complete = null;
-
 		try (InputStream fis = new FileInputStream(filename)) {
-
 			byte[] buffer = new byte[1024];
 			complete = MessageDigest.getInstance("MD5");
 			int numRead;
-
 			do {
 				numRead = fis.read(buffer);
 				if (numRead > 0) {
 					complete.update(buffer, 0, numRead);
 				}
 			} while (numRead != -1);
-
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
@@ -32,7 +27,6 @@ public class MD5Checksum {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 		if (complete != null)
 			return complete.digest();
 		return new byte[0];
@@ -48,5 +42,4 @@ public class MD5Checksum {
 		}
 		return sb.toString();
 	}
-
 }

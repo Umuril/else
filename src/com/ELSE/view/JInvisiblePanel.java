@@ -5,7 +5,6 @@ import java.awt.Component;
 import javax.swing.JPanel;
 
 class JInvisiblePanel {
-
 	private JInvisiblePanel() {
 		throw new AssertionError();
 	}
@@ -15,5 +14,4 @@ class JInvisiblePanel {
 		panel.setBackground(component.getBackground());
 		return panel;
 	}
-
 }

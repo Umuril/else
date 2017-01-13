@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 public class MetadataLibrary {
-
 	private HashMap<String, BookMetadata> database;
 	private String filename;
 
@@ -25,16 +24,12 @@ public class MetadataLibrary {
 		readFromFile();
 		for (BookMetadata book : database.values())
 			System.out.println(book);
-
 	}
 
 	// Throws?
 	public void createFile() {
-		try (ObjectOutputStream oos = new ObjectOutputStream(
-				new FileOutputStream(filename))) {
-
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
 			oos.writeObject(database);
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -42,29 +37,20 @@ public class MetadataLibrary {
 
 	// Need to check this one in the future
 	private void readFromFile() {
-		try (ObjectInputStream oos = new ObjectInputStream(new FileInputStream(
-				filename))) {
-
+		try (ObjectInputStream oos = new ObjectInputStream(new FileInputStream(filename))) {
 			database = new HashMap<String, BookMetadata>();
-
 			Object obj = null;
-
 			try {
 				while ((obj = oos.readObject()) != null)
 					if (obj instanceof HashMap<?, ?>) {
-						for (Entry<?, ?> entry : ((HashMap<?, ?>) obj)
-								.entrySet()) {
-							if (entry.getKey() instanceof String
-									&& entry.getValue() instanceof BookMetadata) {
-								database.put((String) entry.getKey(),
-										(BookMetadata) entry.getValue());
+						for (Entry<?, ?> entry : ((HashMap<?, ?>) obj).entrySet()) {
+							if (entry.getKey() instanceof String && entry.getValue() instanceof BookMetadata) {
+								database.put((String) entry.getKey(), (BookMetadata) entry.getValue());
 							}
 						}
 					}
 			} catch (EOFException e) {
-
 			}
-
 		} catch (FileNotFoundException e) {
 			// TODO e.printStackTrace();
 			System.err.println("File " + filename + " not found.");
@@ -90,5 +76,4 @@ public class MetadataLibrary {
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
-
 }

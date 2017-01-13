@@ -10,13 +10,11 @@ import com.ELSE.presenter.center.CenterPresenter;
 import com.ELSE.view.View;
 
 public class AddMainPageButtonListener implements ActionListener {
-
 	private View view;
 	private Pathbase pathbase;
 	private CenterPresenter centerPresenter;
 
-	public AddMainPageButtonListener(View view, Pathbase pathbase,
-			CenterPresenter centerPresenter) {
+	public AddMainPageButtonListener(View view, Pathbase pathbase, CenterPresenter centerPresenter) {
 		this.view = view;
 		this.pathbase = pathbase;
 		this.centerPresenter = centerPresenter;
@@ -33,5 +31,4 @@ public class AddMainPageButtonListener implements ActionListener {
 		centerPresenter.aggiorna();
 		view.needToSave(true);
 	}
-
 }

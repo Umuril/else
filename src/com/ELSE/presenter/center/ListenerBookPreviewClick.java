@@ -6,7 +6,6 @@ import java.awt.event.MouseListener;
 import com.ELSE.view.PDFReader;
 
 public class ListenerBookPreviewClick implements MouseListener {
-
 	private String path;
 
 	public ListenerBookPreviewClick(String path) {
@@ -25,25 +24,20 @@ public class ListenerBookPreviewClick implements MouseListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-
 	}
-
 }

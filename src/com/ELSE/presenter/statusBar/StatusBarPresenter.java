@@ -43,7 +43,7 @@ public class StatusBarPresenter {
 	}
 
 	public ActionListener printMainPageButton() {
-		return new PrintMainPageButtonListener();
+		return new PrintMainPageButtonListener(model);
 	}
 
 	public void aggiungiFile() {

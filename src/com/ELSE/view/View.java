@@ -115,4 +115,12 @@ public class View {
 	public void needToSave(boolean need) {
 		statusBar.needToSave(need);
 	}
+
+	public String getBookDetailAnno() {
+		return center.getBookDetails().getMetadataPanel().getAnno().getText();
+	}
+
+	public String getBookDetailPagine() {
+		return center.getBookDetails().getMetadataPanel().getPagine().getText();
+	}
 }

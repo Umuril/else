@@ -18,7 +18,7 @@ class MetadataPanel {
 
 	private JPanel parent;
 	private JLabel bookPreview;
-	private JTextField titolo, autore;
+	private JTextField titolo, autore, anno, pagine;
 	private BookMetadata book;
 
 	JTextField getTitolo() {
@@ -27,6 +27,14 @@ class MetadataPanel {
 
 	JTextField getAutore() {
 		return autore;
+	}
+
+	JTextField getAnno() {
+		return anno;
+	}
+
+	JTextField getPagine() {
+		return pagine;
 	}
 
 	private MetadataPanel(JPanel parent) {
@@ -65,6 +73,17 @@ class MetadataPanel {
 			autore = new JTextField(15);
 			autore.setText(book.getAutore());
 			panel.add(autore);
+			JLabel lanno = new JLabel("Anno: ");
+			panel.add(lanno);
+			anno = new JTextField(15);
+			anno.setText(book.getAnno() != null ? book.getAnno().toString()
+					: "");
+			panel.add(anno);
+			JLabel lpagine = new JLabel("Pagine: ");
+			panel.add(lpagine);
+			pagine = new JTextField(15);
+			pagine.setText(Integer.toString(book.getNpagine()));
+			panel.add(pagine);
 
 		} else {
 
@@ -72,10 +91,22 @@ class MetadataPanel {
 			panel.add(ltitolo);
 			JLabel titolo = new JLabel(book.getTitolo());
 			panel.add(titolo);
+
 			JLabel lautore = new JLabel("Autore: ");
 			panel.add(lautore);
 			JLabel autore = new JLabel(book.getAutore());
 			panel.add(autore);
+
+			JLabel lanno = new JLabel("Anno: ");
+			panel.add(lanno);
+			JLabel anno = new JLabel(book.getAnno() != null ? book.getAnno()
+					.toString() : "");
+			panel.add(anno);
+
+			JLabel lpagine = new JLabel("Pagine: ");
+			panel.add(lpagine);
+			JLabel pagine = new JLabel(Integer.toString(book.getNpagine()));
+			panel.add(pagine);
 
 		}
 		things.add(panel);

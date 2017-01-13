@@ -1,4 +1,4 @@
-package com.ELSE.view;
+package com.ELSE.presenter.reader;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -19,34 +19,43 @@ import javax.swing.WindowConstants;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
-public class PDFReader extends JFrame {
 
-	private static final long serialVersionUID = 1L;
+public class EPUBReader implements EbookReader {
+	private File file;
+
+	@Override
+	public BufferedImage getCover() {
+		PDDocument doc = null;
+		try {
+			doc = PDDocument.load(file);
+			PDFRenderer renderer = new PDFRenderer(doc);
+			BufferedImage img = renderer.renderImage(0);
+			doc.close();
+			return img;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	private JLabel label;
 	private int page, totpages;
-	private File file;
 	private JFrame frame;
 	private JButton back, forward;
 
-	public PDFReader(String path) {
+	public EPUBReader(String path) {
 		frame = new JFrame("Viewer");
 		frame.setBounds(100, 100, 800, 500);
 		frame.getContentPane().setLayout(new BorderLayout());
-
 		file = new File(path);
-
 		label = new JLabel();
-
 		JPanel panel = new JPanel();
 		panel.add(Box.createHorizontalGlue());
 		panel.add(label);
 		panel.add(Box.createHorizontalGlue());
-
 		JScrollPane scrollPane = new JScrollPane(panel);
-
 		frame.getContentPane().add(scrollPane);
-
 		PDDocument doc;
 		try {
 			doc = PDDocument.load(file);
@@ -56,16 +65,11 @@ public class PDFReader extends JFrame {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
 		aggiorna();
-
 		back = new JButton("Back");
 		forward = new JButton("Forward");
-
 		back.setEnabled(false);
-
 		back.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -77,9 +81,7 @@ public class PDFReader extends JFrame {
 				forward.setEnabled(page != totpages - 1);
 			}
 		});
-
 		forward.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -91,14 +93,10 @@ public class PDFReader extends JFrame {
 				forward.setEnabled(page != totpages - 1);
 			}
 		});
-
 		JPanel lower = new JPanel();
-
 		lower.add(back);
 		lower.add(forward);
-
 		frame.getContentPane().add(lower, BorderLayout.SOUTH);
-
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.setVisible(true);
 	}
@@ -110,7 +108,6 @@ public class PDFReader extends JFrame {
 			PDFRenderer renderer = new PDFRenderer(doc);
 			BufferedImage image;
 			image = renderer.renderImage(page);
-
 			label.setIcon(new ImageIcon(image));
 			// ImageIO.write(image, "PNG", new File("custom-render.png"));
 			doc.close();
@@ -118,6 +115,5 @@ public class PDFReader extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 }

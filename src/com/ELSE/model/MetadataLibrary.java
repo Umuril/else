@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 public class MetadataLibrary implements Printable {
-
 	private HashMap<String, BookMetadata> database;
 	private String filename;
 
@@ -31,16 +30,12 @@ public class MetadataLibrary implements Printable {
 		readFromFile();
 		for (BookMetadata book : database.values())
 			System.out.println(book);
-
 	}
 
 	// Throws?
 	public void createFile() {
-		try (ObjectOutputStream oos = new ObjectOutputStream(
-				new FileOutputStream(filename))) {
-
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
 			oos.writeObject(database);
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -48,29 +43,20 @@ public class MetadataLibrary implements Printable {
 
 	// Need to check this one in the future
 	private void readFromFile() {
-		try (ObjectInputStream oos = new ObjectInputStream(new FileInputStream(
-				filename))) {
-
+		try (ObjectInputStream oos = new ObjectInputStream(new FileInputStream(filename))) {
 			database = new HashMap<String, BookMetadata>();
-
 			Object obj = null;
-
 			try {
 				while ((obj = oos.readObject()) != null)
 					if (obj instanceof HashMap<?, ?>) {
-						for (Entry<?, ?> entry : ((HashMap<?, ?>) obj)
-								.entrySet()) {
-							if (entry.getKey() instanceof String
-									&& entry.getValue() instanceof BookMetadata) {
-								database.put((String) entry.getKey(),
-										(BookMetadata) entry.getValue());
+						for (Entry<?, ?> entry : ((HashMap<?, ?>) obj).entrySet()) {
+							if (entry.getKey() instanceof String && entry.getValue() instanceof BookMetadata) {
+								database.put((String) entry.getKey(), (BookMetadata) entry.getValue());
 							}
 						}
 					}
 			} catch (EOFException e) {
-
 			}
-
 		} catch (FileNotFoundException e) {
 			// TODO e.printStackTrace();
 			System.err.println("File " + filename + " not found.");
@@ -112,44 +98,37 @@ public class MetadataLibrary implements Printable {
 	}
 
 	@Override
-	public int print(Graphics g, PageFormat pf, int page)
-			throws PrinterException {
+	public int print(Graphics g, PageFormat pf, int page) throws PrinterException {
 		// TODO Auto-generated method stub
 		// We have only one page, and 'page'
 		// is zero-based
 		if (page > 0) {
 			return NO_SUCH_PAGE;
 		}
-
 		// User (0,0) is typically outside the
 		// imageable area, so we must translate
 		// by the X and Y values in the PageFormat
 		// to avoid clipping.
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.translate(pf.getImageableX(), pf.getImageableY());
-
 		int x = 0, y = 30;
-
 		// Now we perform our rendering
 		g.drawString("Titolo", x, y);
 		g.drawString("Autore", x + 250, y);
 		g.drawString("Anno", x + 350, y);
 		g.drawString("Pagine", x + 400, y);
 		y += 20;
-
 		for (Entry<String, BookMetadata> e : database.entrySet()) {
 			BookMetadata b = e.getValue();
 			x = 0;
-			if (b.getTitolo() != null)
+			if (b.getTitolo() != null && !b.getTitolo().isEmpty()) {
 				g.drawString(b.getTitolo().toString(), x, y);
-			if (b.getAutore() != null)
-				g.drawString(b.getAutore().toString(), x + 250, y);
-			if (b.getAnno() != null)
-				g.drawString(b.getAnno().toString(), x + 350, y);
-			g.drawString(Integer.toString(b.getNpagine()), x + 420, y);
-			y += 20;
+				g.drawString(b.getAutore() != null ? b.getAutore().toString() : "-----", x + 250, y);
+				g.drawString(b.getAnno() != null ? b.getAnno().toString() : "-----", x + 350, y);
+				g.drawString(b.getNpagine() != 0 ? Integer.toString(b.getNpagine()) : "---", x + 420, y);
+				y += 20;
+			}
 		}
-
 		// tell the caller that this page is part
 		// of the printed document
 		return PAGE_EXISTS;

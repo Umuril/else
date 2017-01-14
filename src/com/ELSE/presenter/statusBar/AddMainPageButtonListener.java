@@ -28,7 +28,7 @@ public class AddMainPageButtonListener implements ActionListener {
 		int result = jfc.showOpenDialog(view.getFrame());
 		if (result == JFileChooser.APPROVE_OPTION)
 			pathbase.add(jfc.getSelectedFile().getAbsolutePath());
-		centerPresenter.aggiorna();
+		centerPresenter.aggiorna(0);
 		view.needToSave(true);
 	}
 }

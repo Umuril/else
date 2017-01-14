@@ -14,6 +14,6 @@ public class UpdateMainPageButtonListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		centerPresenter.aggiorna();
+		centerPresenter.aggiorna(-1);
 	}
 }

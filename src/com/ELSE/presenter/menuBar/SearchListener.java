@@ -25,7 +25,7 @@ public class SearchListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String text = testo.getText();
 		if (text.isEmpty()) {
-			centerPresenter.aggiorna();
+			centerPresenter.aggiorna(0);
 			return;
 		}
 		System.out.println("Search triggered with " + text + ".");

@@ -10,12 +10,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
@@ -33,10 +29,13 @@ import com.ELSE.view.View;
 public class CenterPresenter {
 	private View view;
 	private Model model;
+	private FileSearcher fileSearcher;
 
 	public CenterPresenter(View view, Model model) {
 		this.view = view;
 		this.model = model;
+		fileSearcher = new FileSearcher(this, model.getPathbase(), 0);
+		fileSearcher.start();
 	}
 
 	public ActionListener clickOnABook(BufferedImage image, BookMetadata book) {
@@ -78,38 +77,39 @@ public class CenterPresenter {
 		}
 	}
 
-	public void aggiorna() {
+	public void aggiorna(int page) {
 		view.getUpSlider().removeAll();
-		// internalPanel.removeAll();
-		for (String s : model.getPathbase().getPathsList()) {
-			File path = new File(s);
-			try {
-				if (path.isDirectory())
-					Files.walkFileTree(Paths.get(s), new SimpleFileVisitor<Path>() {
-						@Override
-						public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-							if (view.getUpSlider().getComponentCount() >= 14) {
-								return FileVisitResult.TERMINATE;
-							}
-							if (file.toString().endsWith(".pdf")) {
-								view.setStatusText("Adding image: " + file.toFile());
-								addImage(file.toFile());
-							}
-							return FileVisitResult.CONTINUE;
-						}
-					});
-				else if (view.getUpSlider().getParent().getComponentCount() < 14)
-					addImage(path);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		if(page < 0)
+			page = fileSearcher.getPage();
+		fileSearcher = new FileSearcher(this, model.getPathbase(), page);
+		fileSearcher.start();
 		// Needed on delete
 		view.getUpSlider().revalidate();
 		view.getUpSlider().repaint();
 	}
 
-	private void addImage(File file) throws IOException {
+	public void loadNextBooks() {
+		view.getUpSlider().removeAll();
+		fileSearcher.findNext();
+		// Needed on delete
+		view.getUpSlider().revalidate();
+		view.getUpSlider().repaint();
+	}
+
+	public void loadPreviousBooks() {
+		int page = fileSearcher.getPage();
+		System.out.println("Reloading books to page: " + page);
+		if (page > 0) {
+			view.getUpSlider().removeAll();
+			fileSearcher = new FileSearcher(this, model.getPathbase(), page - 1);
+			fileSearcher.start();
+			// Needed on delete
+			view.getUpSlider().revalidate();
+			view.getUpSlider().repaint();
+		}
+	}
+
+	void addImage(File file) throws IOException {
 		String filename = System.getProperty("user.home") + File.separator + ".else" + File.separator + MD5Checksum.getMD5Checksum(file.toString()) + ".jpg";
 		File imageFile = new File(filename);
 		view.setStatusText("Trying to read: " + file.toPath());
@@ -152,6 +152,7 @@ public class CenterPresenter {
 		final File outputfile = new File(s);
 		if (outputfile.exists())
 			return null;
+		System.out.println("Book to save: " + file);
 		PDDocument doc = PDDocument.load(file.toFile());
 		PDFRenderer renderer = new PDFRenderer(doc);
 		final BufferedImage image = renderer.renderImage(0);
@@ -196,5 +197,21 @@ public class CenterPresenter {
 		view.getUpSlider().removeAll();
 		view.getUpSlider().revalidate();
 		view.getUpSlider().repaint();
+	}
+
+	public ActionListener backBooks() {
+		return new ListenerPreviousBooks(this);
+	}
+
+	public ActionListener forwardBooks() {
+		return new ListenerForwardBooks(this);
+	}
+
+	public ActionListener gridView() {
+		return new ListenerGridView(this);
+	}
+
+	public ActionListener listView() {
+		return new ListenerListView(this);
 	}
 }

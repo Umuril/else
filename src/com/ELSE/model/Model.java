@@ -38,7 +38,7 @@ public class Model {
 					Files.walkFileTree(Paths.get(s), new SimpleFileVisitor<Path>() {
 						@Override
 						public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-							if (file.toString().endsWith(".pdf")) {
+							if (acceptableFileType(file.toString())) {
 								BookMetadata book = new BookMetadata();
 								// book.setPercorso(file.toString());
 								try {
@@ -93,6 +93,10 @@ public class Model {
 		}
 	}
 
+	public boolean acceptableFileType(String path) {
+		return path.endsWith(".pdf") || path.endsWith(".html") || path.endsWith(".epub");
+	}
+
 	public void loadPathbaseFile(String filename) {
 		getPathbase().clear();
 		// Read from the stored file
@@ -108,5 +112,4 @@ public class Model {
 		} catch (IOException e) {
 		}
 	}
-
 }

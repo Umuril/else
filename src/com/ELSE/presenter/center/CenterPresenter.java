@@ -22,21 +22,21 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.rendering.PDFRenderer;
-
 import com.ELSE.model.BookMetadata;
 import com.ELSE.model.MD5Checksum;
 import com.ELSE.model.Model;
+import com.ELSE.presenter.Presenter;
 import com.ELSE.view.View;
 
 public class CenterPresenter {
 	private View view;
 	private Model model;
+	private Presenter presenter;
 
-	public CenterPresenter(View view, Model model) {
+	public CenterPresenter(View view, Model model, Presenter presenter) {
 		this.view = view;
 		this.model = model;
+		this.presenter = presenter;
 	}
 
 	public ActionListener clickOnABook(BufferedImage image, BookMetadata book) {
@@ -58,7 +58,7 @@ public class CenterPresenter {
 	public MouseListener openBook(BookMetadata book) {
 		for (Entry<String, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
 			if (entry.getValue().equals(book))
-				return new ListenerBookPreviewClick(entry.getKey());
+				return new ListenerBookPreviewClick(Paths.get(entry.getKey()), presenter);
 		}
 		return null;
 	}
@@ -91,7 +91,7 @@ public class CenterPresenter {
 							if (view.getUpSlider().getComponentCount() >= 14) {
 								return FileVisitResult.TERMINATE;
 							}
-							if (file.toString().endsWith(".pdf")) {
+							if (model.acceptableFileType(file.toString())) {
 								view.setStatusText("Adding image: " + file.toFile());
 								addImage(file.toFile());
 							}
@@ -114,10 +114,13 @@ public class CenterPresenter {
 		File imageFile = new File(filename);
 		view.setStatusText("Trying to read: " + file.toPath());
 		BufferedImage image = null;
-		if (imageFile.exists())
+		if (imageFile.exists()) {
+			System.out.println("L'immagine gia esiste.");
 			image = ImageIO.read(imageFile);
-		else
+		} else {
 			image = saveImage(file.toPath());
+			System.out.println("Creazione immagine in corso: " + image);
+		}
 		Image img = image.getScaledInstance(-1, 180, Image.SCALE_DEFAULT);
 		JButton picLabel = new JButton(new ImageIcon(img));
 		String checksum = "";
@@ -152,10 +155,8 @@ public class CenterPresenter {
 		final File outputfile = new File(s);
 		if (outputfile.exists())
 			return null;
-		PDDocument doc = PDDocument.load(file.toFile());
-		PDFRenderer renderer = new PDFRenderer(doc);
-		final BufferedImage image = renderer.renderImage(0);
-		doc.close();
+		final BufferedImage image = presenter.getCover(file);
+		System.out.println("Creating again image of " + image);
 		// Need an asyncronus way
 		Runnable r = new Runnable() {
 			@Override

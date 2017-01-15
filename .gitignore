@@ -69,6 +69,7 @@ local.properties
 
 # Generated files
 .metadata
+*.ps
 *.txt
 
 # Libraries

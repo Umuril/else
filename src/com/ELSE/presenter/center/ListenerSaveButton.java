@@ -2,6 +2,8 @@ package com.ELSE.presenter.center;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Year;
+import java.time.format.DateTimeParseException;
 import java.util.Map.Entry;
 
 import com.ELSE.model.BookMetadata;
@@ -25,6 +27,12 @@ public class ListenerSaveButton implements ActionListener {
 			if (entry.getValue().equals(book)) {
 				entry.getValue().setTitolo(view.getBookDetailTitolo());
 				entry.getValue().setAutore(view.getBookDetailAutore());
+				try {
+					entry.getValue().setAnno(Year.parse(view.getBookDetailAnno()));
+				} catch (DateTimeParseException e1) {
+					entry.getValue().setAnno(null);
+				}
+				entry.getValue().setNpagine(Integer.parseInt(view.getBookDetailPagine()));
 			}
 		}
 		// book.setTitolo(view.getBookDetailTitolo());

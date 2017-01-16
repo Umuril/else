@@ -27,11 +27,13 @@ import com.ELSE.view.View;
 public class CenterPresenter {
 	private View view;
 	private Model model;
+	private Presenter presenter;
 	private FileSearcher fileSearcher;
 
 	public CenterPresenter(View view, Model model, Presenter presenter) {
 		this.view = view;
 		this.model = model;
+		this.presenter = presenter;
 		fileSearcher = new FileSearcher(this, model.getPathbase(), 0);
 		fileSearcher.searchAndAddFile();
 	}

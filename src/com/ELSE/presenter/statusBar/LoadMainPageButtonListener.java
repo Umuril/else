@@ -28,6 +28,6 @@ public class LoadMainPageButtonListener implements ActionListener {
 		int result = jfc.showOpenDialog(view.getFrame());
 		if (result == JFileChooser.APPROVE_OPTION)
 			model.loadPathbaseFile(jfc.getSelectedFile().getAbsolutePath());
-		center.aggiorna();
+		center.aggiorna(-1);
 	}
 }

@@ -215,4 +215,20 @@ public class CenterPresenter {
 	public ActionListener listView() {
 		return new ListenerListView(this);
 	}
+
+	public ActionListener customOpenBook(BookMetadata book) {
+		for (Entry<String, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
+			if (entry.getValue().equals(book))
+				return new ListenerCustomBookPreviewClick(Paths.get(entry.getKey()), presenter);
+		}
+		return null;
+	}
+
+	public ActionListener defaultOpenBook(BookMetadata book) {
+		for (Entry<String, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
+			if (entry.getValue().equals(book))
+				return new ListenerBookPreviewClick(Paths.get(entry.getKey()), presenter);
+		}
+		return null;
+	}
 }

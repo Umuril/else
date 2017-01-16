@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -20,6 +21,7 @@ class MetadataPanel {
 	private JPanel parent;
 	private JLabel bookPreview;
 	private JTextField titolo, autore, anno, pagine;
+	private JButton openDefault, openCustom;
 	private BookMetadata book;
 
 	JTextField getTitolo() {
@@ -51,20 +53,20 @@ class MetadataPanel {
 	void change(Image image, BookMetadata book, boolean editable) {
 		System.out.println("CHANGING TO " + book + " - " + editable);
 		JPanel parentpanel = JInvisiblePanel.newInstance(parent);
-		parentpanel.setLayout(new BoxLayout(parentpanel,BoxLayout.X_AXIS));
+		parentpanel.setLayout(new BoxLayout(parentpanel, BoxLayout.X_AXIS));
 		this.book = book;
 		parent.removeAll();
 		bookPreview.setIcon(new ImageIcon(new ImageIcon(image).getImage().getScaledInstance(-1, 300, Image.SCALE_DEFAULT)));
-		//bookPreview.setAlignmentX(JLabel.CENTER);
+		// bookPreview.setAlignmentX(JLabel.CENTER);
 		// parent.add(bookPreview,BorderLayour.WEST);
-		//JPanel bookPreviewPanel = JInvisiblePanel.newInstance(parentpanel);
-		//bookPreviewPanel.setLayout(new BorderLayout());
-		//bookPreviewPanel.add(bookPreview);
+		// JPanel bookPreviewPanel = JInvisiblePanel.newInstance(parentpanel);
+		// bookPreviewPanel.setLayout(new BorderLayout());
+		// bookPreviewPanel.add(bookPreview);
 		parentpanel.add(Box.createHorizontalGlue());
 		parentpanel.add(bookPreview);
 		parentpanel.add(Box.createHorizontalGlue());
 		JPanel things = JInvisiblePanel.newInstance(parent);
-		things.setLayout(new FlowLayout());
+		things.setLayout(new BoxLayout(things,BoxLayout.Y_AXIS));
 		JPanel panel = JInvisiblePanel.newInstance(things);
 		panel.setLayout(new GridLayout(0, 2));
 		if (editable) {
@@ -107,6 +109,13 @@ class MetadataPanel {
 			panel.add(pagine);
 		}
 		things.add(panel);
+		things.add(Box.createVerticalGlue());
+		JPanel useless = JInvisiblePanel.newInstance(things);
+		openCustom = new JButton("Internal Open");
+		useless.add(openCustom);
+		openDefault = new JButton("External Open");
+		useless.add(openDefault);
+		things.add(useless);
 		parentpanel.add(things);
 		parentpanel.add(Box.createHorizontalGlue());
 		parent.add(parentpanel, BorderLayout.NORTH);
@@ -118,5 +127,7 @@ class MetadataPanel {
 		for (MouseListener ml : bookPreview.getMouseListeners())
 			bookPreview.removeMouseListener(ml);
 		bookPreview.addMouseListener(presenter.getCenterPresenter().openBook(book));
+		openCustom.addActionListener(presenter.getCenterPresenter().customOpenBook(book));
+		openDefault.addActionListener(presenter.getCenterPresenter().defaultOpenBook(book));
 	}
 }

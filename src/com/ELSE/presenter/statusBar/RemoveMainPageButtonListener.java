@@ -23,9 +23,10 @@ public class RemoveMainPageButtonListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String input = (String) JOptionPane.showInputDialog(null, "Scegli il percorso da cancellare: ", "Rimuovi percorso", JOptionPane.QUESTION_MESSAGE, null, pathbase.getPathsList().toArray(), pathbase.getPathsList().get(0));
-		if (input != null)
+		if (input != null) {
 			pathbase.remove(input);
-		centerPresenter.aggiorna();
-		view.needToSave(true);
+			centerPresenter.aggiorna(0);
+			view.needToSave(true);
+		}
 	}
 }

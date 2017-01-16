@@ -49,9 +49,11 @@ public class View {
 	public void setPresenter(Presenter presenter) {
 		menuBar.setPresenter(presenter);
 		center.getBookDetails().setPresenter(presenter);
+		center.getSlider().setPresenter(presenter);
 		statusBar.setPresenter(presenter);
 		presenter.getCenterPresenter().loadFromFile("db.txt");
-		presenter.getCenterPresenter().aggiorna();
+		// Can I delete it? Need more checks
+		// presenter.getCenterPresenter().aggiorna();
 	}
 
 	/*************************************

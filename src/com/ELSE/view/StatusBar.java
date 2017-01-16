@@ -27,7 +27,6 @@ class StatusBar {
 		bar.getRight().add(save);
 		load = Button.newInstance(StatusBar.class.getResource("/load.png"));
 		bar.getRight().add(load);
-
 		print = Button.newInstance(StatusBar.class.getResource("/print.png"));
 		bar.getRight().add(print);
 	}
@@ -69,9 +68,7 @@ class StatusBar {
 	}
 
 	public void needToSave(boolean need) {
-		save.setIcon(new ImageIcon(new ImageIcon(StatusBar.class
-				.getResource(need ? "/save_red.png" : "/save.png")).getImage()
-				.getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
+		save.setIcon(new ImageIcon(new ImageIcon(StatusBar.class.getResource(need ? "/save_red.png" : "/save.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
 	}
 
 	void setPresenter(Presenter presenter) {

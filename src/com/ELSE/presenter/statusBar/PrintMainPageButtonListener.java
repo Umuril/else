@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import com.ELSE.model.Model;
 
 public class PrintMainPageButtonListener implements ActionListener {
-
 	Model model;
 
 	public PrintMainPageButtonListener(Model model) {

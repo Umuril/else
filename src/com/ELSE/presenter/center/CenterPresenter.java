@@ -25,7 +25,6 @@ import com.ELSE.presenter.Presenter;
 import com.ELSE.view.View;
 
 public class CenterPresenter {
-
 	private View view;
 	private Model model;
 	private Presenter presenter;
@@ -80,7 +79,7 @@ public class CenterPresenter {
 
 	public void aggiorna(int page) {
 		view.getUpSlider().removeAll();
-		if(page < 0)
+		if (page < 0)
 			page = fileSearcher.getPage();
 		fileSearcher = new FileSearcher(this, model.getPathbase(), page);
 		fileSearcher.start();

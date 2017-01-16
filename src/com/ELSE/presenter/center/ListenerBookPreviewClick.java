@@ -13,10 +13,8 @@ import com.ELSE.presenter.Presenter;
 
 public class ListenerBookPreviewClick implements MouseListener, ActionListener {
 	private Path path;
-	private Presenter presenter;
 
 	public ListenerBookPreviewClick(Path path, Presenter presenter) {
-		this.presenter = presenter;
 		this.path = path;
 	}
 
@@ -52,7 +50,7 @@ public class ListenerBookPreviewClick implements MouseListener, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		//presenter.getReader(path);
+		// presenter.getReader(path);
 		try {
 			Desktop.getDesktop().open(new File(path.toString()));
 		} catch (IOException e1) { // TODO Auto-generated catch block

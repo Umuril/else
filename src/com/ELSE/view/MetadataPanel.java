@@ -1,7 +1,6 @@
 package com.ELSE.view;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.MouseListener;
@@ -66,7 +65,7 @@ class MetadataPanel {
 		parentpanel.add(bookPreview);
 		parentpanel.add(Box.createHorizontalGlue());
 		JPanel things = JInvisiblePanel.newInstance(parent);
-		things.setLayout(new BoxLayout(things,BoxLayout.Y_AXIS));
+		things.setLayout(new BoxLayout(things, BoxLayout.Y_AXIS));
 		JPanel panel = JInvisiblePanel.newInstance(things);
 		panel.setLayout(new GridLayout(0, 2));
 		if (editable) {

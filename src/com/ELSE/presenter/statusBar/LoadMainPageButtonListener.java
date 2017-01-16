@@ -10,13 +10,11 @@ import com.ELSE.presenter.center.CenterPresenter;
 import com.ELSE.view.View;
 
 public class LoadMainPageButtonListener implements ActionListener {
-
 	private View view;
 	private Model model;
 	private CenterPresenter center;
 
-	public LoadMainPageButtonListener(View view, Model model,
-			CenterPresenter center) {
+	public LoadMainPageButtonListener(View view, Model model, CenterPresenter center) {
 		this.view = view;
 		this.model = model;
 		this.center = center;

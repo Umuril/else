@@ -16,7 +16,7 @@ class MenuBar {
 		parent.getLeft().add(settings);
 		searchBar = SearchBar.newInstance();
 		parent.getRight().add(searchBar.getPanel());
-		advSearch = Button.newInstance(MenuBar.class.getResource("/advsearch_gray.png"));
+		advSearch = Button.newInstance(MenuBar.class.getResource("/advsearch.png"));
 		parent.getRight().add(advSearch);
 	}
 

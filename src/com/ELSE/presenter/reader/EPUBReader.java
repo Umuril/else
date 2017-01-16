@@ -19,7 +19,6 @@ import javax.swing.WindowConstants;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
-
 public class EPUBReader implements EbookReader {
 	private File file;
 
@@ -101,7 +100,7 @@ public class EPUBReader implements EbookReader {
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.setVisible(true);
 	}
-	
+
 	public EPUBReader(String path) {
 		this.path = path;
 	}

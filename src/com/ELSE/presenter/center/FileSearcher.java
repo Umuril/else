@@ -11,7 +11,7 @@ import java.util.Locale;
 
 import com.ELSE.model.Pathbase;
 
-public class FileSearcher extends Thread{
+public class FileSearcher extends Thread {
 	private static final int perPage = 14;
 	private Object lock = new Object();
 	private Pathbase pathbase;

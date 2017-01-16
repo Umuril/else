@@ -6,4 +6,7 @@ public interface EbookReader {
 	
 	public BufferedImage getCover();
 	
+	public void getFrame();
+	
+	
 }

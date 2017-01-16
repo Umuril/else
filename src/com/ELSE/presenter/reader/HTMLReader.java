@@ -21,7 +21,8 @@ public class HTMLReader implements EbookReader {
 		return new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB);
 	}
 
-	public HTMLReader(String path) {
+	private String path;
+	public void getFrame(){
 		JFrame frame = new JFrame("Viewer");
 		frame.setBounds(100, 100, 800, 500);
 		frame.getContentPane().setLayout(new BorderLayout());
@@ -51,5 +52,9 @@ public class HTMLReader implements EbookReader {
 		frame.getContentPane().add(scrollPane);
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.setVisible(true);
+	}
+	
+	public HTMLReader(String path) {
+		this.path = path;
 	}
 }

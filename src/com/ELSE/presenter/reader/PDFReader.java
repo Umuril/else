@@ -21,10 +21,11 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 
 
 public class PDFReader implements EbookReader {
-	private File file;
-
+	private File file ;
+	
 	@Override
 	public BufferedImage getCover() {
+		
 		PDDocument doc = null;
 		try {
 			doc = PDDocument.load(file);
@@ -43,8 +44,9 @@ public class PDFReader implements EbookReader {
 	private int page, totpages;
 	private JFrame frame;
 	private JButton back, forward;
+	private String path;
 
-	public PDFReader(String path) {
+	public void getFrame(){
 		frame = new JFrame("Viewer");
 		frame.setBounds(100, 100, 800, 500);
 		frame.getContentPane().setLayout(new BorderLayout());
@@ -99,6 +101,11 @@ public class PDFReader implements EbookReader {
 		frame.getContentPane().add(lower, BorderLayout.SOUTH);
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.setVisible(true);
+	}
+	
+	public PDFReader(String path) {
+		this.path = path;
+		this.file = new File(path);
 	}
 
 	private void aggiorna() {

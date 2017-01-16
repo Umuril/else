@@ -7,7 +7,6 @@ import com.ELSE.model.Model;
 import com.ELSE.presenter.center.CenterPresenter;
 import com.ELSE.presenter.menuBar.MenuBarPresenter;
 import com.ELSE.presenter.reader.EPUBReader;
-import com.ELSE.presenter.reader.EbookReader;
 import com.ELSE.presenter.reader.HTMLReader;
 import com.ELSE.presenter.reader.PDFReader;
 import com.ELSE.presenter.statusBar.StatusBarPresenter;
@@ -47,16 +46,14 @@ public class Presenter {
 		System.out.println("Formato non supportato. File: " + file.toString());
 		return null;
 	}
-	
+
 	// This sucks !!!
-		public EbookReader getReader(Path file) {
-			if (file.toString().endsWith(".pdf"))
-				return new PDFReader(file.toString());
-			if (file.toString().endsWith(".html"))
-				return new HTMLReader(file.toString());
-			if (file.toString().endsWith(".epub"))
-				return new EPUBReader(file.toString());
-			System.out.println("Formato non supportato. File: " + file.toString());
-			return null;
-		}
+	public void getReader(Path file) {
+		if (file.toString().endsWith(".pdf"))
+			new PDFReader(file.toString()).getFrame();
+		if (file.toString().endsWith(".html"))
+			new HTMLReader(file.toString()).getFrame();
+		if (file.toString().endsWith(".epub"))
+			new EPUBReader(file.toString()).getFrame();
+	}
 }

@@ -43,8 +43,9 @@ public class EPUBReader implements EbookReader {
 	private int page, totpages;
 	private JFrame frame;
 	private JButton back, forward;
+	private String path;
 
-	public EPUBReader(String path) {
+	public void getFrame() {
 		frame = new JFrame("Viewer");
 		frame.setBounds(100, 100, 800, 500);
 		frame.getContentPane().setLayout(new BorderLayout());
@@ -99,6 +100,10 @@ public class EPUBReader implements EbookReader {
 		frame.getContentPane().add(lower, BorderLayout.SOUTH);
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.setVisible(true);
+	}
+	
+	public EPUBReader(String path) {
+		this.path = path;
 	}
 
 	private void aggiorna() {

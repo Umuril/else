@@ -28,9 +28,7 @@ public class Model {
 		// Need to check the names
 		library = new MetadataLibrary(filename);
 		setPathbase(new Pathbase());
-
 		loadPathbaseFile("db.txt");
-
 		for (String s : pathbase.getPathsList()) {
 			File path = new File(s);
 			try {
@@ -100,14 +98,15 @@ public class Model {
 	public void loadPathbaseFile(String filename) {
 		getPathbase().clear();
 		// Read from the stored file
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-				new FileInputStream(new File(filename)),
-				Charset.defaultCharset()))) {
-
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(filename)), Charset.defaultCharset()))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
-				Path path = Paths.get(line).toRealPath();
-				getPathbase().add(path.toString());
+				try {
+					Path path = Paths.get(line).toRealPath();
+					getPathbase().add(path.toString());
+				} catch (IOException e) {
+					System.out.println(e);
+				}
 			}
 		} catch (IOException e) {
 		}

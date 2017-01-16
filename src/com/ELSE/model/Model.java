@@ -29,39 +29,45 @@ public class Model {
 		library = new MetadataLibrary(filename);
 		setPathbase(new Pathbase());
 		loadPathbaseFile("db.txt");
-		for (String s : pathbase.getPathsList()) {
-			File path = new File(s);
-			try {
-				if (path.isDirectory())
-					Files.walkFileTree(Paths.get(s), new SimpleFileVisitor<Path>() {
-						@Override
-						public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-							if (acceptableFileType(file.toString())) {
-								BookMetadata book = new BookMetadata();
-								// book.setPercorso(file.toString());
-								try {
-									book.setChecksum(MD5Checksum.getMD5Checksum(file.toString()));
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
-							}
-							return FileVisitResult.CONTINUE;
-						}
-					});
-				else {
-					BookMetadata book = new BookMetadata();
-					// book.setPercorso(path.toString());
+		Runnable r = new Runnable() {
+			@Override
+			public void run() {
+				for (String s : pathbase.getPathsList()) {
+					File path = new File(s);
 					try {
-						book.setChecksum(MD5Checksum.getMD5Checksum(path.toString()));
-					} catch (Exception e) {
+						if (path.isDirectory())
+							Files.walkFileTree(Paths.get(s), new SimpleFileVisitor<Path>() {
+								@Override
+								public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+									if (acceptableFileType(file.toString())) {
+										BookMetadata book = new BookMetadata();
+										// book.setPercorso(file.toString());
+										try {
+											book.setChecksum(MD5Checksum.getMD5Checksum(file.toString()));
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
+									}
+									return FileVisitResult.CONTINUE;
+								}
+							});
+						else {
+							BookMetadata book = new BookMetadata();
+							// book.setPercorso(path.toString());
+							try {
+								book.setChecksum(MD5Checksum.getMD5Checksum(path.toString()));
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+							library.getDatabase().put(book.getChecksum(), book);
+						}
+					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					library.getDatabase().put(book.getChecksum(), book);
 				}
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
-		}
+		};
+		new Thread(r).start();
 	}
 
 	public Pathbase getPathbase() {

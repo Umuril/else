@@ -47,6 +47,7 @@ public class Model {
 										} catch (Exception e) {
 											e.printStackTrace();
 										}
+										library.getDatabase().put(book.getChecksum(), book);
 									}
 									return FileVisitResult.CONTINUE;
 								}

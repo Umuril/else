@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.MouseListener;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -48,10 +50,19 @@ class MetadataPanel {
 
 	void change(Image image, BookMetadata book, boolean editable) {
 		System.out.println("CHANGING TO " + book + " - " + editable);
+		JPanel parentpanel = JInvisiblePanel.newInstance(parent);
+		parentpanel.setLayout(new BoxLayout(parentpanel,BoxLayout.X_AXIS));
 		this.book = book;
 		parent.removeAll();
 		bookPreview.setIcon(new ImageIcon(new ImageIcon(image).getImage().getScaledInstance(-1, 300, Image.SCALE_DEFAULT)));
-		parent.add(bookPreview, BorderLayout.WEST);
+		//bookPreview.setAlignmentX(JLabel.CENTER);
+		// parent.add(bookPreview,BorderLayour.WEST);
+		//JPanel bookPreviewPanel = JInvisiblePanel.newInstance(parentpanel);
+		//bookPreviewPanel.setLayout(new BorderLayout());
+		//bookPreviewPanel.add(bookPreview);
+		parentpanel.add(Box.createHorizontalGlue());
+		parentpanel.add(bookPreview);
+		parentpanel.add(Box.createHorizontalGlue());
 		JPanel things = JInvisiblePanel.newInstance(parent);
 		things.setLayout(new FlowLayout());
 		JPanel panel = JInvisiblePanel.newInstance(things);
@@ -70,40 +81,35 @@ class MetadataPanel {
 			JLabel lanno = new JLabel("Anno: ");
 			panel.add(lanno);
 			anno = new JTextField(15);
-			anno.setText(book.getAnno() != null ? book.getAnno().toString()
-					: "");
+			anno.setText(book.getAnno() != null ? book.getAnno().toString() : "");
 			panel.add(anno);
 			JLabel lpagine = new JLabel("Pagine: ");
 			panel.add(lpagine);
 			pagine = new JTextField(15);
 			pagine.setText(Integer.toString(book.getNpagine()));
 			panel.add(pagine);
-
 		} else {
 			JLabel ltitolo = new JLabel("Titolo: ");
 			panel.add(ltitolo);
 			JLabel titolo = new JLabel(book.getTitolo());
 			panel.add(titolo);
-
 			JLabel lautore = new JLabel("Autore: ");
 			panel.add(lautore);
 			JLabel autore = new JLabel(book.getAutore());
 			panel.add(autore);
-
 			JLabel lanno = new JLabel("Anno: ");
 			panel.add(lanno);
-			JLabel anno = new JLabel(book.getAnno() != null ? book.getAnno()
-					.toString() : "");
+			JLabel anno = new JLabel(book.getAnno() != null ? book.getAnno().toString() : "");
 			panel.add(anno);
-
 			JLabel lpagine = new JLabel("Pagine: ");
 			panel.add(lpagine);
 			JLabel pagine = new JLabel(Integer.toString(book.getNpagine()));
 			panel.add(pagine);
-
 		}
 		things.add(panel);
-		parent.add(things, BorderLayout.CENTER);
+		parentpanel.add(things);
+		parentpanel.add(Box.createHorizontalGlue());
+		parent.add(parentpanel, BorderLayout.NORTH);
 		parent.revalidate();
 		parent.repaint();
 	}

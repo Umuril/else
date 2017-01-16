@@ -25,6 +25,7 @@ import com.ELSE.presenter.Presenter;
 import com.ELSE.view.View;
 
 public class CenterPresenter {
+
 	private View view;
 	private Model model;
 	private Presenter presenter;
@@ -35,7 +36,7 @@ public class CenterPresenter {
 		this.model = model;
 		this.presenter = presenter;
 		fileSearcher = new FileSearcher(this, model.getPathbase(), 0);
-		fileSearcher.searchAndAddFile();
+		fileSearcher.start();
 	}
 
 	public ActionListener clickOnABook(BufferedImage image, BookMetadata book) {
@@ -82,7 +83,7 @@ public class CenterPresenter {
 		if(page < 0)
 			page = fileSearcher.getPage();
 		fileSearcher = new FileSearcher(this, model.getPathbase(), page);
-		fileSearcher.searchAndAddFile();
+		fileSearcher.start();
 		// Needed on delete
 		view.getUpSlider().revalidate();
 		view.getUpSlider().repaint();
@@ -102,7 +103,7 @@ public class CenterPresenter {
 		if (page > 0) {
 			view.getUpSlider().removeAll();
 			fileSearcher = new FileSearcher(this, model.getPathbase(), page - 1);
-			fileSearcher.searchAndAddFile();
+			fileSearcher.start();
 			// Needed on delete
 			view.getUpSlider().revalidate();
 			view.getUpSlider().repaint();

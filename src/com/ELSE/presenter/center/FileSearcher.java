@@ -11,7 +11,7 @@ import java.util.Locale;
 
 import com.ELSE.model.Pathbase;
 
-public class FileSearcher {
+public class FileSearcher extends Thread{
 	private static final int perPage = 14;
 	private Object lock = new Object();
 	private Pathbase pathbase;
@@ -34,7 +34,8 @@ public class FileSearcher {
 		}
 	}
 
-	public void searchAndAddFile() {
+	@Override
+	public void run() {
 		needToSkip = page * perPage;
 		for (String s : pathbase.getPathsList()) {
 			Path path = Paths.get(s);
@@ -45,7 +46,7 @@ public class FileSearcher {
 						if (file.toString().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
 							if (needToSkip > 0) {
 								needToSkip--;
-								System.err.println(needToSkip + " Skipping book: " + file);
+								System.out.println(needToSkip + " Skipping book: " + file);
 								return FileVisitResult.CONTINUE;
 							}
 							System.out.println("Aggiungendo al centro: " + file);

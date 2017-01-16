@@ -35,7 +35,7 @@ public class CenterPresenter {
 		this.view = view;
 		this.model = model;
 		fileSearcher = new FileSearcher(this, model.getPathbase(), 0);
-		fileSearcher.start();
+		fileSearcher.searchAndAddFile();
 	}
 
 	public ActionListener clickOnABook(BufferedImage image, BookMetadata book) {
@@ -82,7 +82,7 @@ public class CenterPresenter {
 		if(page < 0)
 			page = fileSearcher.getPage();
 		fileSearcher = new FileSearcher(this, model.getPathbase(), page);
-		fileSearcher.start();
+		fileSearcher.searchAndAddFile();
 		// Needed on delete
 		view.getUpSlider().revalidate();
 		view.getUpSlider().repaint();
@@ -102,7 +102,7 @@ public class CenterPresenter {
 		if (page > 0) {
 			view.getUpSlider().removeAll();
 			fileSearcher = new FileSearcher(this, model.getPathbase(), page - 1);
-			fileSearcher.start();
+			fileSearcher.searchAndAddFile();
 			// Needed on delete
 			view.getUpSlider().revalidate();
 			view.getUpSlider().repaint();

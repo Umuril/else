@@ -11,7 +11,7 @@ import java.util.Locale;
 
 import com.ELSE.model.Pathbase;
 
-public class FileSearcher extends Thread {
+public class FileSearcher {
 	private static final int perPage = 14;
 	private Object lock = new Object();
 	private Pathbase pathbase;
@@ -34,8 +34,7 @@ public class FileSearcher extends Thread {
 		}
 	}
 
-	@Override
-	public void run() {
+	public void searchAndAddFile() {
 		needToSkip = page * perPage;
 		for (String s : pathbase.getPathsList()) {
 			Path path = Paths.get(s);

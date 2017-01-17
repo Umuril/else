@@ -78,4 +78,12 @@ class SliderPage implements CentralProperties {
 		down.revalidate();
 		down.repaint();
 	}
+
+	public void enableNextButton(boolean b) {
+		System.out.println(b?"ENABLED":"DISABLED");
+		forward.setEnabled(b);
+		forward.setIcon(new ImageIcon(new ImageIcon(SliderPage.class.getResource(b?"/forward.png":"/forward_gray.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
+		down.revalidate();
+		down.repaint();
+	}
 }

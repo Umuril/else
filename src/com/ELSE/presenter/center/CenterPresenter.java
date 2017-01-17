@@ -34,7 +34,7 @@ public class CenterPresenter {
 		this.view = view;
 		this.model = model;
 		this.presenter = presenter;
-		fileSearcher = new FileSearcher(this, model.getPathbase(), 0);
+		fileSearcher = new FileSearcher(view, this, model.getPathbase(), 0);
 		fileSearcher.start();
 	}
 
@@ -81,7 +81,7 @@ public class CenterPresenter {
 		view.getUpSlider().removeAll();
 		if (page < 0)
 			page = fileSearcher.getPage();
-		fileSearcher = new FileSearcher(this, model.getPathbase(), page);
+		fileSearcher = new FileSearcher(view, this, model.getPathbase(), page);
 		fileSearcher.start();
 		// Needed on delete
 		view.getUpSlider().revalidate();
@@ -102,7 +102,7 @@ public class CenterPresenter {
 		System.out.println("Reloading books to page: " + page);
 		if (page > 0) {
 			view.getUpSlider().removeAll();
-			fileSearcher = new FileSearcher(this, model.getPathbase(), page - 1);
+			fileSearcher = new FileSearcher(view, this, model.getPathbase(), page - 1);
 			fileSearcher.start();
 			view.enableBackButton(page != 1);
 			// Needed on delete

@@ -10,6 +10,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Locale;
 
 import com.ELSE.model.Pathbase;
+import com.ELSE.view.View;
 
 public class FileSearcher extends Thread {
 	private static final int perPage = 14;
@@ -18,12 +19,14 @@ public class FileSearcher extends Thread {
 	private CenterPresenter centerPresenter;
 	private int found, page;
 	private int needToSkip;
+	private View view;
 
-	public FileSearcher(CenterPresenter centerPresenter, Pathbase pathbase, int page) {
+	public FileSearcher(View view, CenterPresenter centerPresenter, Pathbase pathbase, int page) {
 		this.pathbase = pathbase;
 		this.centerPresenter = centerPresenter;
 		found = 0;
 		this.page = page;
+		this.view = view;
 	}
 
 	public void findNext() {
@@ -49,10 +52,10 @@ public class FileSearcher extends Thread {
 								System.out.println(needToSkip + " Skipping book: " + file);
 								return FileVisitResult.CONTINUE;
 							}
-							System.out.println("Aggiungendo al centro: " + file);
-							centerPresenter.addImage(file.toFile());
-							found++; // ++found?
 							if (found >= perPage) {
+								// Here there are another books but i still
+								// don't add it
+								view.enableNextButton(true);
 								try {
 									synchronized (lock) {
 										while (found >= perPage)
@@ -62,6 +65,9 @@ public class FileSearcher extends Thread {
 									e.printStackTrace();
 								}
 							}
+							System.out.println("Aggiungendo al centro: " + file);
+							centerPresenter.addImage(file.toFile());
+							found++; // ++found?
 						}
 						return FileVisitResult.CONTINUE;
 					}
@@ -70,6 +76,7 @@ public class FileSearcher extends Thread {
 				e.printStackTrace();
 			}
 		}
+		view.enableNextButton(false);
 	}
 
 	public int getFound() {

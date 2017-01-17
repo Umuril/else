@@ -112,4 +112,8 @@ public class View {
 	public void enableBackButton(boolean b) {
 		center.getSlider().enableBackButton(b);
 	}
+
+	public void enableNextButton(boolean b) {
+		center.getSlider().enableNextButton(b);
+	}
 }

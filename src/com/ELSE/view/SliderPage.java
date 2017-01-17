@@ -2,7 +2,9 @@ package com.ELSE.view;
 
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.Image;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -32,7 +34,8 @@ class SliderPage implements CentralProperties {
 	@Override
 	public JPanel initDown(JPanel container) {
 		down = SubSizePanel.newInstance(container);
-		back = Button.newInstance(SliderPage.class.getResource("/back.png"));
+		back = Button.newInstance(SliderPage.class.getResource("/back_gray.png"));
+		back.setEnabled(false);
 		down.add(back);
 		back.setAlignmentX(Component.LEFT_ALIGNMENT);
 		JPanel dcenter = JInvisiblePanel.newInstance(down);
@@ -66,5 +69,13 @@ class SliderPage implements CentralProperties {
 		grid.addActionListener(presenter.getCenterPresenter().gridView());
 		list.addActionListener(presenter.getCenterPresenter().listView());
 		forward.addActionListener(presenter.getCenterPresenter().forwardBooks());
+	}
+
+	public void enableBackButton(boolean b) {
+		System.out.println(b?"ENABLED":"DISABLED");
+		back.setEnabled(b);
+		back.setIcon(new ImageIcon(new ImageIcon(SliderPage.class.getResource(b?"/back.png":"/back_gray.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
+		down.revalidate();
+		down.repaint();
 	}
 }

@@ -108,4 +108,8 @@ public class View {
 	public String getBookDetailPagine() {
 		return center.getBookDetails().getMetadataPanel().getPagine().getText();
 	}
+
+	public void enableBackButton(boolean b) {
+		center.getSlider().enableBackButton(b);
+	}
 }

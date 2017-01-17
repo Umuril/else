@@ -91,6 +91,7 @@ public class CenterPresenter {
 	public void loadNextBooks() {
 		view.getUpSlider().removeAll();
 		fileSearcher.findNext();
+		view.enableBackButton(true);
 		// Needed on delete
 		view.getUpSlider().revalidate();
 		view.getUpSlider().repaint();
@@ -103,6 +104,7 @@ public class CenterPresenter {
 			view.getUpSlider().removeAll();
 			fileSearcher = new FileSearcher(this, model.getPathbase(), page - 1);
 			fileSearcher.start();
+			view.enableBackButton(page != 1);
 			// Needed on delete
 			view.getUpSlider().revalidate();
 			view.getUpSlider().repaint();

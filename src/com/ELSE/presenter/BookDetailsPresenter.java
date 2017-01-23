@@ -46,16 +46,16 @@ public class BookDetailsPresenter implements ActionListener, DocumentListener {
 			for (Entry<String, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
 				if (entry.getValue().equals(book)) {
 					String s = metadataPanel.getTitolo().getText();
-					if (Utils.checkString(s))
+					if (Utils.checkString(s) && s.length() <= 20)
 						entry.getValue().setTitolo(s);
 					s = metadataPanel.getAutore().getText();
-					if (Utils.checkString(s))
+					if (Utils.checkString(s) && s.length() <= 20)
 						entry.getValue().setAutore(s);
 					s = metadataPanel.getAnno().getText();
-					if (Utils.checkString(s) && s.matches("^\\d+$"))
+					if (Utils.checkString(s) && s.length() <= 4 && s.matches("^\\d+$"))
 						entry.getValue().setAnno(String.format("%04d", Integer.parseInt(s)));
 					s = metadataPanel.getPagine().getText();
-					if (Utils.checkString(s) && s.matches("^\\d+$"))
+					if (Utils.checkString(s) && s.length() <= 5 && s.matches("^\\d+$"))
 						entry.getValue().setPagine(Integer.parseInt(s));
 				}
 			}
@@ -103,12 +103,12 @@ public class BookDetailsPresenter implements ActionListener, DocumentListener {
 		BookMetadata book = view.getMetadataPanel().getBook();
 		JTextField text;
 		text = view.getMetadataPanel().getTitolo();
-		if (text.getDocument() == e.getDocument() && !book.getTitolo().equals(text.getText())) {
+		if (text.getDocument() == e.getDocument() && text.getText().length() < 20 && !book.getTitolo().equals(text.getText())) {
 			Utils.log(Utils.Debug.DEBUG, "DOCUMENT LISTENER ON TITOLO");
 			view.getBookDetailsPage().enableSaveButton(true);
 		}
 		text = view.getMetadataPanel().getAutore();
-		if (text.getDocument() == e.getDocument() && !book.getAutore().equals(text.getText())) {
+		if (text.getDocument() == e.getDocument() && text.getText().length() < 20 && !book.getAutore().equals(text.getText())) {
 			Utils.log(Utils.Debug.DEBUG, "DOCUMENT LISTENER ON AUTORE");
 			view.getBookDetailsPage().enableSaveButton(true);
 		}

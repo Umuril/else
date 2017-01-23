@@ -48,15 +48,23 @@ public class BookDetailsPresenter implements ActionListener, DocumentListener {
 					String s = metadataPanel.getTitolo().getText();
 					if (Utils.checkString(s) && s.length() <= 20)
 						entry.getValue().setTitolo(s);
+					else
+						view.setStatusText("Titolo non valido o troppo lungo!");
 					s = metadataPanel.getAutore().getText();
 					if (Utils.checkString(s) && s.length() <= 20)
 						entry.getValue().setAutore(s);
+					else
+						view.setStatusText("Autore non valido o troppo lungo!");
 					s = metadataPanel.getAnno().getText();
 					if (Utils.checkString(s) && s.length() <= 4 && s.matches("^\\d+$"))
 						entry.getValue().setAnno(String.format("%04d", Integer.parseInt(s)));
+					else
+						view.setStatusText("Anno non valido!");
 					s = metadataPanel.getPagine().getText();
 					if (Utils.checkString(s) && s.length() <= 5 && s.matches("^\\d+$"))
 						entry.getValue().setPagine(Integer.parseInt(s));
+					else
+						view.setStatusText("Numero di pagine non valido!");
 				}
 			}
 			view.changeBookPageEditable(Boolean.FALSE);

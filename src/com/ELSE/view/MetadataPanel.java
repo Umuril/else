@@ -34,6 +34,8 @@ public class MetadataPanel {
 		autore = new JTextField(15);
 		anno = new JTextField(15);
 		pagine = new JTextField(15);
+		openCustom = new JButton("Internal Open");
+		openDefault = new JButton("External Open");
 	}
 
 	void change(Image image, BookMetadata book, boolean editable) {
@@ -86,9 +88,7 @@ public class MetadataPanel {
 		things.add(panel);
 		things.add(Box.createVerticalGlue());
 		JPanel useless = JInvisiblePanel.newInstance(things);
-		openCustom = new JButton("Internal Open");
 		useless.add(openCustom);
-		openDefault = new JButton("External Open");
 		useless.add(openDefault);
 		things.add(useless);
 		parentpanel.add(things);

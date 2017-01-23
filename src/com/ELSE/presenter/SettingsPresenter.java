@@ -43,7 +43,7 @@ public class SettingsPresenter implements ActionListener, ItemListener {
 			fc.setMultiSelectionEnabled(false);
 			if (fc.showOpenDialog(dialog) == JFileChooser.APPROVE_OPTION) {
 				Utils.setPreferences("Folder", fc.getSelectedFile().toString());
-				System.out.println(fc.getSelectedFile().toString() + " <= " + Utils.getPreferences("Folder"));
+				//System.out.println(fc.getSelectedFile().toString() + " <= " + Utils.getPreferences("Folder"));
 			}
 		} else if (e.getSource() == settings.getRestore()) {
 			Utils.resetPreferences();

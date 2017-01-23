@@ -13,7 +13,7 @@ import com.ELSE.model.Utils;
 import com.ELSE.view.View;
 
 public class FileSearcher extends Thread {
-	private static final int perPage = 14;
+	private static final int perPage = 8;
 	private CenterPresenter centerPresenter;
 	private int found, page;
 	private Object lock = new Object();

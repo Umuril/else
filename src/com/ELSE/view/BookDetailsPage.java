@@ -92,8 +92,16 @@ public class BookDetailsPage implements CentralProperties {
 		metadataPanel.setPresenter(presenter);
 		for (ActionListener al : save.getActionListeners())
 			save.removeActionListener(al);
+		JButton openCustom = metadataPanel.getOpenCustomButton();
+		for (ActionListener al : openCustom.getActionListeners())
+			openCustom.removeActionListener(al);
+		JButton openDefault = metadataPanel.getOpenCustomButton();
+		for (ActionListener al : openDefault.getActionListeners())
+			openDefault.removeActionListener(al);
 		// save.addActionListener(presenter.getCenterPresenter().saveBookDetailPageChanges(book));
 		save.addActionListener(presenter.getCenterPresenter().getBookDetailsPresenter());
+		openCustom.addActionListener(presenter.getCenterPresenter().getBookDetailsPresenter());
+		openDefault.addActionListener(presenter.getCenterPresenter().getBookDetailsPresenter());
 	}
 
 	public JButton getBackButton() {

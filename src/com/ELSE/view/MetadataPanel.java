@@ -3,6 +3,7 @@ package com.ELSE.view;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionListener;
 import java.time.Year;
 
 import javax.swing.Box;
@@ -135,6 +136,10 @@ public class MetadataPanel {
 		autore.getDocument().addDocumentListener(presenter.getCenterPresenter().getBookDetailsPresenter());
 		anno.getDocument().addDocumentListener(presenter.getCenterPresenter().getBookDetailsPresenter());
 		pagine.getDocument().addDocumentListener(presenter.getCenterPresenter().getBookDetailsPresenter());
+		for (ActionListener al : openCustom.getActionListeners())
+			openCustom.removeActionListener(al);
+		for (ActionListener al : openDefault.getActionListeners())
+			openDefault.removeActionListener(al);
 		openCustom.addActionListener(presenter.getCenterPresenter().getBookDetailsPresenter());
 		openDefault.addActionListener(presenter.getCenterPresenter().getBookDetailsPresenter());
 	}

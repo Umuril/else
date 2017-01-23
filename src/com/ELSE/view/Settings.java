@@ -27,6 +27,7 @@ public class Settings implements KeyEventDispatcher {
 	private JButton color1, color2, backcolor, paths, folder;
 	private JCheckBox preview, save;
 	private JButton conferma;
+	private JButton restore;
 
 	private Settings(View view) {
 		dialog = new JDialog();
@@ -84,6 +85,8 @@ public class Settings implements KeyEventDispatcher {
 		save.setSelected(Boolean.parseBoolean(Utils.getPreferences("Save")));
 		panel.add(save,c);
 		border.add(panel);
+		restore = new JButton("Resetta");
+		border.add(restore, BorderLayout.SOUTH);
 		conferma = new JButton("Conferma");
 		border.add(conferma, BorderLayout.SOUTH);
 		Border a = BorderFactory.createEmptyBorder(10, 10, 10, 10);
@@ -107,6 +110,7 @@ public class Settings implements KeyEventDispatcher {
 		folder.addActionListener(presenter.getMenuBarPresenter().getSettingsPresenter());
 		preview.addItemListener(presenter.getMenuBarPresenter().getSettingsPresenter());
 		save.addItemListener(presenter.getMenuBarPresenter().getSettingsPresenter());
+		restore.addActionListener(presenter.getMenuBarPresenter().getSettingsPresenter());
 		conferma.addActionListener(presenter.getMenuBarPresenter().getSettingsPresenter());
 	}
 
@@ -155,6 +159,10 @@ public class Settings implements KeyEventDispatcher {
 
 	public JButton getConferma() {
 		return conferma;
+	}
+	
+	public JButton getRestore() {
+		return restore;
 	}
 	
 	public void updateColor(Color color){

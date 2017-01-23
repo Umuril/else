@@ -45,6 +45,8 @@ public class SettingsPresenter implements ActionListener, ItemListener {
 				Utils.setPreferences("Folder", fc.getSelectedFile().toString());
 				System.out.println(fc.getSelectedFile().toString() + " <= " + Utils.getPreferences("Folder"));
 			}
+		} else if (e.getSource() == settings.getRestore()) {
+			Utils.resetPreferences();
 		} else if (e.getSource() == settings.getConferma()) {
 			dialog.dispose();
 		}

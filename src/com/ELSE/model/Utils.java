@@ -2,6 +2,7 @@ package com.ELSE.model;
 
 import java.awt.Color;
 import java.io.File;
+import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 public class Utils {
@@ -60,5 +61,14 @@ public class Utils {
 
 	public static void setPreferences(String key, String value) {
 		prefs.put(key, value);
+	}
+
+	public static void resetPreferences() {
+		try {
+			prefs.clear();
+		} catch (BackingStoreException e) {
+			// TODO Catch vs throws
+			e.printStackTrace();
+		}
 	}
 }

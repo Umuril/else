@@ -1,7 +1,10 @@
 package com.ELSE.presenter.reader;
 
 import java.awt.BorderLayout;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.awt.image.renderable.RenderableImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -29,10 +32,10 @@ public class HTMLReader extends EbookReader {
 
 	@Override
 	public BufferedImage getCover() {
-		URL settings = MenuBar.class.getResource("/html.jpg");
+		URL url = MenuBar.class.getResource("/small_html.jpg");
 		BufferedImage image = null;
 		try {
-			image = ImageIO.read(settings);
+			image = ImageIO.read(url);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

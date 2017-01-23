@@ -201,6 +201,7 @@ public class CenterPresenter implements KeyEventDispatcher {
 			Utils.log(Utils.Debug.DEBUG, "The book is not null (already present)");
 			Utils.log(Utils.Debug.DEBUG, book);
 		}
+		picLabel.setToolTipText(file.toString());
 		picLabel.addActionListener(new InnerListener(view, image, book));
 		// picLabel.addActionListener(new
 		// ActionListenerWhenClickingOnABook(file));

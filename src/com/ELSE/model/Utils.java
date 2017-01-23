@@ -6,7 +6,7 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 public class Utils {
-	private static int debugmask = 3;
+	private static int debugmask = 0;
 
 	public enum Debug {
 		ERROR, WARNING, INFO, DEBUG

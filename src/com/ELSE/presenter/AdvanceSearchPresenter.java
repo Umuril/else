@@ -2,8 +2,12 @@ package com.ELSE.presenter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.IOException;
+import java.util.Map.Entry;
 
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JTextField;
 
@@ -32,32 +36,38 @@ public class AdvanceSearchPresenter implements ActionListener {
 		JTextField autore = advanceSearch.getAutore();
 		JTextField anno = advanceSearch.getAnno();
 		JTextField pagine = advanceSearch.getPagine();
+		JCheckBox epub = advanceSearch.getEpub();
+		JCheckBox html = advanceSearch.getHtml();
+		JCheckBox pdf = advanceSearch.getPdf();
 		Utils.log(Utils.Debug.INFO, "Search triggered with title " + titolo.getText() + ".");
 		Utils.log(Utils.Debug.DEBUG, "Search triggered with author " + autore.getText() + ".");
 		Utils.log(Utils.Debug.DEBUG, model.getLibrary().getDatabase().values());
 		if (titolo.getText().isEmpty() && autore.getText().isEmpty() && anno.getText().isEmpty() && pagine.getText().isEmpty())
 			return;
 		centerPresenter.emptyOfBooks();
-		for (BookMetadata book : model.getLibrary().getDatabase().values()) {
+		for (Entry<String, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
+			BookMetadata book = entry.getValue();
 			boolean found = false;
-			if (book.getAnno() != null && !anno.getText().isEmpty())
-				if (book.getAnno().toString().contains(anno.getText()))
-					found = true;
-			if (book.getAutore() != null && !autore.getText().isEmpty())
-				if (book.getAutore().contains(autore.getText()))
-					found = true;
-			if (book.getPagine() > 0 && !pagine.getText().isEmpty())
-				if (String.valueOf(book.getPagine()).contains(pagine.getText()))
-					found = true;
-			if (book.getTitolo() != null && !titolo.getText().isEmpty())
-				if (book.getTitolo().contains(titolo.getText()))
-					found = true;
-			if (found) {
-				Utils.log(Utils.Debug.INFO, "Found: " + book);
-				try {
-					centerPresenter.addImage(book);
-				} catch (IOException e1) {
-					e1.printStackTrace();
+			if (epub.isSelected() && entry.getKey().endsWith(".epub") || html.isSelected() && entry.getKey().endsWith(".html") || pdf.isSelected() && entry.getKey().endsWith(".pdf")) {
+				if (book.getAnno() != null && !anno.getText().isEmpty())
+					if (book.getAnno().toString().contains(anno.getText()))
+						found = true;
+				if (book.getAutore() != null && !autore.getText().isEmpty())
+					if (book.getAutore().contains(autore.getText()))
+						found = true;
+				if (book.getPagine() > 0 && !pagine.getText().isEmpty())
+					if (String.valueOf(book.getPagine()).contains(pagine.getText()))
+						found = true;
+				if (book.getTitolo() != null && !titolo.getText().isEmpty())
+					if (book.getTitolo().contains(titolo.getText()))
+						found = true;
+				if (found) {
+					Utils.log(Utils.Debug.INFO, "Found: " + book);
+					try {
+						centerPresenter.addImage(book);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 		}

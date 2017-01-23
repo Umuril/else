@@ -1,10 +1,7 @@
 package com.ELSE.presenter.reader;
 
 import java.awt.BorderLayout;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-import java.awt.image.renderable.RenderableImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -49,31 +46,9 @@ public class HTMLReader extends EbookReader {
 		JFrame frame = new JFrame("Viewer");
 		frame.setBounds(100, 100, 800, 500);
 		frame.getContentPane().setLayout(new BorderLayout());
-		/*JEditorPane jEditorPane = new JEditorPane();
-		jEditorPane.setEditable(false);
-		HTMLEditorKit kit = new HTMLEditorKit();
-		jEditorPane.setEditorKit(kit);
-		Document doc = kit.createDefaultDocument();
-		jEditorPane.setDocument(doc);
-		StringBuilder contentBuilder = new StringBuilder();
-		try {
-			BufferedReader in = new BufferedReader(new FileReader(super.getPath()));
-			String str;
-			while ((str = in.readLine()) != null) {
-				contentBuilder.append(str);
-			}
-			in.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String content = contentBuilder.toString();
-		System.out.println(content);
-		jEditorPane.setText(content);
-		JPanel panel = new JPanel();
-		panel.add(Box.createHorizontalGlue());
-		panel.add(jEditorPane);
-		panel.add(Box.createHorizontalGlue());
-		JScrollPane scrollPane = new JScrollPane(panel);*/
+		/*
+		 * JEditorPane jEditorPane = new JEditorPane(); jEditorPane.setEditable(false); HTMLEditorKit kit = new HTMLEditorKit(); jEditorPane.setEditorKit(kit); Document doc = kit.createDefaultDocument(); jEditorPane.setDocument(doc); StringBuilder contentBuilder = new StringBuilder(); try { BufferedReader in = new BufferedReader(new FileReader(super.getPath())); String str; while ((str = in.readLine()) != null) { contentBuilder.append(str); } in.close(); } catch (IOException e) { e.printStackTrace(); } String content = contentBuilder.toString(); System.out.println(content); jEditorPane.setText(content); JPanel panel = new JPanel(); panel.add(Box.createHorizontalGlue()); panel.add(jEditorPane); panel.add(Box.createHorizontalGlue()); JScrollPane scrollPane = new JScrollPane(panel);
+		 */
 		StringBuilder contentBuilder = new StringBuilder();
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(super.getPath()));

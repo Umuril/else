@@ -99,7 +99,7 @@ public class SliderPage implements CentralProperties {
 	public JButton getForwardButton() {
 		return forward;
 	}
-	
+
 	public void updateColor(Color color) {
 		parent.setBackground(color);
 		parent.revalidate();

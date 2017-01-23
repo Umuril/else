@@ -25,7 +25,7 @@ class Center {
 		panel = JInvisiblePanel.newInstance(parent);
 		// panel.add(slider.getContainerPanel());
 		empty = true;
-		//panel.add(emptyPage.getContainerPanel());
+		// panel.add(emptyPage.getContainerPanel());
 	}
 
 	void change(Image image, BookMetadata book) {
@@ -43,10 +43,10 @@ class Center {
 		panel.repaint();
 	}
 
-	public void  setEmpty(boolean empty){
+	public void setEmpty(boolean empty) {
 		this.empty = empty;
 	}
-	
+
 	BookDetailsPage getBookDetailsPage() {
 		return bookDetails;
 	}

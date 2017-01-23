@@ -35,8 +35,7 @@ public class Settings implements KeyEventDispatcher {
 		dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		// dialog.setLocationRelativeTo(null);
 		JPanel border = JInvisiblePanel.newInstance(dialog);
-		
-		border.add(new JLabel("Tutte le impostazioni verranno applicate dopo il primo riavvio"),BorderLayout.NORTH);
+		border.add(new JLabel("Tutte le impostazioni verranno applicate dopo il primo riavvio"), BorderLayout.NORTH);
 		JPanel panel = JInvisiblePanel.newInstance(border);
 		// GridLayout layout = new GridLayout(0, 2);
 		// layout.setVgap(7);
@@ -47,43 +46,43 @@ public class Settings implements KeyEventDispatcher {
 		c.ipady = 10;
 		panel.setLayout(layout);
 		JLabel lcolor1 = new JLabel("Colore principale: ");
-		panel.add(lcolor1,c);
+		panel.add(lcolor1, c);
 		color1 = new JButton();
-		panel.add(color1,c);
+		panel.add(color1, c);
 		c.gridy = 1;
 		JLabel lcolor2 = new JLabel("Colore secondario: ");
-		panel.add(lcolor2,c);
+		panel.add(lcolor2, c);
 		color2 = new JButton();
-		panel.add(color2,c);
+		panel.add(color2, c);
 		c.gridy = 2;
 		JLabel lbackcolor = new JLabel("Colore di sfondo: ");
-		panel.add(lbackcolor,c);
+		panel.add(lbackcolor, c);
 		backcolor = new JButton();
-		panel.add(backcolor,c);
+		panel.add(backcolor, c);
 		c.gridy = 3;
 		JLabel lpaths = new JLabel("File con i percorsi: ");
-		panel.add(lpaths,c);
+		panel.add(lpaths, c);
 		paths = new JButton();
-		panel.add(paths,c);
+		panel.add(paths, c);
 		c.gridy = 4;
 		JLabel lpreview = new JLabel("Vuoi salvare le anteprime (consigliato): ");
-		panel.add(lpreview,c);
+		panel.add(lpreview, c);
 		preview = new JCheckBox();
 		preview.setBackground(new Color(Integer.parseInt(Utils.getPreferences("Color1"))));
 		preview.setSelected(Boolean.parseBoolean(Utils.getPreferences("Preview")));
-		panel.add(preview,c);
+		panel.add(preview, c);
 		c.gridy = 5;
 		JLabel lfolder = new JLabel("Quale cartella di lavoro? (obbligatorio): ");
-		panel.add(lfolder,c);
+		panel.add(lfolder, c);
 		folder = new JButton();
-		panel.add(folder,c);
+		panel.add(folder, c);
 		c.gridy = 6;
 		JLabel lsave = new JLabel("Vuoi salvare in automatico prima di uscire?: ");
-		panel.add(lsave,c);
+		panel.add(lsave, c);
 		save = new JCheckBox();
 		save.setBackground(new Color(Integer.parseInt(Utils.getPreferences("Color1"))));
 		save.setSelected(Boolean.parseBoolean(Utils.getPreferences("Save")));
-		panel.add(save,c);
+		panel.add(save, c);
 		border.add(panel);
 		restore = new JButton("Resetta");
 		border.add(restore, BorderLayout.SOUTH);
@@ -121,8 +120,8 @@ public class Settings implements KeyEventDispatcher {
 	public JDialog getDialog() {
 		return dialog;
 	}
-	
-	public JButton getColor1(){
+
+	public JButton getColor1() {
 		return color1;
 	}
 
@@ -160,12 +159,12 @@ public class Settings implements KeyEventDispatcher {
 	public JButton getConferma() {
 		return conferma;
 	}
-	
+
 	public JButton getRestore() {
 		return restore;
 	}
-	
-	public void updateColor(Color color){
+
+	public void updateColor(Color color) {
 		dialog.setBackground(color);
 		dialog.revalidate();
 		dialog.repaint();

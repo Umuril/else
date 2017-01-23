@@ -92,7 +92,6 @@ public class BookDetailsPage implements CentralProperties {
 		metadataPanel.setPresenter(presenter);
 		for (ActionListener al : save.getActionListeners())
 			save.removeActionListener(al);
-		
 		// save.addActionListener(presenter.getCenterPresenter().saveBookDetailPageChanges(book));
 		save.addActionListener(presenter.getCenterPresenter().getBookDetailsPresenter());
 	}

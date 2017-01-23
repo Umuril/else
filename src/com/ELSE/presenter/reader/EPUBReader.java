@@ -119,7 +119,7 @@ class EPUBReader extends EbookReader {
 			reader.setIsIncludingTextContent(true); // Optional, to return the tags-excluded version.
 			reader.setFullContent(path); // Must call before readSection.
 			BookSection bookSection = reader.readSection(page);
-			//System.out.println(bookSection.getSectionContent());
+			// System.out.println(bookSection.getSectionContent());
 			content = bookSection.getSectionContent(); // Returns content as html.
 		} catch (ReadingException | OutOfPagesException e) {
 			// TODO Auto-generated catch block

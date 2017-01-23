@@ -147,8 +147,8 @@ public class View {
 	public Settings getSettings() {
 		return settings;
 	}
-	
-	public void updateColor(Color color){
+
+	public void updateColor(Color color) {
 		framePrincipale.getContentPane().setBackground(color);
 		framePrincipale.getContentPane().revalidate();
 		framePrincipale.getContentPane().repaint();

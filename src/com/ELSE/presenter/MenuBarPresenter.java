@@ -27,8 +27,8 @@ public class MenuBarPresenter implements ActionListener, DocumentListener {
 		this.advanceSearchPresenter = new AdvanceSearchPresenter(view, model, centerPresenter);
 		this.settingsPresenter = new SettingsPresenter(view, model, centerPresenter);
 	}
-	
-	public AdvanceSearchPresenter getAdvanceSearchPresenter(){
+
+	public AdvanceSearchPresenter getAdvanceSearchPresenter() {
 		return advanceSearchPresenter;
 	}
 
@@ -60,7 +60,7 @@ public class MenuBarPresenter implements ActionListener, DocumentListener {
 	}
 
 	private void cerca() {
-		if(centerPresenter.isUpdating())
+		if (centerPresenter.isUpdating())
 			return;
 		centerPresenter.change(null, null);
 		String text = view.getMenuBar().getSearchField().getText();

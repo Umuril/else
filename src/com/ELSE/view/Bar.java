@@ -37,10 +37,10 @@ public class Bar {
 	JPanel getRight() {
 		return right;
 	}
-	public void updateColor(Color color){
+
+	public void updateColor(Color color) {
 		barContainer.setBackground(color);
 		barContainer.revalidate();
 		barContainer.repaint();
 	}
-	
 }

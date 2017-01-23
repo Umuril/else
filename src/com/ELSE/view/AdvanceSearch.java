@@ -1,6 +1,5 @@
 package com.ELSE.view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.GridLayout;
@@ -9,7 +8,6 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -19,8 +17,6 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
-
-import nl.siegmann.epublib.epub.EpubReader;
 
 import com.ELSE.model.Utils;
 import com.ELSE.presenter.Presenter;
@@ -37,7 +33,7 @@ public class AdvanceSearch implements KeyEventDispatcher {
 		dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		// dialog.setLocationRelativeTo(null);
 		JPanel border = JInvisiblePanel.newInstance(dialog);
-		//border.setLayout(new BoxLayout(border, BoxLayou));
+		// border.setLayout(new BoxLayout(border, BoxLayou));
 		JPanel panel = JInvisiblePanel.newInstance(border);
 		panel.setLayout(new GridLayout(0, 2));
 		JLabel ltitolo = new JLabel("Titolo: ");
@@ -58,7 +54,6 @@ public class AdvanceSearch implements KeyEventDispatcher {
 		panel.add(pagine);
 		border.add(panel);
 		JPanel panel2 = JInvisiblePanel.newInstance(border);
-		
 		panel2.add(new JLabel("EPUB: "));
 		epub = new JCheckBox();
 		epub.setBackground(panel2.getBackground());
@@ -138,11 +133,11 @@ public class AdvanceSearch implements KeyEventDispatcher {
 	public JCheckBox getEpub() {
 		return epub;
 	}
-	
+
 	public JCheckBox getHtml() {
 		return html;
 	}
-	
+
 	public JCheckBox getPdf() {
 		return pdf;
 	}

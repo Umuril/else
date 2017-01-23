@@ -67,12 +67,12 @@ public class Presenter implements WindowListener {
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		if (!view.needSave()){
+		if (!view.needSave()) {
 			view.getFrame().dispose();
 			System.exit(0);
-		}else {
+		} else {
 			if (Boolean.parseBoolean(Utils.getPreferences("Save"))) {
-				try{
+				try {
 					model.getPathbase().createPathbaseFile(Utils.getPreferences("Pathbase"));
 					model.getLibrary().createFile();
 					view.getFrame().dispose();

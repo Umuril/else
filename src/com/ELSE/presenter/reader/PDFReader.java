@@ -116,7 +116,9 @@ public class PDFReader extends EbookReader {
 		PDDocument doc;
 		try {
 			doc = PDDocument.load(file);
-			return doc.getNumberOfPages();
+			int num = doc.getNumberOfPages();
+			doc.close();
+			return num;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

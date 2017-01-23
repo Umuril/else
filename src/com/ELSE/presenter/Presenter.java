@@ -83,6 +83,7 @@ public class Presenter implements WindowListener {
 				int confirmed = JOptionPane.showConfirmDialog(null, "Sei sicuro di voler uscire senza salvare?", "Chiudi senza salvare", JOptionPane.YES_NO_OPTION);
 				if (confirmed == JOptionPane.YES_OPTION) {
 					view.getFrame().dispose();
+					System.exit(0);
 				}
 			}
 		}

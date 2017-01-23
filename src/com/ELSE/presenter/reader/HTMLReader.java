@@ -96,7 +96,7 @@ public class HTMLReader extends EbookReader {
 			public void run() {
 				WebView webView = new WebView();
 				jfxPanel.setScene(new Scene(webView));
-				webView.setDisabled(true);
+				webView.setDisable(true);
 				webView.getEngine().loadContent(content);
 			}
 		});

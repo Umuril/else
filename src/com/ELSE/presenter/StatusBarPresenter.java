@@ -66,9 +66,10 @@ public class StatusBarPresenter implements ActionListener {
 		} else if (e.getSource() == statusBar.getLoadButton()) {
 			Utils.log(Utils.Debug.DEBUG, "getLoadButton()");
 			JFileChooser jfc = new JFileChooser();
-			int result = jfc.showOpenDialog(view.getFrame());
-			jfc.setFileFilter(new FileNameExtensionFilter("TEXT FILES", "txt", "text"));
-			if (result == JFileChooser.APPROVE_OPTION) {
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files (*.txt)", "txt");
+			jfc.setFileFilter(filter);
+			jfc.setAcceptAllFileFilterUsed(false);
+			if (jfc.showOpenDialog(view.getFrame()) == JFileChooser.APPROVE_OPTION) {
 				int size = model.getPathbase().size();
 				try {
 					model.getPathbase().loadFromFile(new File(jfc.getSelectedFile().getAbsolutePath()));

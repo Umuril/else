@@ -3,9 +3,9 @@ package com.ELSE.view;
 import javax.swing.JPanel;
 
 interface CentralProperties {
-	public JPanel initUp(JPanel parent);
+	JPanel getContainerPanel();
 
-	public JPanel initDown(JPanel parent);
+	JPanel initDown(JPanel parent);
 
-	public JPanel getContainerPanel();
+	JPanel initUp(JPanel parent);
 }

@@ -9,22 +9,24 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-class CentralPage {
-	private CentralPage() {
-		throw new AssertionError();
-	}
+import com.ELSE.model.Utils;
 
-	static JPanel newInstance(CentralProperties components) {
+public class CentralPage {
+	static JPanel newInstance(CentralProperties centralProperties) {
 		JPanel container = new JPanel();
-		container.setBackground(Color.white);
+		container.setBackground(new Color(Integer.parseInt(Utils.getPreferences("BackColor"))));
 		container.setBorder(BorderFactory.createCompoundBorder(new LineBorder(Color.BLACK), new EmptyBorder(10, 10, 10, 10)));
 		container.setMinimumSize(new Dimension(960, 400));
 		container.setPreferredSize(new Dimension(960, 400));
 		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-		JPanel up = components.initUp(container);
+		JPanel up = centralProperties.initUp(container);
 		container.add(up);
-		JPanel down = components.initDown(container);
+		JPanel down = centralProperties.initDown(container);
 		container.add(down);
 		return container;
+	}
+
+	private CentralPage() {
+		throw new AssertionError();
 	}
 }

@@ -19,36 +19,32 @@ import javax.swing.WindowConstants;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
-public class PDFReader implements EbookReader {
+public class PDFReader extends EbookReader {
+	private JButton back, forward;
 	private File file;
-
-	@Override
-	public BufferedImage getCover() {
-		PDDocument doc = null;
-		try {
-			doc = PDDocument.load(file);
-			PDFRenderer renderer = new PDFRenderer(doc);
-			BufferedImage img = renderer.renderImage(0);
-			doc.close();
-			return img;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-
+	private JFrame frame;
 	private JLabel label;
 	private int page, totpages;
-	private JFrame frame;
-	private JButton back, forward;
-	private String path;
 
-	public void getFrame() {
+	PDFReader(String path) {
+		super(path);
+		file = new File(path);
+	}
+
+	@Override
+	public BufferedImage getCover() throws IOException {
+		PDDocument doc = PDDocument.load(file);
+		PDFRenderer renderer = new PDFRenderer(doc);
+		BufferedImage img = renderer.renderImage(0);
+		doc.close();
+		return img;
+	}
+
+	@Override
+	public void getFrame() throws IOException {
 		frame = new JFrame("Viewer");
 		frame.setBounds(100, 100, 800, 500);
 		frame.getContentPane().setLayout(new BorderLayout());
-		file = new File(path);
 		label = new JLabel();
 		JPanel panel = new JPanel();
 		panel.add(Box.createHorizontalGlue());
@@ -56,15 +52,9 @@ public class PDFReader implements EbookReader {
 		panel.add(Box.createHorizontalGlue());
 		JScrollPane scrollPane = new JScrollPane(panel);
 		frame.getContentPane().add(scrollPane);
-		PDDocument doc;
-		try {
-			doc = PDDocument.load(file);
-			totpages = doc.getNumberOfPages();
-			doc.close();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		PDDocument doc = PDDocument.load(file);
+		totpages = doc.getNumberOfPages();
+		doc.close();
 		aggiorna();
 		back = new JButton("Back");
 		forward = new JButton("Forward");
@@ -75,7 +65,12 @@ public class PDFReader implements EbookReader {
 				// TODO Auto-generated method stub
 				if (page > 0) {
 					page--;
-					aggiorna();
+					try {
+						aggiorna();
+					} catch (IOException e1) {
+						// TODO Needs check but this is called before so no error should be found
+						e1.printStackTrace();
+					}
 				}
 				back.setEnabled(page != 0);
 				forward.setEnabled(page != totpages - 1);
@@ -87,7 +82,12 @@ public class PDFReader implements EbookReader {
 				// TODO Auto-generated method stub
 				if (page < totpages) {
 					page++;
-					aggiorna();
+					try {
+						aggiorna();
+					} catch (IOException e1) {
+						// TODO Needs check but this is called before so no error should be found
+						e1.printStackTrace();
+					}
 				}
 				back.setEnabled(page != 0);
 				forward.setEnabled(page != totpages - 1);
@@ -101,24 +101,13 @@ public class PDFReader implements EbookReader {
 		frame.setVisible(true);
 	}
 
-	public PDFReader(String path) {
-		this.path = path;
-		this.file = new File(path);
-	}
-
-	private void aggiorna() {
-		PDDocument doc = null;
-		try {
-			doc = PDDocument.load(file);
-			PDFRenderer renderer = new PDFRenderer(doc);
-			BufferedImage image;
-			image = renderer.renderImage(page);
-			label.setIcon(new ImageIcon(image));
-			// ImageIO.write(image, "PNG", new File("custom-render.png"));
-			doc.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	private void aggiorna() throws IOException {
+		PDDocument doc = PDDocument.load(file);
+		PDFRenderer renderer = new PDFRenderer(doc);
+		BufferedImage image;
+		image = renderer.renderImage(page);
+		label.setIcon(new ImageIcon(image));
+		// ImageIO.write(image, "PNG", new File("custom-render.png"));
+		doc.close();
 	}
 }

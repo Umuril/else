@@ -1,5 +1,6 @@
 package com.ELSE.view;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Image;
@@ -10,25 +11,35 @@ import javax.swing.JPanel;
 
 import com.ELSE.presenter.Presenter;
 
-class SliderPage implements CentralProperties {
-	private JPanel parent;
-	private JPanel up;
-	private JPanel down;
+public class SliderPage implements CentralProperties {
+	static SliderPage newInstance() {
+		return new SliderPage();
+	}
+
 	private JButton back, grid, list, forward;
+	private JPanel parent, up, down;
 
 	private SliderPage() {
 		parent = CentralPage.newInstance(this);
 	}
 
-	static SliderPage newInstance() {
-		return new SliderPage();
+	public void enableBackButton(boolean enable) {
+		back.setEnabled(enable);
+		back.setIcon(new ImageIcon(new ImageIcon(SliderPage.class.getResource(enable ? "/back.png" : "/back_gray.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
+		down.revalidate();
+		down.repaint();
+	}
+
+	public void enableNextButton(boolean enable) {
+		forward.setEnabled(enable);
+		forward.setIcon(new ImageIcon(new ImageIcon(SliderPage.class.getResource(enable ? "/forward.png" : "/forward_gray.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
+		down.revalidate();
+		down.repaint();
 	}
 
 	@Override
-	public JPanel initUp(JPanel container) {
-		up = CentralSizePanel.newInstance(container);
-		up.setLayout(new FlowLayout());
-		return up;
+	public JPanel getContainerPanel() {
+		return parent;
 	}
 
 	@Override
@@ -52,38 +63,49 @@ class SliderPage implements CentralProperties {
 	}
 
 	@Override
-	public JPanel getContainerPanel() {
-		return parent;
+	public JPanel initUp(JPanel container) {
+		up = JInvisiblePanel.newInstance(container);
+		up.setLayout(new FlowLayout());
+		return up;
 	}
 
-	JPanel getUp() {
-		return up;
+	public void setPresenter(Presenter presenter) {
+		back.addActionListener(presenter.getCenterPresenter().getSliderPresenter());
+		grid.addActionListener(presenter.getCenterPresenter().getSliderPresenter());
+		list.addActionListener(presenter.getCenterPresenter().getSliderPresenter());
+		forward.addActionListener(presenter.getCenterPresenter().getSliderPresenter());
 	}
 
 	JPanel getDown() {
 		return down;
 	}
 
-	public void setPresenter(Presenter presenter) {
-		back.addActionListener(presenter.getCenterPresenter().backBooks());
-		grid.addActionListener(presenter.getCenterPresenter().gridView());
-		list.addActionListener(presenter.getCenterPresenter().listView());
-		forward.addActionListener(presenter.getCenterPresenter().forwardBooks());
+	public JPanel getUp() {
+		return up;
 	}
 
-	public void enableBackButton(boolean b) {
-		System.out.println(b?"ENABLED":"DISABLED");
-		back.setEnabled(b);
-		back.setIcon(new ImageIcon(new ImageIcon(SliderPage.class.getResource(b?"/back.png":"/back_gray.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
-		down.revalidate();
-		down.repaint();
+	public JButton getBackButton() {
+		return back;
 	}
 
-	public void enableNextButton(boolean b) {
-		System.out.println(b?"ENABLED":"DISABLED");
-		forward.setEnabled(b);
-		forward.setIcon(new ImageIcon(new ImageIcon(SliderPage.class.getResource(b?"/forward.png":"/forward_gray.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
-		down.revalidate();
-		down.repaint();
+	public JButton getGridButton() {
+		return grid;
+	}
+
+	public JButton getListButton() {
+		return list;
+	}
+
+	public JButton getForwardButton() {
+		return forward;
+	}
+	
+	public void updateColor(Color color) {
+		parent.setBackground(color);
+		parent.revalidate();
+		parent.repaint();
+		up.setBackground(color);
+		up.revalidate();
+		up.repaint();
 	}
 }

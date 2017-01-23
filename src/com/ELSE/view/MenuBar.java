@@ -1,18 +1,22 @@
 package com.ELSE.view;
 
 import javax.swing.JButton;
+import javax.swing.JTextField;
 
 import com.ELSE.presenter.Presenter;
 
-class MenuBar {
+public class MenuBar {
+	static MenuBar newInstance() {
+		return new MenuBar();
+	}
+
 	private Bar parent;
-	private JButton settings;
 	private SearchBar searchBar;
-	private JButton advSearch;
+	private JButton settings, advSearch;
 
 	private MenuBar() {
 		parent = Bar.newInstance();
-		settings = Button.newInstance(MenuBar.class.getResource("/settings_gray.png"));
+		settings = Button.newInstance(MenuBar.class.getResource("/settings.png"));
 		parent.getLeft().add(settings);
 		searchBar = SearchBar.newInstance();
 		parent.getRight().add(searchBar.getPanel());
@@ -20,30 +24,31 @@ class MenuBar {
 		parent.getRight().add(advSearch);
 	}
 
-	static MenuBar newInstance() {
-		return new MenuBar();
-	}
-
-	Bar getParent() {
+	public Bar getParent() {
 		return parent;
 	}
 
-	JButton getSettings() {
+	void setPresenter(Presenter presenter) {
+		settings.addActionListener(presenter.getMenuBarPresenter());
+		searchBar.getTesto().addActionListener(presenter.getMenuBarPresenter());
+		searchBar.getTesto().getDocument().addDocumentListener(presenter.getMenuBarPresenter());
+		searchBar.getIcona().addActionListener(presenter.getMenuBarPresenter());
+		advSearch.addActionListener(presenter.getMenuBarPresenter());
+	}
+
+	public JButton getSettingsButton() {
 		return settings;
 	}
 
-	SearchBar getSearchBar() {
-		return searchBar;
+	public JTextField getSearchField() {
+		return searchBar.getTesto();
 	}
 
-	JButton getAdvSearch() {
+	public JButton getSearchButton() {
+		return searchBar.getIcona();
+	}
+
+	public JButton getAdvanceSearchButton() {
 		return advSearch;
-	}
-
-	void setPresenter(Presenter presenter) {
-		settings.addActionListener(presenter.getMenuBarPresenter().settings());
-		searchBar.getTesto().addActionListener(presenter.getMenuBarPresenter().search(searchBar.getTesto()));
-		searchBar.getIcona().addActionListener(presenter.getMenuBarPresenter().search(searchBar.getTesto()));
-		advSearch.addActionListener(presenter.getMenuBarPresenter().advSearch());
 	}
 }

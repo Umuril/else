@@ -6,22 +6,24 @@ import java.awt.Color;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-class Bar {
+import com.ELSE.model.Utils;
+
+public class Bar {
+	static Bar newInstance() {
+		return new Bar();
+	}
+
 	private JPanel barContainer, left, right;
 
 	private Bar() {
 		barContainer = new JPanel();
-		barContainer.setBackground(Color.decode("#cbc4a7"));
+		barContainer.setBackground(new Color(Integer.parseInt(Utils.getPreferences("Color2"))));
 		barContainer.setBorder(new EmptyBorder(5, 5, 5, 5));
 		barContainer.setLayout(new BorderLayout());
 		left = JInvisiblePanel.newInstance(barContainer);
 		right = JInvisiblePanel.newInstance(barContainer);
 		barContainer.add(left, BorderLayout.WEST);
 		barContainer.add(right, BorderLayout.EAST);
-	}
-
-	static Bar newInstance() {
-		return new Bar();
 	}
 
 	JPanel getBarContainer() {
@@ -35,4 +37,10 @@ class Bar {
 	JPanel getRight() {
 		return right;
 	}
+	public void updateColor(Color color){
+		barContainer.setBackground(color);
+		barContainer.revalidate();
+		barContainer.repaint();
+	}
+	
 }

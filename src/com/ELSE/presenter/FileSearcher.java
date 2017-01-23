@@ -1,4 +1,4 @@
-package com.ELSE.presenter.center;
+package com.ELSE.presenter;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -7,26 +7,28 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Locale;
 
-import com.ELSE.model.Pathbase;
+import com.ELSE.model.Model;
+import com.ELSE.model.Utils;
 import com.ELSE.view.View;
 
 public class FileSearcher extends Thread {
 	private static final int perPage = 14;
-	private Object lock = new Object();
-	private Pathbase pathbase;
 	private CenterPresenter centerPresenter;
 	private int found, page;
+	private Object lock = new Object();
 	private int needToSkip;
+	private Model model;
 	private View view;
+	private boolean updating;
 
-	public FileSearcher(View view, CenterPresenter centerPresenter, Pathbase pathbase, int page) {
-		this.pathbase = pathbase;
+	public FileSearcher(Model model, View view, CenterPresenter centerPresenter, int page) {
+		this.model = model;
 		this.centerPresenter = centerPresenter;
 		found = 0;
 		this.page = page;
 		this.view = view;
+		updating = false;
 	}
 
 	public void findNext() {
@@ -37,25 +39,35 @@ public class FileSearcher extends Thread {
 		}
 	}
 
+	public int getFound() {
+		return found;
+	}
+
+	public int getPage() {
+		return page;
+	}
+
 	@Override
 	public void run() {
 		needToSkip = page * perPage;
-		for (String s : pathbase.getPathsList()) {
+		for (String s : model.getPathbase().getPathsList()) {
 			Path path = Paths.get(s);
 			try {
 				Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
 					@Override
 					public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-						if (file.toString().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
+						updating = true;
+						if (model.acceptableFileType(file.toString())) {
 							if (needToSkip > 0) {
 								needToSkip--;
-								System.out.println(needToSkip + " Skipping book: " + file);
+								Utils.log(Utils.Debug.DEBUG, needToSkip + " Skipping book: " + file);
 								return FileVisitResult.CONTINUE;
 							}
 							if (found >= perPage) {
 								// Here there are another books but i still
 								// don't add it
 								view.enableNextButton(true);
+								updating = false;
 								try {
 									synchronized (lock) {
 										while (found >= perPage)
@@ -65,7 +77,11 @@ public class FileSearcher extends Thread {
 									e.printStackTrace();
 								}
 							}
-							System.out.println("Aggiungendo al centro: " + file);
+							Utils.log(Utils.Debug.DEBUG, "Aggiungendo al centro: " + file);
+							if (view.isEmpty()) {
+								view.setEmpty(false);
+								centerPresenter.change(null, null);
+							}
 							centerPresenter.addImage(file.toFile());
 							found++; // ++found?
 						}
@@ -76,18 +92,19 @@ public class FileSearcher extends Thread {
 				e.printStackTrace();
 			}
 		}
+		updating = false;
+		if (found == 0) {
+			view.setEmpty(true);
+			view.change(null, null);
+		}
 		view.enableNextButton(false);
-	}
-
-	public int getFound() {
-		return found;
 	}
 
 	public void setFound(int found) {
 		this.found = found;
 	}
 
-	public int getPage() {
-		return page;
+	public boolean getUpdating() {
+		return updating;
 	}
 }

@@ -4,14 +4,14 @@ import java.awt.Component;
 
 import javax.swing.JPanel;
 
-class JInvisiblePanel {
-	private JInvisiblePanel() {
-		throw new AssertionError();
-	}
-
+public class JInvisiblePanel {
 	public static JPanel newInstance(Component component) {
 		JPanel panel = new JPanel();
 		panel.setBackground(component.getBackground());
 		return panel;
+	}
+
+	private JInvisiblePanel() {
+		throw new AssertionError();
 	}
 }

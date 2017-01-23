@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.ELSE.model.Model;
 import com.ELSE.model.Pathbase;
@@ -66,6 +67,7 @@ public class StatusBarPresenter implements ActionListener {
 			Utils.log(Utils.Debug.DEBUG, "getLoadButton()");
 			JFileChooser jfc = new JFileChooser();
 			int result = jfc.showOpenDialog(view.getFrame());
+			jfc.setFileFilter(new FileNameExtensionFilter("TEXT FILES", "txt", "text"));
 			if (result == JFileChooser.APPROVE_OPTION) {
 				int size = model.getPathbase().size();
 				try {

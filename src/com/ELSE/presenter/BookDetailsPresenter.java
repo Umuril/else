@@ -113,12 +113,12 @@ public class BookDetailsPresenter implements ActionListener, DocumentListener {
 			view.getBookDetailsPage().enableSaveButton(true);
 		}
 		text = view.getMetadataPanel().getAnno();
-		if (text.getDocument() == e.getDocument() && text.getText().matches("^\\d+$") && !book.getAnno().equals(Year.parse(String.format("%04d", Integer.parseInt(text.getText()))))) {
+		if (text.getDocument() == e.getDocument() && text.getText().matches("^\\d+$") && text.getText().length() < 5 && !book.getAnno().equals(Year.parse(String.format("%04d", Integer.parseInt(text.getText()))))) {
 			Utils.log(Utils.Debug.DEBUG, "DOCUMENT LISTENER ON ANNO");
 			view.getBookDetailsPage().enableSaveButton(true);
 		}
 		text = view.getMetadataPanel().getPagine();
-		if (text.getDocument() == e.getDocument() && text.getText().matches("^\\d+$") && book.getPagine() != Integer.parseInt(text.getText())) {
+		if (text.getDocument() == e.getDocument() && text.getText().length() < 6 && text.getText().matches("^\\d+$") && book.getPagine() != Integer.parseInt(text.getText())) {
 			Utils.log(Utils.Debug.DEBUG, "DOCUMENT LISTENER ON PAGINE");
 			view.getBookDetailsPage().enableSaveButton(true);
 		}

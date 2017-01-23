@@ -28,4 +28,6 @@ public abstract class EbookReader {
 			return new PDFReader(path.toString());
 		return null;
 	}
+
+	public abstract int getPageNumber();
 }

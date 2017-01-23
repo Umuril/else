@@ -101,4 +101,9 @@ public class HTMLReader extends EbookReader {
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.setVisible(true);
 	}
+
+	@Override
+	public int getPageNumber() {
+		return 0;
+	}
 }

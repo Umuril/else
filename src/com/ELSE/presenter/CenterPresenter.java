@@ -25,6 +25,7 @@ import com.ELSE.model.BookMetadata;
 import com.ELSE.model.MD5Checksum;
 import com.ELSE.model.Model;
 import com.ELSE.model.Utils;
+import com.ELSE.presenter.reader.EbookReader;
 import com.ELSE.view.View;
 
 public class CenterPresenter implements KeyEventDispatcher {
@@ -193,9 +194,10 @@ public class CenterPresenter implements KeyEventDispatcher {
 			e1.printStackTrace();
 		}
 		BookMetadata book = model.getLibrary().getDatabase().get(file.toString());
+		int pages = EbookReader.newInstance(file.toPath()).getPageNumber();
 		if (book == null) {
 			Utils.log(Utils.Debug.DEBUG, "The book is null (doesn't exist before)");
-			book = new BookMetadata.Builder(checksum).titolo(file.getName().replaceFirst("[.][^.]+$", "")).build();
+			book = new BookMetadata.Builder(checksum).titolo(file.getName().replaceFirst("[.][^.]+$", "")).pagine(pages).build();
 			model.getLibrary().getDatabase().put(file.toString(), book);
 		} else {
 			Utils.log(Utils.Debug.DEBUG, "The book is not null (already present)");

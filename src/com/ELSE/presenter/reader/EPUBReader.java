@@ -138,4 +138,16 @@ class EPUBReader extends EbookReader {
 		jfxPanel.revalidate();
 		jfxPanel.repaint();
 	}
+
+	@Override
+	public int getPageNumber() {
+		Reader reader = new Reader();
+		int totpage = 0;
+		try {
+			while (true)
+				reader.readSection(totpage++);
+		} catch (RuntimeException | ReadingException | OutOfPagesException e) {
+		}
+		return totpage;
+	}
 }

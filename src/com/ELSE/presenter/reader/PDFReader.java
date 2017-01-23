@@ -110,4 +110,17 @@ public class PDFReader extends EbookReader {
 		// ImageIO.write(image, "PNG", new File("custom-render.png"));
 		doc.close();
 	}
+
+	@Override
+	public int getPageNumber() {
+		PDDocument doc;
+		try {
+			doc = PDDocument.load(file);
+			return doc.getNumberOfPages();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
 }

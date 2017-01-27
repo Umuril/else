@@ -32,9 +32,10 @@ import com.github.mertakdut.exception.ReadingException;
 
 class EPUBReader extends EbookReader {
 	private JButton back, forward;
-	private File file;
+	private final File file;
 	private JFrame frame;
-	private int page, totpages = 100;
+	private int page;
+	private final int totpages = 100;
 	private String content;
 	private JFXPanel jfxPanel;
 	private JScrollPane scrollPane;
@@ -142,12 +143,14 @@ class EPUBReader extends EbookReader {
 	@Override
 	public int getPageNumber() {
 		Reader reader = new Reader();
-		int totpage = 0;
 		try {
-			while (true)
-				reader.readSection(totpage++);
-		} catch (RuntimeException | ReadingException | OutOfPagesException e) {
+			reader.setFullContent(path); // Must call before readSection.
+			reader.readSection(Integer.MAX_VALUE);
+		} catch (OutOfPagesException e) {
+			return e.getPageCount();
+		} catch (ReadingException e) {
+			e.printStackTrace();
 		}
-		return totpage;
+		return 0;
 	}
 }

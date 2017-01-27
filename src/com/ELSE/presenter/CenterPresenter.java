@@ -8,11 +8,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -22,7 +23,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import com.ELSE.model.BookMetadata;
-import com.ELSE.model.MD5Checksum;
 import com.ELSE.model.Model;
 import com.ELSE.model.Utils;
 import com.ELSE.presenter.reader.EbookReader;
@@ -89,7 +89,7 @@ public class CenterPresenter implements KeyEventDispatcher {
 	}
 
 	public void loadFromFile(String filename) {
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(Utils.getPreferences("Pathbase"))), Charset.defaultCharset()))) {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(Paths.get(Utils.getPreferences("Pathbase")).toFile()), Charset.defaultCharset()))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				Path path = Paths.get(line).toRealPath();
@@ -132,9 +132,9 @@ public class CenterPresenter implements KeyEventDispatcher {
 	 * public MouseListener openBook(BookMetadata book) { for (Entry<String, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) { if (entry.getValue().equals(book)) return new BookDetailsPresenter(Paths.get(entry.getKey()), presenter); } return null; }
 	 */
 	private BufferedImage saveImage(Path file) throws IOException {
-		String s = Utils.getPreferences("Folder") + File.separator + MD5Checksum.getMD5Checksum(file.toString()) + ".jpg";
-		final File outputfile = new File(s);
-		if (outputfile.exists())
+		String s = Utils.getPreferences("Folder") + FileSystems.getDefault().getSeparator() + Utils.getMD5Checksum(file.toString()) + ".jpg";
+		final Path outputfile = Paths.get(s);
+		if (Files.exists(outputfile))
 			return null;
 		final BufferedImage image = presenter.getCover(file);
 		Utils.log(Utils.Debug.INFO, "Creating again image of " + image);
@@ -144,7 +144,7 @@ public class CenterPresenter implements KeyEventDispatcher {
 				@Override
 				public void run() {
 					try {
-						ImageIO.write(image, "jpg", outputfile);
+						ImageIO.write(image, "jpg", outputfile.toFile());
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -155,17 +155,17 @@ public class CenterPresenter implements KeyEventDispatcher {
 		return image;
 	}
 
-	void addImage(File file) throws IOException {
-		String filename = Utils.getPreferences("Folder") + File.separator + MD5Checksum.getMD5Checksum(file.toString()) + ".jpg";
-		File imageFile = new File(filename);
+	void addImage(Path file) throws IOException {
+		String filename = Utils.getPreferences("Folder") + FileSystems.getDefault().getSeparator() + Utils.getMD5Checksum(file.toString()) + ".jpg";
+		Path imageFile = Paths.get(filename);
 		BufferedImage image = null;
 		long startTime = System.currentTimeMillis();
-		if (imageFile.exists()) {
+		if (Files.exists(imageFile)) {
 			Utils.log(Utils.Debug.DEBUG, "L'immagine gia esiste.");
-			image = ImageIO.read(imageFile);
+			image = ImageIO.read(imageFile.toFile());
 		} else {
 			view.setStatusText("Cercando nuovi file, potrebbe volerci un po...");
-			image = saveImage(file.toPath());
+			image = saveImage(file);
 			Utils.log(Utils.Debug.DEBUG, "Creazione immagine in corso: " + image);
 		}
 		Utils.log(Utils.Debug.ERROR, "RENDERING TIME: " + (System.currentTimeMillis() - startTime) + " for file " + file);
@@ -173,15 +173,15 @@ public class CenterPresenter implements KeyEventDispatcher {
 		JButton picLabel = new JButton(new ImageIcon(img));
 		String checksum = "";
 		try {
-			checksum = MD5Checksum.getMD5Checksum(file.toString());
+			checksum = Utils.getMD5Checksum(file.toString());
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		BookMetadata book = model.getLibrary().getDatabase().get(file.toString());
-		int pages = EbookReader.newInstance(file.toPath()).getPageNumber();
+		int pages = EbookReader.newInstance(file).getPageNumber();
 		if (book == null) {
 			Utils.log(Utils.Debug.DEBUG, "The book is null (doesn't exist before)");
-			book = new BookMetadata.Builder(checksum).titolo(file.getName().replaceFirst("[.][^.]+$", "")).pagine(pages).build();
+			book = new BookMetadata.Builder(checksum).titolo(file.getFileName().toString().replaceFirst("[.][^.]+$", "")).pagine(pages).build();
 			model.getLibrary().getDatabase().put(file.toString(), book);
 		} else {
 			Utils.log(Utils.Debug.DEBUG, "The book is not null (already present)");

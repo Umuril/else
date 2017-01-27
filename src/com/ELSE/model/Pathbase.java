@@ -2,7 +2,6 @@ package com.ELSE.model;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -10,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.Map;
 
 public class Pathbase {
 	private static class PathNode {
-		private Map<String, PathNode> children = new HashMap<>();
+		private final Map<String, PathNode> children = new HashMap<>();
 		private final String name;
 
 		private PathNode(String name) {
@@ -67,7 +68,7 @@ public class Pathbase {
 				if (child.isLeaf())
 					list.add(prefix + child.name);
 				else
-					child.listPaths(list, prefix + child.name + File.separator);
+					child.listPaths(list, prefix + child.name + FileSystems.getDefault().getSeparator());
 			}
 		}
 
@@ -92,11 +93,11 @@ public class Pathbase {
 
 	public static Pathbase newInstance(String filename) {
 		Pathbase pathbase = new Pathbase();
-		File file = new File(filename);
-		if (file.exists() && file.isFile())
+		Path path = Paths.get(filename);
+		if (Files.isRegularFile(path))
 			try {
 				Utils.log(Utils.Debug.DEBUG, "BEFORE READING FILE: " + pathbase.getPathsList());
-				pathbase.loadFromFile(file);
+				pathbase.loadFromFile(path);
 				Utils.log(Utils.Debug.DEBUG, "AFTER READING FILE: " + pathbase.getPathsList());
 			} catch (FileNotFoundException e) {
 				// Intentionally unchecked exception
@@ -108,7 +109,7 @@ public class Pathbase {
 		return pathbase;
 	}
 
-	private PathNode root = new PathNode("");
+	private final PathNode root = new PathNode("");
 
 	public void add(String p) {
 		root.add(Arrays.asList(p.split("\\\\|/")), 0);
@@ -119,7 +120,7 @@ public class Pathbase {
 	}
 
 	public void createPathbaseFile(String filename) throws IOException {
-		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(filename)), Charset.defaultCharset()))) {
+		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(filename).toFile()), Charset.defaultCharset()))) {
 			for (String path : getPathsList()) {
 				writer.append(path);
 				writer.newLine();
@@ -133,13 +134,13 @@ public class Pathbase {
 		return list;
 	}
 
-	public void loadFromFile(File file) throws IOException {
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), Charset.defaultCharset()))) {
+	public void loadFromFile(Path path) throws IOException {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path.toFile()), Charset.defaultCharset()))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				if (!line.isEmpty()) {
-					Path path = Paths.get(line).toRealPath();
-					add(path.toString());
+					Path pathToAdd = Paths.get(line).toRealPath();
+					add(pathToAdd.toString());
 				}
 			}
 		}

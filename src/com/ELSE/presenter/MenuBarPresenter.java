@@ -2,8 +2,9 @@ package com.ELSE.presenter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -80,9 +81,9 @@ public class MenuBarPresenter implements ActionListener, DocumentListener {
 		centerPresenter.emptyOfBooks();
 		// java.util.ConcurrentModificationException
 		// for (BookMetadata book : model.getLibrary().getDatabase().values()) {
-		for (Iterator<BookMetadata> iterator = model.getLibrary().getDatabase().values().iterator(); iterator.hasNext();) {
+		for (Iterator<Entry<String, BookMetadata>> iterator = Collections.synchronizedMap(model.getLibrary().getDatabase()).entrySet().iterator(); iterator.hasNext();) {
 			boolean found = false;
-			BookMetadata book = iterator.next();
+			BookMetadata book = iterator.next().getValue();
 			if (book.getAnno() != null)
 				if (book.getAnno().toString().contains(text))
 					found = true;
@@ -100,7 +101,7 @@ public class MenuBarPresenter implements ActionListener, DocumentListener {
 				try {
 					for (Entry<String, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
 						if (Objects.equals(book, entry.getValue())) {
-							centerPresenter.addImage(new File(entry.getKey()));
+							centerPresenter.addImage(Paths.get(entry.getKey()));
 							break;
 						}
 					}

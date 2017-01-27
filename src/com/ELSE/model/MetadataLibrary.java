@@ -6,12 +6,14 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Year;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -26,8 +28,8 @@ public class MetadataLibrary implements Printable {
 
 	private MetadataLibrary(String filename) {
 		this.filename = filename;
-		File file = new File(filename);
-		if (file.exists() && file.isFile())
+		Path path = Paths.get(filename);
+		if (Files.exists(path) && Files.isRegularFile(path))
 			try {
 				readFromFile();
 			} catch (ClassNotFoundException | IOException e) {

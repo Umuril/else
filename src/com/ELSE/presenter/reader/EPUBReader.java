@@ -5,10 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -32,7 +33,7 @@ import com.github.mertakdut.exception.ReadingException;
 
 class EPUBReader extends EbookReader {
 	private JButton back, forward;
-	private final File file;
+	private final Path file;
 	private JFrame frame;
 	private int page;
 	private final int totpages = 100;
@@ -42,7 +43,7 @@ class EPUBReader extends EbookReader {
 
 	EPUBReader(String path) {
 		super(path);
-		file = new File(path);
+		file = Paths.get(path);
 	}
 
 	@Override
@@ -52,7 +53,7 @@ class EPUBReader extends EbookReader {
 		 */
 		EpubReader epubReader = new EpubReader();
 		try {
-			Book book = epubReader.readEpub(new FileInputStream(file));
+			Book book = epubReader.readEpub(new FileInputStream(file.toFile()));
 			byte[] bytes = book.getCoverImage().getData();
 			BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 			return image;

@@ -4,8 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -21,19 +22,19 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 
 public class PDFReader extends EbookReader {
 	private JButton back, forward;
-	private File file;
+	private final Path file;
 	private JFrame frame;
 	private JLabel label;
 	private int page, totpages;
 
 	PDFReader(String path) {
 		super(path);
-		file = new File(path);
+		file = Paths.get(path);
 	}
 
 	@Override
 	public BufferedImage getCover() throws IOException {
-		PDDocument doc = PDDocument.load(file);
+		PDDocument doc = PDDocument.load(file.toFile());
 		PDFRenderer renderer = new PDFRenderer(doc);
 		BufferedImage img = renderer.renderImage(0);
 		doc.close();
@@ -52,7 +53,7 @@ public class PDFReader extends EbookReader {
 		panel.add(Box.createHorizontalGlue());
 		JScrollPane scrollPane = new JScrollPane(panel);
 		frame.getContentPane().add(scrollPane);
-		PDDocument doc = PDDocument.load(file);
+		PDDocument doc = PDDocument.load(file.toFile());
 		totpages = doc.getNumberOfPages();
 		doc.close();
 		aggiorna();
@@ -102,7 +103,7 @@ public class PDFReader extends EbookReader {
 	}
 
 	private void aggiorna() throws IOException {
-		PDDocument doc = PDDocument.load(file);
+		PDDocument doc = PDDocument.load(file.toFile());
 		PDFRenderer renderer = new PDFRenderer(doc);
 		BufferedImage image;
 		image = renderer.renderImage(page);
@@ -115,7 +116,7 @@ public class PDFReader extends EbookReader {
 	public int getPageNumber() {
 		PDDocument doc;
 		try {
-			doc = PDDocument.load(file);
+			doc = PDDocument.load(file.toFile());
 			int num = doc.getNumberOfPages();
 			doc.close();
 			return num;

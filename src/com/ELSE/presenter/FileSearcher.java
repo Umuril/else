@@ -14,12 +14,12 @@ import com.ELSE.view.View;
 
 public class FileSearcher extends Thread {
 	private static final int perPage = 8;
-	private CenterPresenter centerPresenter;
+	private final CenterPresenter centerPresenter;
 	private int found, page;
-	private Object lock = new Object();
+	private final Object lock = new Object();
 	private int needToSkip;
-	private Model model;
-	private View view;
+	private final Model model;
+	private final View view;
 	private boolean updating;
 
 	public FileSearcher(Model model, View view, CenterPresenter centerPresenter, int page) {
@@ -82,7 +82,7 @@ public class FileSearcher extends Thread {
 								view.setEmpty(false);
 								centerPresenter.change(null, null);
 							}
-							centerPresenter.addImage(file.toFile());
+							centerPresenter.addImage(file);
 							found++; // ++found?
 						}
 						return FileVisitResult.CONTINUE;

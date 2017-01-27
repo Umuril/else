@@ -2,8 +2,8 @@ package com.ELSE.presenter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Map.Entry;
 
 import javax.swing.JCheckBox;
@@ -63,7 +63,7 @@ public class AdvanceSearchPresenter implements ActionListener {
 				if (found) {
 					Utils.log(Utils.Debug.INFO, "Found: " + book);
 					try {
-						centerPresenter.addImage(new File(entry.getKey()));
+						centerPresenter.addImage(Paths.get(entry.getKey()));
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}

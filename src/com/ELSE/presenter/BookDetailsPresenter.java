@@ -3,7 +3,6 @@ package com.ELSE.presenter;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.Year;
@@ -21,9 +20,9 @@ import com.ELSE.view.MetadataPanel;
 import com.ELSE.view.View;
 
 public class BookDetailsPresenter implements ActionListener, DocumentListener {
-	private View view;
-	private Model model;
-	private Presenter presenter;
+	private final View view;
+	private final Model model;
+	private final Presenter presenter;
 
 	public BookDetailsPresenter(View view, Model model, Presenter presenter) {
 		this.view = view;
@@ -81,7 +80,7 @@ public class BookDetailsPresenter implements ActionListener, DocumentListener {
 			for (Entry<String, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
 				if (entry.getValue().equals(book)) {
 					try {
-						Desktop.getDesktop().open(new File(entry.getKey()));
+						Desktop.getDesktop().open(Paths.get(entry.getKey()).toFile());
 					} catch (RuntimeException | IOException ex) {
 						view.setStatusText("Errore nella lettura del libro");
 					}

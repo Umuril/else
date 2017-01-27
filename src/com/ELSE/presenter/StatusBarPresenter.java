@@ -2,8 +2,8 @@ package com.ELSE.presenter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -73,7 +73,7 @@ public class StatusBarPresenter implements ActionListener {
 			if (jfc.showOpenDialog(view.getFrame()) == JFileChooser.APPROVE_OPTION) {
 				int size = model.getPathbase().size();
 				try {
-					model.getPathbase().loadFromFile(new File(jfc.getSelectedFile().getAbsolutePath()));
+					model.getPathbase().loadFromFile(Paths.get(jfc.getSelectedFile().getAbsolutePath()));
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

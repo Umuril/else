@@ -23,11 +23,10 @@ import com.ELSE.model.Utils;
 import com.ELSE.presenter.Presenter;
 
 public class Settings implements KeyEventDispatcher {
-	private JDialog dialog;
-	private JButton color1, color2, backcolor, paths, folder;
-	private JCheckBox preview, save;
-	private JButton conferma;
-	private JButton restore;
+	private final JDialog dialog;
+	private final JButton color1, color2, backcolor, paths, folder;
+	private final JCheckBox preview, save;
+	private final JButton delete, restore, conferma;
 
 	private Settings(View view) {
 		dialog = new JDialog();
@@ -84,6 +83,8 @@ public class Settings implements KeyEventDispatcher {
 		save.setSelected(Boolean.parseBoolean(Utils.getPreferences("Save")));
 		panel.add(save, c);
 		border.add(panel);
+		delete = new JButton("Cancella tutto");
+		border.add(delete, BorderLayout.SOUTH);
 		restore = new JButton("Resetta");
 		border.add(restore, BorderLayout.SOUTH);
 		conferma = new JButton("Conferma");
@@ -109,6 +110,7 @@ public class Settings implements KeyEventDispatcher {
 		folder.addActionListener(presenter.getMenuBarPresenter().getSettingsPresenter());
 		preview.addItemListener(presenter.getMenuBarPresenter().getSettingsPresenter());
 		save.addItemListener(presenter.getMenuBarPresenter().getSettingsPresenter());
+		delete.addActionListener(presenter.getMenuBarPresenter().getSettingsPresenter());
 		restore.addActionListener(presenter.getMenuBarPresenter().getSettingsPresenter());
 		conferma.addActionListener(presenter.getMenuBarPresenter().getSettingsPresenter());
 	}
@@ -162,6 +164,10 @@ public class Settings implements KeyEventDispatcher {
 
 	public JButton getRestore() {
 		return restore;
+	}
+
+	public JButton getDelete() {
+		return delete;
 	}
 
 	public void updateColor(Color color) {

@@ -2,6 +2,7 @@ package com.ELSE.presenter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.Map.Entry;
 
@@ -16,9 +17,9 @@ import com.ELSE.view.AdvanceSearch;
 import com.ELSE.view.View;
 
 public class AdvanceSearchPresenter implements ActionListener {
-	private CenterPresenter centerPresenter;
-	private Model model;
-	private View view;
+	private final CenterPresenter centerPresenter;
+	private final Model model;
+	private final View view;
 
 	public AdvanceSearchPresenter(View view, Model model, CenterPresenter centerPresenter) {
 		this.view = view;
@@ -62,7 +63,7 @@ public class AdvanceSearchPresenter implements ActionListener {
 				if (found) {
 					Utils.log(Utils.Debug.INFO, "Found: " + book);
 					try {
-						centerPresenter.addImage(book);
+						centerPresenter.addImage(new File(entry.getKey()));
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}

@@ -2,7 +2,11 @@ package com.ELSE.presenter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Objects;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -14,11 +18,11 @@ import com.ELSE.view.MenuBar;
 import com.ELSE.view.View;
 
 public class MenuBarPresenter implements ActionListener, DocumentListener {
-	private Model model;
-	private View view;
-	private CenterPresenter centerPresenter;
-	private AdvanceSearchPresenter advanceSearchPresenter;
-	private SettingsPresenter settingsPresenter;
+	private final Model model;
+	private final View view;
+	private final CenterPresenter centerPresenter;
+	private final AdvanceSearchPresenter advanceSearchPresenter;
+	private final SettingsPresenter settingsPresenter;
 
 	public MenuBarPresenter(View view, Model model, CenterPresenter centerPresenter) {
 		this.model = model;
@@ -62,6 +66,8 @@ public class MenuBarPresenter implements ActionListener, DocumentListener {
 	private void cerca() {
 		if (centerPresenter.isUpdating())
 			return;
+		System.out.println(model.getLibrary().getDatabase().values().size());
+		System.out.println(model.getLibrary().getDatabase().values());
 		centerPresenter.change(null, null);
 		String text = view.getMenuBar().getSearchField().getText();
 		if (text.isEmpty()) {
@@ -72,8 +78,11 @@ public class MenuBarPresenter implements ActionListener, DocumentListener {
 		Utils.log(Utils.Debug.INFO, "Search triggered with " + text + ".");
 		Utils.log(Utils.Debug.DEBUG, model.getLibrary().getDatabase().values());
 		centerPresenter.emptyOfBooks();
-		for (BookMetadata book : model.getLibrary().getDatabase().values()) {
+		// java.util.ConcurrentModificationException
+		// for (BookMetadata book : model.getLibrary().getDatabase().values()) {
+		for (Iterator<BookMetadata> iterator = model.getLibrary().getDatabase().values().iterator(); iterator.hasNext();) {
 			boolean found = false;
+			BookMetadata book = iterator.next();
 			if (book.getAnno() != null)
 				if (book.getAnno().toString().contains(text))
 					found = true;
@@ -89,7 +98,12 @@ public class MenuBarPresenter implements ActionListener, DocumentListener {
 			if (found) {
 				Utils.log(Utils.Debug.INFO, "Found: " + book);
 				try {
-					centerPresenter.addImage(book);
+					for (Entry<String, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
+						if (Objects.equals(book, entry.getValue())) {
+							centerPresenter.addImage(new File(entry.getKey()));
+							break;
+						}
+					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

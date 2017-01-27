@@ -16,9 +16,9 @@ import com.ELSE.view.StatusBar;
 import com.ELSE.view.View;
 
 public class StatusBarPresenter implements ActionListener {
-	private View view;
-	private Model model;
-	private CenterPresenter centerPresenter;
+	private final View view;
+	private final Model model;
+	private final CenterPresenter centerPresenter;
 
 	public StatusBarPresenter(View view, Model model, CenterPresenter centerPresenter) {
 		this.view = view;
@@ -36,6 +36,7 @@ public class StatusBarPresenter implements ActionListener {
 			int result = jfc.showOpenDialog(view.getFrame());
 			if (result == JFileChooser.APPROVE_OPTION) {
 				model.getPathbase().add(jfc.getSelectedFile().getAbsolutePath());
+				model.searchForNewBooks();
 				centerPresenter.aggiorna(0);
 				view.needToSave(true);
 			}

@@ -30,11 +30,11 @@ import com.ELSE.view.View;
 
 public class CenterPresenter implements KeyEventDispatcher {
 	private FileSearcher fileSearcher;
-	private Model model;
-	private Presenter presenter;
-	private View view;
-	private SliderPresenter sliderPresenter;
-	private BookDetailsPresenter bookDetailsPresenter;
+	private final Model model;
+	private final Presenter presenter;
+	private final View view;
+	private final SliderPresenter sliderPresenter;
+	private final BookDetailsPresenter bookDetailsPresenter;
 
 	public CenterPresenter(View view, Model model, Presenter presenter) {
 		this.view = view;
@@ -53,22 +53,6 @@ public class CenterPresenter implements KeyEventDispatcher {
 
 	public BookDetailsPresenter getBookDetailsPresenter() {
 		return bookDetailsPresenter;
-	}
-
-	public void addImage(BookMetadata book) throws IOException {
-		String filename = Utils.getPreferences("Folder") + File.separator + book.getChecksum() + ".jpg";
-		File imageFile = new File(filename);
-		if (!imageFile.exists()) {
-			System.err.println("Error 404");
-			return;
-		}
-		BufferedImage image = ImageIO.read(imageFile);
-		JButton picLabel = new JButton(new ImageIcon(image.getScaledInstance(-1, 180, Image.SCALE_DEFAULT)));
-		picLabel.addActionListener(new InnerListener(view, image, book));
-		picLabel.setBorder(null);
-		view.getSliderPage().getUp().add(picLabel);
-		picLabel.revalidate();
-		picLabel.repaint();
 	}
 
 	public boolean isUpdating() {
@@ -214,9 +198,9 @@ public class CenterPresenter implements KeyEventDispatcher {
 	}
 
 	private static class InnerListener implements ActionListener {
-		private BookMetadata book;
-		private BufferedImage image;
-		private View view;
+		private final BookMetadata book;
+		private final BufferedImage image;
+		private final View view;
 
 		public InnerListener(View view, BufferedImage image, BookMetadata book) {
 			this.view = view;

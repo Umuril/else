@@ -11,7 +11,7 @@ import javax.swing.border.LineBorder;
 
 import com.ELSE.model.Utils;
 
-public class CentralPage {
+class CentralPage {
 	static JPanel newInstance(CentralProperties centralProperties) {
 		JPanel container = new JPanel();
 		container.setBackground(new Color(Integer.parseInt(Utils.getPreferences("BackColor"))));

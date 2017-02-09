@@ -91,9 +91,8 @@ public class Pathbase {
 		add("");
 	}
 
-	public static Pathbase newInstance(String filename) {
+	static Pathbase newInstance(Path path) {
 		Pathbase pathbase = new Pathbase();
-		Path path = Paths.get(filename);
 		if (Files.isRegularFile(path))
 			try {
 				Utils.log(Utils.Debug.DEBUG, "BEFORE READING FILE: " + pathbase.getPathsList());
@@ -119,10 +118,10 @@ public class Pathbase {
 		root.clear();
 	}
 
-	public void createPathbaseFile(String filename) throws IOException {
-		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(filename).toFile()), Charset.defaultCharset()))) {
-			for (String path : getPathsList()) {
-				writer.append(path);
+	public void createPathbaseFile(Path path) throws IOException {
+		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path.toFile()), Charset.defaultCharset()))) {
+			for (String pathlist : getPathsList()) {
+				writer.append(pathlist);
 				writer.newLine();
 			}
 		}

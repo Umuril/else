@@ -6,6 +6,7 @@ import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.swing.JOptionPane;
 
@@ -15,11 +16,11 @@ import com.ELSE.presenter.reader.EbookReader;
 import com.ELSE.view.View;
 
 public class Presenter implements WindowListener {
-	private View view;
-	private MenuBarPresenter menuBarPresenter;
-	private CenterPresenter centerPresenter;
-	private StatusBarPresenter statusBarPresenter;
-	private Model model;
+	private final View view;
+	private final MenuBarPresenter menuBarPresenter;
+	private final CenterPresenter centerPresenter;
+	private final StatusBarPresenter statusBarPresenter;
+	private final Model model;
 
 	public Presenter(View view, Model model) {
 		this.view = view;
@@ -42,7 +43,7 @@ public class Presenter implements WindowListener {
 		return statusBarPresenter;
 	}
 
-	public BufferedImage getCover(Path file) {
+	BufferedImage getCover(Path file) {
 		try {
 			return EbookReader.newInstance(file).getCover();
 		} catch (IOException e) {
@@ -51,7 +52,7 @@ public class Presenter implements WindowListener {
 		}
 	}
 
-	public void getReader(Path file) {
+	void getReader(Path file) {
 		Utils.log(Utils.Debug.DEBUG, file);
 		try {
 			EbookReader.newInstance(file).getFrame();
@@ -73,7 +74,7 @@ public class Presenter implements WindowListener {
 		} else {
 			if (Boolean.parseBoolean(Utils.getPreferences("Save"))) {
 				try {
-					model.getPathbase().createPathbaseFile(Utils.getPreferences("Pathbase"));
+					model.getPathbase().createPathbaseFile(Paths.get(Utils.getPreferences("Pathbase")));
 					model.getLibrary().createFile();
 					view.getFrame().dispose();
 					System.exit(0);
@@ -116,7 +117,7 @@ public class Presenter implements WindowListener {
 		// TODO Auto-generated method stub
 	}
 
-	public void updateAllColors() {
+	private void updateAllColors() {
 		view.updateColor(new Color(Integer.parseInt(Utils.getPreferences("Color1"))));
 		Color color2 = new Color(Integer.parseInt(Utils.getPreferences("Color2")));
 		view.getAdvanceSearch().updateColor(color2);

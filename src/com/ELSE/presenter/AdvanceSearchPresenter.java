@@ -3,7 +3,7 @@ package com.ELSE.presenter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.Map.Entry;
 
 import javax.swing.JCheckBox;
@@ -16,12 +16,12 @@ import com.ELSE.model.Utils;
 import com.ELSE.view.AdvanceSearch;
 import com.ELSE.view.View;
 
-public class AdvanceSearchPresenter implements ActionListener {
+class AdvanceSearchPresenter implements ActionListener {
 	private final CenterPresenter centerPresenter;
 	private final Model model;
 	private final View view;
 
-	public AdvanceSearchPresenter(View view, Model model, CenterPresenter centerPresenter) {
+	AdvanceSearchPresenter(View view, Model model, CenterPresenter centerPresenter) {
 		this.view = view;
 		this.model = model;
 		this.centerPresenter = centerPresenter;
@@ -44,7 +44,7 @@ public class AdvanceSearchPresenter implements ActionListener {
 		if (titolo.getText().isEmpty() && autore.getText().isEmpty() && anno.getText().isEmpty() && pagine.getText().isEmpty())
 			return;
 		centerPresenter.emptyOfBooks();
-		for (Entry<String, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
+		for (Entry<Path, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
 			BookMetadata book = entry.getValue();
 			boolean found = false;
 			if (epub.isSelected() && entry.getKey().endsWith(".epub") || html.isSelected() && entry.getKey().endsWith(".html") || pdf.isSelected() && entry.getKey().endsWith(".pdf")) {
@@ -63,7 +63,7 @@ public class AdvanceSearchPresenter implements ActionListener {
 				if (found) {
 					Utils.log(Utils.Debug.INFO, "Found: " + book);
 					try {
-						centerPresenter.addImage(Paths.get(entry.getKey()));
+						centerPresenter.addImage(entry.getKey());
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}

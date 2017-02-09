@@ -13,7 +13,7 @@ public class Bar {
 		return new Bar();
 	}
 
-	private JPanel barContainer, left, right;
+	private final JPanel barContainer, left, right;
 
 	private Bar() {
 		barContainer = new JPanel();

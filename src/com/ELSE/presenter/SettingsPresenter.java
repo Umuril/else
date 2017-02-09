@@ -23,12 +23,12 @@ import com.ELSE.model.Utils;
 import com.ELSE.view.Settings;
 import com.ELSE.view.View;
 
-public class SettingsPresenter implements ActionListener, ItemListener {
+class SettingsPresenter implements ActionListener, ItemListener {
 	private final View view;
 	private final Settings settings;
 	private final JDialog dialog;
 
-	public SettingsPresenter(View view, Model model, CenterPresenter centerPresenter) {
+	SettingsPresenter(View view, Model model, CenterPresenter centerPresenter) {
 		this.view = view;
 		settings = view.getSettings();
 		dialog = settings.getDialog();

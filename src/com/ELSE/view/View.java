@@ -16,13 +16,13 @@ import com.ELSE.presenter.Presenter;
  * @author Eduard Rubio Cholbi
  */
 public class View {
-	private Center center;
-	private JFrame framePrincipale;
-	private MenuBar menuBar;
-	private StatusBar statusBar;
-	private AdvanceSearch advanceSearch;
+	private final Center center;
+	private final JFrame framePrincipale;
+	private final MenuBar menuBar;
+	private final StatusBar statusBar;
+	private final AdvanceSearch advanceSearch;
 	private boolean needsave;
-	private Settings settings;
+	private final Settings settings;
 
 	public View() {
 		framePrincipale = new JFrame("ELSE");
@@ -59,7 +59,6 @@ public class View {
 		advanceSearch.setPresenter(presenter);
 		settings.setPresenter(presenter);
 		framePrincipale.addWindowListener(presenter);
-		// TODO need to change filename
 		// presenter.getCenterPresenter().loadFromFile("db.txt");
 		// Can I delete it? Need more checks
 		// presenter.getCenterPresenter().aggiorna();

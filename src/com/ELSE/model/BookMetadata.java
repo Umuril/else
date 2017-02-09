@@ -7,7 +7,7 @@ public class BookMetadata implements Serializable {
 	public static class Builder {
 		private Year anno = Year.of(0);
 		private String autore = "";
-		private String checksum;
+		private final String checksum;
 		private int pagine = 0;
 		private String titolo = "";
 

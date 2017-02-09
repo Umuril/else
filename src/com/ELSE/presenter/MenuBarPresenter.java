@@ -3,9 +3,7 @@ package com.ELSE.presenter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.Iterator;
+import java.nio.file.Path;
 import java.util.Map.Entry;
 import java.util.Objects;
 
@@ -25,7 +23,7 @@ public class MenuBarPresenter implements ActionListener, DocumentListener {
 	private final AdvanceSearchPresenter advanceSearchPresenter;
 	private final SettingsPresenter settingsPresenter;
 
-	public MenuBarPresenter(View view, Model model, CenterPresenter centerPresenter) {
+	MenuBarPresenter(View view, Model model, CenterPresenter centerPresenter) {
 		this.model = model;
 		this.view = view;
 		this.centerPresenter = centerPresenter;
@@ -80,10 +78,10 @@ public class MenuBarPresenter implements ActionListener, DocumentListener {
 		Utils.log(Utils.Debug.DEBUG, model.getLibrary().getDatabase().values());
 		centerPresenter.emptyOfBooks();
 		// java.util.ConcurrentModificationException
-		// for (BookMetadata book : model.getLibrary().getDatabase().values()) {
-		for (Iterator<Entry<String, BookMetadata>> iterator = Collections.synchronizedMap(model.getLibrary().getDatabase()).entrySet().iterator(); iterator.hasNext();) {
+		for (BookMetadata book : model.getLibrary().getDatabase().values()) {
+			// for (Iterator<Entry<String, BookMetadata>> iterator = Collections.synchronizedMap(model.getLibrary().getDatabase()).entrySet().iterator(); iterator.hasNext();) {
 			boolean found = false;
-			BookMetadata book = iterator.next().getValue();
+			// BookMetadata book = iterator.next().getValue();
 			if (book.getAnno() != null)
 				if (book.getAnno().toString().contains(text))
 					found = true;
@@ -99,9 +97,9 @@ public class MenuBarPresenter implements ActionListener, DocumentListener {
 			if (found) {
 				Utils.log(Utils.Debug.INFO, "Found: " + book);
 				try {
-					for (Entry<String, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
+					for (Entry<Path, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
 						if (Objects.equals(book, entry.getValue())) {
-							centerPresenter.addImage(Paths.get(entry.getKey()));
+							centerPresenter.addImage(entry.getKey());
 							break;
 						}
 					}

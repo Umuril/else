@@ -81,8 +81,8 @@ public class Utils {
 		}
 	}
 
-	public static String getMD5Checksum(String filename) {
-		byte[] b = createChecksum(filename);
+	public static String getMD5Checksum(Path path) {
+		byte[] b = createChecksum(path);
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < b.length; i++) {
 			sb.append(Integer.toString((b[i] & 0xff) + 0x100, 16).substring(1));
@@ -90,9 +90,9 @@ public class Utils {
 		return sb.toString();
 	}
 
-	private static byte[] createChecksum(String filename) {
+	private static byte[] createChecksum(Path path) {
 		MessageDigest complete = null;
-		try (InputStream fis = new FileInputStream(filename)) {
+		try (InputStream fis = new FileInputStream(path.toFile())) {
 			byte[] buffer = new byte[1024];
 			complete = MessageDigest.getInstance("MD5");
 			int numRead;

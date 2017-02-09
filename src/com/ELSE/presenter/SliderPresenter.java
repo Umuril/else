@@ -6,11 +6,11 @@ import java.awt.event.ActionListener;
 import com.ELSE.view.SliderPage;
 import com.ELSE.view.View;
 
-public class SliderPresenter implements ActionListener {
-	private View view;
-	private CenterPresenter centerPresenter;
+class SliderPresenter implements ActionListener {
+	private final View view;
+	private final CenterPresenter centerPresenter;
 
-	public SliderPresenter(View view, CenterPresenter centerPresenter) {
+	SliderPresenter(View view, CenterPresenter centerPresenter) {
 		this.view = view;
 		this.centerPresenter = centerPresenter;
 	}

@@ -7,11 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,7 +21,6 @@ import javax.swing.JPanel;
 import com.ELSE.model.BookMetadata;
 import com.ELSE.model.Model;
 import com.ELSE.model.Utils;
-import com.ELSE.presenter.reader.EbookReader;
 import com.ELSE.view.View;
 
 public class CenterPresenter implements KeyEventDispatcher {
@@ -36,7 +31,7 @@ public class CenterPresenter implements KeyEventDispatcher {
 	private final SliderPresenter sliderPresenter;
 	private final BookDetailsPresenter bookDetailsPresenter;
 
-	public CenterPresenter(View view, Model model, Presenter presenter) {
+	CenterPresenter(View view, Model model, Presenter presenter) {
 		this.view = view;
 		this.model = model;
 		this.presenter = presenter;
@@ -59,7 +54,7 @@ public class CenterPresenter implements KeyEventDispatcher {
 		return fileSearcher.getUpdating();
 	}
 
-	public void aggiorna(int page) {
+	void aggiorna(int page) {
 		if (isUpdating())
 			return;
 		view.getSliderPage().getUp().removeAll();
@@ -74,32 +69,21 @@ public class CenterPresenter implements KeyEventDispatcher {
 		view.getSliderPage().getUp().repaint();
 	}
 
-	public void change(Image image, BookMetadata book) {
+	void change(Image image, BookMetadata book) {
 		view.change(image, book);
 	}
 
 	/*
 	 * public ActionListener customOpenBook(BookMetadata book) { for (Entry<String, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) { if (entry.getValue().equals(book)) return new BookDetailsPresenter(Paths.get(entry.getKey()), presenter); } return null; } public ActionListener defaultOpenBook(BookMetadata book) { for (Entry<String, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) { if (entry.getValue().equals(book)) return new BookDetailsPresenter(Paths.get(entry.getKey()), presenter); } return null; }
 	 */
-	public void emptyOfBooks() {
+	void emptyOfBooks() {
 		JPanel panel = view.getSliderPage().getUp();
 		panel.removeAll();
 		panel.revalidate();
 		panel.repaint();
 	}
 
-	public void loadFromFile(String filename) {
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(Paths.get(Utils.getPreferences("Pathbase")).toFile()), Charset.defaultCharset()))) {
-			String line;
-			while ((line = reader.readLine()) != null) {
-				Path path = Paths.get(line).toRealPath();
-				model.getPathbase().add(path.toString());
-			}
-		} catch (IOException e) {
-		}
-	}
-
-	public void loadNextBooks() {
+	void loadNextBooks() {
 		if (fileSearcher.getUpdating())
 			return;
 		JPanel panel = view.getSliderPage().getUp();
@@ -111,7 +95,7 @@ public class CenterPresenter implements KeyEventDispatcher {
 		panel.repaint();
 	}
 
-	public void loadPreviousBooks() {
+	void loadPreviousBooks() {
 		if (fileSearcher.getUpdating())
 			return;
 		int page = fileSearcher.getPage();
@@ -131,12 +115,11 @@ public class CenterPresenter implements KeyEventDispatcher {
 	/*
 	 * public MouseListener openBook(BookMetadata book) { for (Entry<String, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) { if (entry.getValue().equals(book)) return new BookDetailsPresenter(Paths.get(entry.getKey()), presenter); } return null; }
 	 */
-	private BufferedImage saveImage(Path file) throws IOException {
-		String s = Utils.getPreferences("Folder") + FileSystems.getDefault().getSeparator() + Utils.getMD5Checksum(file.toString()) + ".jpg";
-		final Path outputfile = Paths.get(s);
-		if (Files.exists(outputfile))
+	private BufferedImage saveImage(Path bookPath) throws IOException {
+		final Path imagePath = Paths.get(Utils.getPreferences("Folder") + FileSystems.getDefault().getSeparator() + Utils.getMD5Checksum(bookPath) + ".jpg");
+		if (Files.exists(imagePath))
 			return null;
-		final BufferedImage image = presenter.getCover(file);
+		final BufferedImage image = presenter.getCover(bookPath);
 		Utils.log(Utils.Debug.INFO, "Creating again image of " + image);
 		if (Boolean.parseBoolean(Utils.getPreferences("Preview"))) {
 			// Need an asyncronus way
@@ -144,7 +127,7 @@ public class CenterPresenter implements KeyEventDispatcher {
 				@Override
 				public void run() {
 					try {
-						ImageIO.write(image, "jpg", outputfile.toFile());
+						ImageIO.write(image, "jpg", imagePath.toFile());
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -155,40 +138,24 @@ public class CenterPresenter implements KeyEventDispatcher {
 		return image;
 	}
 
-	void addImage(Path file) throws IOException {
-		String filename = Utils.getPreferences("Folder") + FileSystems.getDefault().getSeparator() + Utils.getMD5Checksum(file.toString()) + ".jpg";
-		Path imageFile = Paths.get(filename);
+	// path of the book OMFG
+	void addImage(Path bookPath) throws IOException {
+		Path imagePath = Paths.get(Utils.getPreferences("Folder") + FileSystems.getDefault().getSeparator() + Utils.getMD5Checksum(bookPath) + ".jpg");
 		BufferedImage image = null;
 		long startTime = System.currentTimeMillis();
-		if (Files.exists(imageFile)) {
+		if (Files.exists(imagePath)) {
 			Utils.log(Utils.Debug.DEBUG, "L'immagine gia esiste.");
-			image = ImageIO.read(imageFile.toFile());
+			image = ImageIO.read(imagePath.toFile());
 		} else {
 			view.setStatusText("Cercando nuovi file, potrebbe volerci un po...");
-			image = saveImage(file);
+			image = saveImage(bookPath);
 			Utils.log(Utils.Debug.DEBUG, "Creazione immagine in corso: " + image);
 		}
-		Utils.log(Utils.Debug.ERROR, "RENDERING TIME: " + (System.currentTimeMillis() - startTime) + " for file " + file);
+		Utils.log(Utils.Debug.ERROR, "RENDERING TIME: " + (System.currentTimeMillis() - startTime) + " for file " + bookPath);
 		Image img = image.getScaledInstance(-1, 160, Image.SCALE_DEFAULT);
 		JButton picLabel = new JButton(new ImageIcon(img));
-		String checksum = "";
-		try {
-			checksum = Utils.getMD5Checksum(file.toString());
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		BookMetadata book = model.getLibrary().getDatabase().get(file.toString());
-		int pages = EbookReader.newInstance(file).getPageNumber();
-		if (book == null) {
-			Utils.log(Utils.Debug.DEBUG, "The book is null (doesn't exist before)");
-			book = new BookMetadata.Builder(checksum).titolo(file.getFileName().toString().replaceFirst("[.][^.]+$", "")).pagine(pages).build();
-			model.getLibrary().getDatabase().put(file.toString(), book);
-		} else {
-			Utils.log(Utils.Debug.DEBUG, "The book is not null (already present)");
-			Utils.log(Utils.Debug.DEBUG, book);
-		}
-		picLabel.setToolTipText(file.toString());
-		picLabel.addActionListener(new InnerListener(view, image, book));
+		picLabel.setToolTipText(bookPath.toString());
+		picLabel.addActionListener(new InnerListener(view, image, model.getLibrary().getDatabase().get(bookPath)));
 		// picLabel.addActionListener(new
 		// ActionListenerWhenClickingOnABook(file));
 		picLabel.setBorder(null);

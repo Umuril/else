@@ -19,39 +19,40 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 public class MetadataLibrary implements Printable {
-	static MetadataLibrary newInstance(String filename) {
-		return new MetadataLibrary(filename);
+	static MetadataLibrary newInstance(Path path) {
+		return new MetadataLibrary(path);
 	}
 
-	private HashMap<String, BookMetadata> database;
-	private String filename;
+	private HashMap<Path, BookMetadata> database;
+	private final Path path;
 
-	private MetadataLibrary(String filename) {
-		this.filename = filename;
-		Path path = Paths.get(filename);
-		if (Files.exists(path) && Files.isRegularFile(path))
+	private MetadataLibrary(Path path) {
+		this.path = path;
+		if (Files.isRegularFile(path)) {
 			try {
 				readFromFile();
 			} catch (ClassNotFoundException | IOException e) {
 				e.printStackTrace();
-				database = new HashMap<String, BookMetadata>();
+				database = new HashMap<Path, BookMetadata>();
 			}
-		else
-			database = new HashMap<String, BookMetadata>();
+		} else {
+			database = new HashMap<Path, BookMetadata>();
+		}
+		System.out.println(database.entrySet());
 	}
 
 	public void createFile() throws IOException {
-		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
-			oos.writeObject(database);
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path.toFile()))) {
+			oos.writeObject(database.size());
+			for (Entry<Path, BookMetadata> entry : database.entrySet()) {
+				oos.writeObject(entry.getKey().toString());
+				oos.writeObject(entry.getValue());
+			}
 		}
 	}
 
-	public HashMap<String, BookMetadata> getDatabase() {
+	public HashMap<Path, BookMetadata> getDatabase() {
 		return database;
-	}
-
-	public String getFilename() {
-		return filename;
 	}
 
 	public void print() {
@@ -79,7 +80,7 @@ public class MetadataLibrary implements Printable {
 		g.drawString("Anno", x + 350, y);
 		g.drawString("Pagine", x + 400, y);
 		y += 20;
-		for (Entry<String, BookMetadata> e : database.entrySet()) {
+		for (Entry<Path, BookMetadata> e : database.entrySet()) {
 			BookMetadata b = e.getValue();
 			x = 0;
 			if (Utils.checkString(b.getTitolo())) {
@@ -93,22 +94,17 @@ public class MetadataLibrary implements Printable {
 		return PAGE_EXISTS;
 	}
 
-	public void setDatabase(HashMap<String, BookMetadata> database) {
-		this.database = database;
-	}
-
-	public void setFilename(String filename) {
-		this.filename = filename;
-	}
-
 	private void readFromFile() throws IOException, ClassNotFoundException {
-		try (ObjectInputStream oos = new ObjectInputStream(new FileInputStream(filename))) {
-			database = new HashMap<String, BookMetadata>();
-			Object obj = oos.readObject();
-			if (obj != null && obj instanceof HashMap<?, ?>)
-				for (Entry<?, ?> entry : ((HashMap<?, ?>) obj).entrySet())
-					if (entry.getKey() instanceof String && entry.getValue() instanceof BookMetadata)
-						database.put((String) entry.getKey(), (BookMetadata) entry.getValue());
+		try (ObjectInputStream oos = new ObjectInputStream(new FileInputStream(path.toFile()))) {
+			database = new HashMap<Path, BookMetadata>();
+			int size = (int) oos.readObject();
+			while (size-- > 0) {
+				Object key = oos.readObject();
+				Object value = oos.readObject();
+				if (key != null && key instanceof String && value != null && value instanceof BookMetadata)
+					database.put(Paths.get((String) key), (BookMetadata) value);
+			}
 		}
+		System.out.println(database.entrySet());
 	}
 }

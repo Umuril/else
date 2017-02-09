@@ -19,7 +19,7 @@ import javax.swing.WindowConstants;
 
 import com.ELSE.view.MenuBar;
 
-public class HTMLReader extends EbookReader {
+class HTMLReader extends EbookReader {
 	private JFXPanel jfxPanel;
 	private String content;
 

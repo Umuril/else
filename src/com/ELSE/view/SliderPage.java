@@ -17,20 +17,22 @@ public class SliderPage implements CentralProperties {
 	}
 
 	private JButton back, grid, list, forward;
-	private JPanel parent, up, down;
+	private final JPanel parent;
+	private JPanel up;
+	private JPanel down;
 
 	private SliderPage() {
 		parent = CentralPage.newInstance(this);
 	}
 
-	public void enableBackButton(boolean enable) {
+	void enableBackButton(boolean enable) {
 		back.setEnabled(enable);
 		back.setIcon(new ImageIcon(new ImageIcon(SliderPage.class.getResource(enable ? "/back.png" : "/back_gray.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
 		down.revalidate();
 		down.repaint();
 	}
 
-	public void enableNextButton(boolean enable) {
+	void enableNextButton(boolean enable) {
 		forward.setEnabled(enable);
 		forward.setIcon(new ImageIcon(new ImageIcon(SliderPage.class.getResource(enable ? "/forward.png" : "/forward_gray.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
 		down.revalidate();
@@ -74,10 +76,6 @@ public class SliderPage implements CentralProperties {
 		grid.addActionListener(presenter.getCenterPresenter().getSliderPresenter());
 		list.addActionListener(presenter.getCenterPresenter().getSliderPresenter());
 		forward.addActionListener(presenter.getCenterPresenter().getSliderPresenter());
-	}
-
-	JPanel getDown() {
-		return down;
 	}
 
 	public JPanel getUp() {

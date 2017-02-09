@@ -4,7 +4,7 @@ import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.time.Year;
 import java.util.Map.Entry;
 
@@ -19,12 +19,12 @@ import com.ELSE.view.BookDetailsPage;
 import com.ELSE.view.MetadataPanel;
 import com.ELSE.view.View;
 
-public class BookDetailsPresenter implements ActionListener, DocumentListener {
+class BookDetailsPresenter implements ActionListener, DocumentListener {
 	private final View view;
 	private final Model model;
 	private final Presenter presenter;
 
-	public BookDetailsPresenter(View view, Model model, Presenter presenter) {
+	BookDetailsPresenter(View view, Model model, Presenter presenter) {
 		this.view = view;
 		this.model = model;
 		this.presenter = presenter;
@@ -42,7 +42,7 @@ public class BookDetailsPresenter implements ActionListener, DocumentListener {
 			view.changeBookPageEditable(null);
 			// view.getBookDetailsPage().enableSaveButton(true);
 		} else if (e.getSource() == bookDetailsPage.getSaveButton() || e.getSource() == metadataPanel.getTitolo() || e.getSource() == metadataPanel.getAutore() || e.getSource() == metadataPanel.getAnno() || e.getSource() == metadataPanel.getPagine()) {
-			for (Entry<String, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
+			for (Entry<Path, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
 				if (entry.getValue().equals(book)) {
 					String s = metadataPanel.getTitolo().getText();
 					if (Utils.checkString(s) && s.length() <= 20)
@@ -70,17 +70,17 @@ public class BookDetailsPresenter implements ActionListener, DocumentListener {
 			view.getBookDetailsPage().enableSaveButton(false);
 			view.needToSave(true);
 		} else if (e.getSource() == metadataPanel.getOpenCustomButton()) {
-			for (Entry<String, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
+			for (Entry<Path, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
 				if (entry.getValue().equals(book)) {
-					presenter.getReader(Paths.get(entry.getKey()));
+					presenter.getReader(entry.getKey());
 					break;
 				}
 			}
 		} else if (e.getSource() == metadataPanel.getOpenDefaultButton()) {
-			for (Entry<String, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
+			for (Entry<Path, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
 				if (entry.getValue().equals(book)) {
 					try {
-						Desktop.getDesktop().open(Paths.get(entry.getKey()).toFile());
+						Desktop.getDesktop().open(entry.getKey().toFile());
 					} catch (RuntimeException | IOException ex) {
 						view.setStatusText("Errore nella lettura del libro");
 					}

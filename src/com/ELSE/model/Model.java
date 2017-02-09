@@ -9,37 +9,21 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
-public class Model {
-	private class CustomFileVisitor extends SimpleFileVisitor<Path> {
-		@Override
-		public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
-			if (acceptableFileType(file.toString())) {
-				try {
-					BookMetadata book = new BookMetadata.Builder(Utils.getMD5Checksum(file.toString())).build();
-					if (!library.getDatabase().containsKey(book.getChecksum()))
-						library.getDatabase().put(book.getChecksum(), book);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			return FileVisitResult.CONTINUE;
-		}
-	}
+import com.ELSE.presenter.reader.EbookReader;
 
+public class Model {
 	private final MetadataLibrary library;
 	private final Pathbase pathbase;
 
 	public Model() {
-		// Need to check the names
-		pathbase = Pathbase.newInstance(Utils.getPreferences("Pathbase"));
+		pathbase = Pathbase.newInstance(Paths.get(Utils.getPreferences("Pathbase")));
 		Utils.log(Utils.Debug.DEBUG, "BEGIN: " + pathbase.getPathsList());
-		library = MetadataLibrary.newInstance(Utils.getPreferences("Folder") + FileSystems.getDefault().getSeparator() + "metadata.else");
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				searchForNewBooks();
-			}
-		}).start();
+		library = MetadataLibrary.newInstance(Paths.get(Utils.getPreferences("Folder") + FileSystems.getDefault().getSeparator() + "metadata.else"));
+		searchForNewBooks();
+		/*
+		 * new Thread(new Runnable() {
+		 * @Override public void run() { searchForNewBooks(); } }).start();
+		 */
 	}
 
 	public boolean acceptableFileType(String path) {
@@ -58,16 +42,34 @@ public class Model {
 		for (String filename : pathbase.getPathsList()) {
 			Path path = Paths.get(filename);
 			if (Files.isRegularFile(path)) {
-				BookMetadata book = new BookMetadata.Builder(Utils.getMD5Checksum(filename)).build(); // path was file.toString(). Need further checks
-				library.getDatabase().put(book.getChecksum(), book);
+				BookMetadata book = new BookMetadata.Builder(Utils.getMD5Checksum(path)).titolo(path.getFileName().toString().replaceFirst("[.][^.]+$", "")).pagine(EbookReader.newInstance(path).getPageNumber()).build();
+				// BookMetadata book = new BookMetadata.Builder(Utils.getMD5Checksum(path)).build(); // path was file.toString(). Need further checks
+				library.getDatabase().put(path, book);
 			}
 			if (Files.isDirectory(path))
 				try {
-					Files.walkFileTree(Paths.get(filename), new CustomFileVisitor());
+					Files.walkFileTree(path, new CustomFileVisitor());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+		}
+	}
+
+	private class CustomFileVisitor extends SimpleFileVisitor<Path> {
+		@Override
+		public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) {
+			if (acceptableFileType(path.toString())) {
+				try {
+					BookMetadata book = new BookMetadata.Builder(Utils.getMD5Checksum(path)).titolo(path.getFileName().toString().replaceFirst("[.][^.]+$", "")).pagine(EbookReader.newInstance(path).getPageNumber()).build();
+					// BookMetadata book = new BookMetadata.Builder(Utils.getMD5Checksum(file)).build();
+					if (!library.getDatabase().containsKey(path))
+						library.getDatabase().put(path, book);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			return FileVisitResult.CONTINUE;
 		}
 	}
 }

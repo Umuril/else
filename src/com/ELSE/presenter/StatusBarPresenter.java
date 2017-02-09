@@ -15,12 +15,12 @@ import com.ELSE.model.Utils;
 import com.ELSE.view.StatusBar;
 import com.ELSE.view.View;
 
-public class StatusBarPresenter implements ActionListener {
+class StatusBarPresenter implements ActionListener {
 	private final View view;
 	private final Model model;
 	private final CenterPresenter centerPresenter;
 
-	public StatusBarPresenter(View view, Model model, CenterPresenter centerPresenter) {
+	StatusBarPresenter(View view, Model model, CenterPresenter centerPresenter) {
 		this.view = view;
 		this.model = model;
 		this.centerPresenter = centerPresenter;
@@ -57,7 +57,7 @@ public class StatusBarPresenter implements ActionListener {
 			centerPresenter.aggiorna(-1);
 		} else if (e.getSource() == statusBar.getSaveButton()) {
 			try {
-				model.getPathbase().createPathbaseFile(Utils.getPreferences("Pathbase"));
+				model.getPathbase().createPathbaseFile(Paths.get(Utils.getPreferences("Pathbase")));
 				model.getLibrary().createFile();
 				view.needToSave(false);
 			} catch (IOException ex) {

@@ -12,7 +12,7 @@ import com.ELSE.model.Model;
 import com.ELSE.model.Utils;
 import com.ELSE.view.View;
 
-public class FileSearcher extends Thread {
+class FileSearcher extends Thread {
 	private static final int perPage = 8;
 	private final CenterPresenter centerPresenter;
 	private int found, page;
@@ -22,7 +22,7 @@ public class FileSearcher extends Thread {
 	private final View view;
 	private boolean updating;
 
-	public FileSearcher(Model model, View view, CenterPresenter centerPresenter, int page) {
+	FileSearcher(Model model, View view, CenterPresenter centerPresenter, int page) {
 		this.model = model;
 		this.centerPresenter = centerPresenter;
 		found = 0;
@@ -31,7 +31,7 @@ public class FileSearcher extends Thread {
 		updating = false;
 	}
 
-	public void findNext() {
+	void findNext() {
 		synchronized (lock) {
 			page++;
 			found = 0;

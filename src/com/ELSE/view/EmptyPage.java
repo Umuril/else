@@ -3,12 +3,12 @@ package com.ELSE.view;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class EmptyPage implements CentralProperties {
+class EmptyPage implements CentralProperties {
 	static EmptyPage newInstance() {
 		return new EmptyPage();
 	}
 
-	private JPanel parent;
+	private final JPanel parent;
 
 	private EmptyPage() {
 		parent = CentralPage.newInstance(this);

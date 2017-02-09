@@ -20,7 +20,7 @@ import javax.swing.WindowConstants;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
-public class PDFReader extends EbookReader {
+class PDFReader extends EbookReader {
 	private JButton back, forward;
 	private final Path file;
 	private JFrame frame;

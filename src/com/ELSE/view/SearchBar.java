@@ -14,11 +14,11 @@ class SearchBar {
 	static SearchBar newInstance() {
 		return new SearchBar();
 	}
-
-	private JButton icona;
-	private JPanel panel;
-	private JTextField testo;
-
+	
+	private final JButton icona;
+	private final JPanel panel;
+	private final JTextField testo;
+	
 	private SearchBar() {
 		panel = new JPanel();
 		panel.setBackground(Color.white);
@@ -30,15 +30,15 @@ class SearchBar {
 		icona = Button.newInstance(SearchBar.class.getResource("/search.png"));
 		panel.add(icona);
 	}
-
+	
 	JButton getIcona() {
 		return icona;
 	}
-
+	
 	JPanel getPanel() {
 		return panel;
 	}
-
+	
 	JTextField getTesto() {
 		return testo;
 	}

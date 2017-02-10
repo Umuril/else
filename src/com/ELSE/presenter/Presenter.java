@@ -16,13 +16,13 @@ import com.ELSE.presenter.reader.EbookReader;
 import com.ELSE.view.View;
 
 public class Presenter implements WindowListener {
-	private final View view;
-	private final MenuBarPresenter menuBarPresenter;
 	private final CenterPresenter centerPresenter;
-	private final StatusBarPresenter statusBarPresenter;
+	private final MenuBarPresenter menuBarPresenter;
 	private final Model model;
-
-	public Presenter(View view, Model model) {
+	private final StatusBarPresenter statusBarPresenter;
+	private final View view;
+	
+	public Presenter(final View view, final Model model) {
 		this.view = view;
 		this.model = model;
 		centerPresenter = new CenterPresenter(view, model, this);
@@ -30,102 +30,99 @@ public class Presenter implements WindowListener {
 		statusBarPresenter = new StatusBarPresenter(view, model, centerPresenter);
 		updateAllColors();
 	}
-
-	public MenuBarPresenter getMenuBarPresenter() {
-		return menuBarPresenter;
-	}
-
+	
 	public CenterPresenter getCenterPresenter() {
 		return centerPresenter;
 	}
-
-	public StatusBarPresenter getStatusBarPresenter() {
-		return statusBarPresenter;
-	}
-
-	BufferedImage getCover(Path file) {
+	
+	BufferedImage getCover(final Path path) {
 		try {
-			return EbookReader.newInstance(file).getCover();
-		} catch (IOException e) {
+			return EbookReader.newInstance(path).getCover();
+		} catch (final IOException ex) {
 			view.setStatusText("Errore nella lettura del libro");
 			return null;
 		}
 	}
-
-	void getReader(Path file) {
-		Utils.log(Utils.Debug.DEBUG, file);
+	
+	public MenuBarPresenter getMenuBarPresenter() {
+		return menuBarPresenter;
+	}
+	
+	void getReader(final Path path) {
+		Utils.log(Utils.Debug.DEBUG, path);
 		try {
-			EbookReader.newInstance(file).getFrame();
-		} catch (IOException e) {
+			EbookReader.newInstance(path).getFrame();
+		} catch (final IOException ex) {
 			view.setStatusText("Errore nella lettura del libro");
 		}
 	}
-
-	@Override
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
+	
+	public StatusBarPresenter getStatusBarPresenter() {
+		return statusBarPresenter;
 	}
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		if (!view.needSave()) {
-			view.getFrame().dispose();
-			System.exit(0);
-		} else {
-			if (Boolean.parseBoolean(Utils.getPreferences("Save"))) {
-				try {
-					model.getPathbase().createPathbaseFile(Paths.get(Utils.getPreferences("Pathbase")));
-					model.getLibrary().createFile();
-					view.getFrame().dispose();
-					System.exit(0);
-				} catch (IOException e1) {
-					// TODO Need checks
-					view.setStatusText("Errore salvataggio prima di chiudere");
-				}
-			} else {
-				int confirmed = JOptionPane.showConfirmDialog(null, "Sei sicuro di voler uscire senza salvare?", "Chiudi senza salvare", JOptionPane.YES_NO_OPTION);
-				if (confirmed == JOptionPane.YES_OPTION) {
-					view.getFrame().dispose();
-					System.exit(0);
-				}
-			}
-		}
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-	}
-
+	
 	private void updateAllColors() {
 		view.updateColor(new Color(Integer.parseInt(Utils.getPreferences("Color1"))));
-		Color color2 = new Color(Integer.parseInt(Utils.getPreferences("Color2")));
+		final Color color2 = new Color(Integer.parseInt(Utils.getPreferences("Color2")));
 		view.getAdvanceSearch().updateColor(color2);
 		view.getSettings().updateColor(color2);
 		view.getMenuBar().getParent().updateColor(color2);
 		view.getStatusBar().getBar().updateColor(color2);
-		Color backcolor = new Color(Integer.parseInt(Utils.getPreferences("BackColor")));
+		final Color backcolor = new Color(Integer.parseInt(Utils.getPreferences("BackColor")));
 		view.getBookDetailsPage().updateColor(backcolor);
 		view.getSliderPage().updateColor(backcolor);
+	}
+	
+	@Override
+	public void windowActivated(final WindowEvent e) {
+		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public void windowClosed(final WindowEvent e) {
+		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public void windowClosing(final WindowEvent e) {
+		if (!view.needSave()) {
+			view.getFrame().dispose();
+			System.exit(0);
+		} else if (Boolean.parseBoolean(Utils.getPreferences("Save")))
+			try {
+				model.getPathTree().createPathTreeFile(Paths.get(Utils.getPreferences("PathTree")));
+				model.getLibrary().createLibraryFile();
+				view.getFrame().dispose();
+				System.exit(0);
+			} catch (final IOException ex) {
+				// TODO Need checks
+				view.setStatusText("Errore salvataggio prima di chiudere");
+			}
+		else {
+			if (JOptionPane.showConfirmDialog(null, "Sei sicuro di voler uscire senza salvare?", "Chiudi senza salvare", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				view.getFrame().dispose();
+				System.exit(0);
+			}
+		}
+	}
+	
+	@Override
+	public void windowDeactivated(final WindowEvent e) {
+		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public void windowDeiconified(final WindowEvent e) {
+		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public void windowIconified(final WindowEvent e) {
+		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public void windowOpened(final WindowEvent e) {
+		// TODO Auto-generated method stub
 	}
 }

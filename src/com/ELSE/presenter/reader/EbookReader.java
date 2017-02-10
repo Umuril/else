@@ -5,29 +5,29 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public abstract class EbookReader {
-	protected String path;
-
-	public abstract BufferedImage getCover() throws IOException;
-
-	public abstract void getFrame() throws IOException;
-
-	protected EbookReader(String path) {
-		this.path = path;
-	}
-
-	public String getPath() {
-		return path;
-	}
-
-	public static EbookReader newInstance(Path path) {
+	public static EbookReader newInstance(final Path path) {
 		if (path.toString().endsWith(".epub"))
-			return new EPUBReader(path.toString());
+			return new EPUBReader(path);
 		if (path.toString().endsWith(".html"))
-			return new HTMLReader(path.toString());
+			return new HTMLReader(path);
 		if (path.toString().endsWith(".pdf"))
-			return new PDFReader(path.toString());
+			return new PDFReader(path);
 		return null;
 	}
-
+	
+	private final Path path;
+	
+	protected EbookReader(final Path path) {
+		this.path = path;
+	}
+	
+	public abstract BufferedImage getCover() throws IOException;
+	
+	public abstract void getFrame() throws IOException;
+	
 	public abstract int getPageNumber();
+	
+	public Path getPath() {
+		return path;
+	}
 }

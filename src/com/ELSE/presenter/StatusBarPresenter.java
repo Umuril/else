@@ -10,83 +10,80 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.ELSE.model.Model;
-import com.ELSE.model.Pathbase;
+import com.ELSE.model.PathTree;
 import com.ELSE.model.Utils;
 import com.ELSE.view.StatusBar;
 import com.ELSE.view.View;
 
 class StatusBarPresenter implements ActionListener {
-	private final View view;
-	private final Model model;
 	private final CenterPresenter centerPresenter;
-
-	StatusBarPresenter(View view, Model model, CenterPresenter centerPresenter) {
+	private final Model model;
+	private final View view;
+	
+	StatusBarPresenter(final View view, final Model model, final CenterPresenter centerPresenter) {
 		this.view = view;
 		this.model = model;
 		this.centerPresenter = centerPresenter;
 	}
-
+	
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent action) {
 		Utils.log(Utils.Debug.DEBUG, "actionPerformed on StatusBarPresenter");
-		StatusBar statusBar = view.getStatusBar();
-		if (e.getSource() == statusBar.getAddButton()) {
-			JFileChooser jfc = new JFileChooser();
+		final StatusBar statusBar = view.getStatusBar();
+		if (action.getSource() == statusBar.getAddButton()) {
+			final JFileChooser jfc = new JFileChooser();
 			jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-			int result = jfc.showOpenDialog(view.getFrame());
-			if (result == JFileChooser.APPROVE_OPTION) {
-				model.getPathbase().add(jfc.getSelectedFile().getAbsolutePath());
+			if (jfc.showOpenDialog(view.getFrame()) == JFileChooser.APPROVE_OPTION) {
+				model.getPathTree().add(jfc.getSelectedFile().getAbsolutePath());
 				model.searchForNewBooks();
 				centerPresenter.aggiorna(0);
 				view.needToSave(true);
 			}
-		} else if (e.getSource() == statusBar.getRemoveButton()) {
-			Pathbase pathbase = model.getPathbase();
-			if (pathbase.size() > 0) {
-				String input = (String) JOptionPane.showInputDialog(null, "Scegli il percorso da cancellare: ", "Rimuovi percorso", JOptionPane.QUESTION_MESSAGE, null, pathbase.getPathsList().toArray(), pathbase.getPathsList().get(0));
+		} else if (action.getSource() == statusBar.getRemoveButton()) {
+			final PathTree pathtree = model.getPathTree();
+			if (pathtree.size() > 0) {
+				final String input = (String) JOptionPane.showInputDialog(null, "Scegli il percorso da cancellare: ", "Rimuovi percorso", JOptionPane.QUESTION_MESSAGE, null, pathtree.getPathList().toArray(), pathtree.getPathList().get(0));
 				if (input != null) {
-					Utils.log(Utils.Debug.DEBUG, "BEFORE REMOVE SIZE: " + pathbase.size());
-					Utils.log(Utils.Debug.DEBUG, "BEFORE REMOVE: " + pathbase.getPathsList());
-					pathbase.remove(input);
+					Utils.log(Utils.Debug.DEBUG, "BEFORE REMOVE SIZE: " + pathtree.size());
+					Utils.log(Utils.Debug.DEBUG, "BEFORE REMOVE: " + pathtree.getPathList());
+					pathtree.remove(input);
 					centerPresenter.aggiorna(0);
 					view.needToSave(true);
-					Utils.log(Utils.Debug.DEBUG, "AFTER REMOVE SIZE: " + pathbase.size());
+					Utils.log(Utils.Debug.DEBUG, "AFTER REMOVE SIZE: " + pathtree.size());
 				}
 			}
-		} else if (e.getSource() == statusBar.getUpdateButton()) {
+		} else if (action.getSource() == statusBar.getUpdateButton())
 			centerPresenter.aggiorna(-1);
-		} else if (e.getSource() == statusBar.getSaveButton()) {
+		else if (action.getSource() == statusBar.getSaveButton())
 			try {
-				model.getPathbase().createPathbaseFile(Paths.get(Utils.getPreferences("Pathbase")));
-				model.getLibrary().createFile();
+				model.getPathTree().createPathTreeFile(Paths.get(Utils.getPreferences("PathTree")));
+				model.getLibrary().createLibraryFile();
 				view.needToSave(false);
-			} catch (IOException ex) {
+			} catch (final IOException ex) {
 				// TODO
 				ex.printStackTrace();
 			}
-		} else if (e.getSource() == statusBar.getLoadButton()) {
+		else if (action.getSource() == statusBar.getLoadButton()) {
 			Utils.log(Utils.Debug.DEBUG, "getLoadButton()");
-			JFileChooser jfc = new JFileChooser();
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files (*.txt)", "txt");
-			jfc.setFileFilter(filter);
+			final JFileChooser jfc = new JFileChooser();
+			jfc.setFileFilter(new FileNameExtensionFilter("Text Files (*.txt)", "txt"));
 			jfc.setAcceptAllFileFilterUsed(false);
 			if (jfc.showOpenDialog(view.getFrame()) == JFileChooser.APPROVE_OPTION) {
-				int size = model.getPathbase().size();
+				final int size = model.getPathTree().size();
 				try {
-					model.getPathbase().loadFromFile(Paths.get(jfc.getSelectedFile().getAbsolutePath()));
-				} catch (IOException e1) {
+					model.getPathTree().loadFromFile(Paths.get(jfc.getSelectedFile().getAbsolutePath()));
+				} catch (final IOException ex) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					ex.printStackTrace();
 				}
-				Utils.log(Utils.Debug.DEBUG, "SIZE 1: " + model.getPathbase().size() + " SIZE 2: " + size);
-				if (model.getPathbase().size() > size) {
+				Utils.log(Utils.Debug.DEBUG, "SIZE 1: " + model.getPathTree().size() + " SIZE 2: " + size);
+				if (model.getPathTree().size() > size) {
 					Utils.log(Utils.Debug.DEBUG, "SIZE INCREASED");
 					view.needToSave(true);
 					centerPresenter.aggiorna(-1);
 				}
 			}
-		} else if (e.getSource() == statusBar.getPrintButton()) {
+		} else if (action.getSource() == statusBar.getPrintButton())
 			model.getLibrary().print();
-		}
 	}
 }

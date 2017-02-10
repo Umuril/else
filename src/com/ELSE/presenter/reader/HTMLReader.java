@@ -3,14 +3,10 @@ package com.ELSE.presenter.reader;
 import java.awt.BorderLayout;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
-
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Scene;
-import javafx.scene.web.WebView;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -19,46 +15,43 @@ import javax.swing.WindowConstants;
 
 import com.ELSE.view.MenuBar;
 
-class HTMLReader extends EbookReader {
-	private JFXPanel jfxPanel;
-	private String content;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.web.WebView;
 
-	HTMLReader(String path) {
+class HTMLReader extends EbookReader {
+	private String content;
+	private JFXPanel jfxPanel;
+	
+	HTMLReader(final Path path) {
 		super(path);
 	}
-
+	
 	@Override
 	public BufferedImage getCover() {
-		URL url = MenuBar.class.getResource("/small_html.jpg");
-		BufferedImage image = null;
 		try {
-			image = ImageIO.read(url);
-		} catch (IOException e) {
+			return ImageIO.read(MenuBar.class.getResource("/small_html.jpg"));
+		} catch (final IOException ex) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			ex.printStackTrace();
 		}
-		return image;
-		// return new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB);
+		return null;
 	}
-
+	
 	@Override
 	public void getFrame() {
-		JFrame frame = new JFrame("Viewer");
+		final JFrame frame = new JFrame("Viewer");
 		frame.setBounds(100, 100, 800, 500);
 		frame.getContentPane().setLayout(new BorderLayout());
-		/*
-		 * JEditorPane jEditorPane = new JEditorPane(); jEditorPane.setEditable(false); HTMLEditorKit kit = new HTMLEditorKit(); jEditorPane.setEditorKit(kit); Document doc = kit.createDefaultDocument(); jEditorPane.setDocument(doc); StringBuilder contentBuilder = new StringBuilder(); try { BufferedReader in = new BufferedReader(new FileReader(super.getPath())); String str; while ((str = in.readLine()) != null) { contentBuilder.append(str); } in.close(); } catch (IOException e) { e.printStackTrace(); } String content = contentBuilder.toString(); System.out.println(content); jEditorPane.setText(content); JPanel panel = new JPanel(); panel.add(Box.createHorizontalGlue()); panel.add(jEditorPane); panel.add(Box.createHorizontalGlue()); JScrollPane scrollPane = new JScrollPane(panel);
-		 */
-		StringBuilder contentBuilder = new StringBuilder();
-		try {
-			BufferedReader in = new BufferedReader(new FileReader(super.getPath()));
+		final StringBuilder contentBuilder = new StringBuilder();
+		try (BufferedReader br = Files.newBufferedReader(getPath(), Charset.defaultCharset())) {
 			String str;
-			while ((str = in.readLine()) != null) {
+			while ((str = br.readLine()) != null)
 				contentBuilder.append(str);
-			}
-			in.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+			br.close();
+		} catch (final IOException ex) {
+			ex.printStackTrace();
 		}
 		content = contentBuilder.toString();
 		// You should execute this part on the Event Dispatch Thread
@@ -69,18 +62,18 @@ class HTMLReader extends EbookReader {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				WebView webView = new WebView();
+				final WebView webView = new WebView();
 				jfxPanel.setScene(new Scene(webView));
 				webView.setDisable(true);
 				webView.getEngine().loadContent(content);
 			}
 		});
-		JScrollPane scrollPane = new JScrollPane(jfxPanel);
+		final JScrollPane scrollPane = new JScrollPane(jfxPanel);
 		frame.getContentPane().add(scrollPane);
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.setVisible(true);
 	}
-
+	
 	@Override
 	public int getPageNumber() {
 		return 0;

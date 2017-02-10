@@ -10,10 +10,12 @@ import com.ELSE.view.View;
  * @author Eduard Rubio Cholbi
  */
 public class Main {
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
+		System.out.println(com.sun.javafx.runtime.VersionInfo.getRuntimeVersion());
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
-				View view = new View();
+				final View view = new View();
 				view.setPresenter(new Presenter(view, new Model()));
 			}
 		});

@@ -9,11 +9,11 @@ public class MenuBar {
 	static MenuBar newInstance() {
 		return new MenuBar();
 	}
-
-	private Bar parent;
-	private SearchBar searchBar;
-	private JButton settings, advSearch;
-
+	
+	private final Bar parent;
+	private final SearchBar searchBar;
+	private final JButton settings, advSearch;
+	
 	private MenuBar() {
 		parent = Bar.newInstance();
 		settings = Button.newInstance(MenuBar.class.getResource("/settings.png"));
@@ -23,32 +23,32 @@ public class MenuBar {
 		advSearch = Button.newInstance(MenuBar.class.getResource("/advsearch.png"));
 		parent.getRight().add(advSearch);
 	}
-
+	
+	public JButton getAdvanceSearchButton() {
+		return advSearch;
+	}
+	
 	public Bar getParent() {
 		return parent;
 	}
-
-	void setPresenter(Presenter presenter) {
+	
+	public JButton getSearchButton() {
+		return searchBar.getIcona();
+	}
+	
+	public JTextField getSearchField() {
+		return searchBar.getTesto();
+	}
+	
+	public JButton getSettingsButton() {
+		return settings;
+	}
+	
+	void setPresenter(final Presenter presenter) {
 		settings.addActionListener(presenter.getMenuBarPresenter());
 		searchBar.getTesto().addActionListener(presenter.getMenuBarPresenter());
 		searchBar.getTesto().getDocument().addDocumentListener(presenter.getMenuBarPresenter());
 		searchBar.getIcona().addActionListener(presenter.getMenuBarPresenter());
 		advSearch.addActionListener(presenter.getMenuBarPresenter());
-	}
-
-	public JButton getSettingsButton() {
-		return settings;
-	}
-
-	public JTextField getSearchField() {
-		return searchBar.getTesto();
-	}
-
-	public JButton getSearchButton() {
-		return searchBar.getIcona();
-	}
-
-	public JButton getAdvanceSearchButton() {
-		return advSearch;
 	}
 }

@@ -7,13 +7,13 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 class SubSizePanel {
-	public static JPanel newInstance(Component container) {
-		JPanel panel = JInvisiblePanel.newInstance(container);
+	public static JPanel newInstance(final Component parent) {
+		final JPanel panel = JInvisiblePanel.newInstance(parent);
 		panel.setMaximumSize(new Dimension(2000, 1));
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		return panel;
 	}
-
+	
 	private SubSizePanel() {
 		throw new AssertionError();
 	}

@@ -19,17 +19,17 @@ import com.ELSE.model.Utils;
 import com.ELSE.presenter.Presenter;
 
 public class MetadataPanel {
-	static MetadataPanel newInstance(JPanel parent) {
+	static MetadataPanel newInstance(final JPanel parent) {
 		return new MetadataPanel(parent);
 	}
-
+	
 	private BookMetadata book;
 	private JLabel bookPreview;
 	private final JButton openDefault, openCustom;
 	private final JPanel parent;
 	private final JTextField titolo, autore, anno, pagine;
-
-	private MetadataPanel(JPanel parent) {
+	
+	private MetadataPanel(final JPanel parent) {
 		this.parent = parent;
 		titolo = new JTextField(15);
 		autore = new JTextField(15);
@@ -38,11 +38,11 @@ public class MetadataPanel {
 		openCustom = new JButton("Internal Open");
 		openDefault = new JButton("External Open");
 	}
-
-	void change(Image image, BookMetadata book, boolean editable) {
+	
+	void change(final Image image, final BookMetadata book, final boolean editable) {
 		// TODO Needs full refactory
 		Utils.log(Utils.Debug.DEBUG, "CHANGING TO " + book + " - " + editable);
-		JPanel parentpanel = JInvisiblePanel.newInstance(parent);
+		final JPanel parentpanel = JInvisiblePanel.newInstance(parent);
 		parentpanel.setLayout(new BoxLayout(parentpanel, BoxLayout.X_AXIS));
 		this.book = book;
 		parent.removeAll();
@@ -51,14 +51,14 @@ public class MetadataPanel {
 		parentpanel.add(Box.createHorizontalGlue());
 		parentpanel.add(bookPreview);
 		parentpanel.add(Box.createHorizontalGlue());
-		JPanel things = JInvisiblePanel.newInstance(parent);
-		things.setLayout(new BoxLayout(things, BoxLayout.Y_AXIS));
-		JPanel panel = JInvisiblePanel.newInstance(things);
+		final JPanel vbox = JInvisiblePanel.newInstance(parent);
+		vbox.setLayout(new BoxLayout(vbox, BoxLayout.Y_AXIS));
+		final JPanel panel = JInvisiblePanel.newInstance(vbox);
 		panel.setLayout(new GridLayout(0, 2));
-		JLabel ltitolo = new JLabel("Titolo: ");
-		JLabel lautore = new JLabel("Autore: ");
-		JLabel lanno = new JLabel("Anno: ");
-		JLabel lpagine = new JLabel("Pagine: ");
+		final JLabel ltitolo = new JLabel("Titolo: ");
+		final JLabel lautore = new JLabel("Autore: ");
+		final JLabel lanno = new JLabel("Anno: ");
+		final JLabel lpagine = new JLabel("Pagine: ");
 		if (editable) {
 			panel.add(ltitolo);
 			titolo.setText(book.getTitolo());
@@ -74,60 +74,60 @@ public class MetadataPanel {
 			panel.add(pagine);
 		} else {
 			panel.add(ltitolo);
-			JLabel titolo = new JLabel(book.getTitolo());
+			final JLabel titolo = new JLabel(book.getTitolo());
 			panel.add(titolo);
 			panel.add(lautore);
-			JLabel autore = new JLabel(book.getAutore());
+			final JLabel autore = new JLabel(book.getAutore());
 			panel.add(autore);
 			panel.add(lanno);
-			JLabel anno = new JLabel(book.getAnno() != null && !book.getAnno().equals(Year.of(0)) ? book.getAnno().toString() : "");
+			final JLabel anno = new JLabel(book.getAnno() != null && !book.getAnno().equals(Year.of(0)) ? book.getAnno().toString() : "");
 			panel.add(anno);
 			panel.add(lpagine);
-			JLabel pagine = new JLabel(book.getPagine() > 0 ? Integer.toString(book.getPagine()) : "");
+			final JLabel pagine = new JLabel(book.getPagine() > 0 ? Integer.toString(book.getPagine()) : "");
 			panel.add(pagine);
 		}
-		things.add(panel);
-		things.add(Box.createVerticalGlue());
-		JPanel useless = JInvisiblePanel.newInstance(things);
-		useless.add(openCustom);
-		useless.add(openDefault);
-		things.add(useless);
-		parentpanel.add(things);
+		vbox.add(panel);
+		vbox.add(Box.createVerticalGlue());
+		final JPanel buttons = JInvisiblePanel.newInstance(vbox);
+		buttons.add(openCustom);
+		buttons.add(openDefault);
+		vbox.add(buttons);
+		parentpanel.add(vbox);
 		parentpanel.add(Box.createHorizontalGlue());
 		parent.add(parentpanel, BorderLayout.NORTH);
 		parent.revalidate();
 		parent.repaint();
 	}
-
+	
 	public JTextField getAnno() {
 		return anno;
 	}
-
+	
 	public JTextField getAutore() {
 		return autore;
 	}
-
-	public JTextField getPagine() {
-		return pagine;
-	}
-
-	public JTextField getTitolo() {
-		return titolo;
-	}
-
+	
 	public BookMetadata getBook() {
 		return book;
 	}
-
-	public JButton getOpenDefaultButton() {
-		return openDefault;
-	}
-
+	
 	public JButton getOpenCustomButton() {
 		return openCustom;
 	}
-
-	void setPresenter(Presenter presenter) {
+	
+	public JButton getOpenDefaultButton() {
+		return openDefault;
+	}
+	
+	public JTextField getPagine() {
+		return pagine;
+	}
+	
+	public JTextField getTitolo() {
+		return titolo;
+	}
+	
+	void setPresenter(final Presenter presenter) {
 		titolo.addActionListener(presenter.getCenterPresenter().getBookDetailsPresenter());
 		autore.addActionListener(presenter.getCenterPresenter().getBookDetailsPresenter());
 		anno.addActionListener(presenter.getCenterPresenter().getBookDetailsPresenter());
@@ -136,9 +136,9 @@ public class MetadataPanel {
 		autore.getDocument().addDocumentListener(presenter.getCenterPresenter().getBookDetailsPresenter());
 		anno.getDocument().addDocumentListener(presenter.getCenterPresenter().getBookDetailsPresenter());
 		pagine.getDocument().addDocumentListener(presenter.getCenterPresenter().getBookDetailsPresenter());
-		for (ActionListener al : openCustom.getActionListeners())
+		for (final ActionListener al : openCustom.getActionListeners())
 			openCustom.removeActionListener(al);
-		for (ActionListener al : openDefault.getActionListeners())
+		for (final ActionListener al : openDefault.getActionListeners())
 			openDefault.removeActionListener(al);
 		openCustom.addActionListener(presenter.getCenterPresenter().getBookDetailsPresenter());
 		openDefault.addActionListener(presenter.getCenterPresenter().getBookDetailsPresenter());

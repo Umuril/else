@@ -7,23 +7,24 @@ import com.ELSE.view.SliderPage;
 import com.ELSE.view.View;
 
 class SliderPresenter implements ActionListener {
-	private final View view;
 	private final CenterPresenter centerPresenter;
-
-	SliderPresenter(View view, CenterPresenter centerPresenter) {
+	private final View view;
+	
+	SliderPresenter(final View view, final CenterPresenter centerPresenter) {
 		this.view = view;
 		this.centerPresenter = centerPresenter;
 	}
-
+	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		SliderPage sliderPage = view.getSliderPage();
-		if (e.getSource() == sliderPage.getBackButton()) {
+	public void actionPerformed(final ActionEvent action) {
+		final SliderPage sliderPage = view.getSliderPage();
+		if (action.getSource() == sliderPage.getBackButton())
 			centerPresenter.loadPreviousBooks();
-		} else if (e.getSource() == sliderPage.getGridButton()) {
-		} else if (e.getSource() == sliderPage.getListButton()) {
-		} else if (e.getSource() == sliderPage.getForwardButton()) {
+		else if (action.getSource() == sliderPage.getGridButton()) {
+			// TODO Unimplemented feature
+		} else if (action.getSource() == sliderPage.getListButton()) {
+			// TODO Unimplemented feature
+		} else if (action.getSource() == sliderPage.getForwardButton())
 			centerPresenter.loadNextBooks();
-		}
 	}
 }

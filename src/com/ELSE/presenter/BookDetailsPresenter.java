@@ -20,64 +20,61 @@ import com.ELSE.view.MetadataPanel;
 import com.ELSE.view.View;
 
 class BookDetailsPresenter implements ActionListener, DocumentListener {
-	private final View view;
 	private final Model model;
 	private final Presenter presenter;
-
-	BookDetailsPresenter(View view, Model model, Presenter presenter) {
+	private final View view;
+	
+	BookDetailsPresenter(final View view, final Model model, final Presenter presenter) {
 		this.view = view;
 		this.model = model;
 		this.presenter = presenter;
 	}
-
+	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		BookDetailsPage bookDetailsPage = view.getBookDetailsPage();
-		MetadataPanel metadataPanel = view.getMetadataPanel();
-		BookMetadata book = view.getMetadataPanel().getBook();
-		if (e.getSource() == bookDetailsPage.getBackButton()) {
+	public void actionPerformed(final ActionEvent action) {
+		final BookDetailsPage bookDetailsPage = view.getBookDetailsPage();
+		final MetadataPanel metadataPanel = view.getMetadataPanel();
+		final BookMetadata book = view.getMetadataPanel().getBook();
+		if (action.getSource() == bookDetailsPage.getBackButton()) {
 			presenter.getCenterPresenter().change(null, null);
 			view.changeBookPageEditable(Boolean.FALSE);
-		} else if (e.getSource() == bookDetailsPage.getEditButton()) {
+		} else if (action.getSource() == bookDetailsPage.getEditButton())
 			view.changeBookPageEditable(null);
-			// view.getBookDetailsPage().enableSaveButton(true);
-		} else if (e.getSource() == bookDetailsPage.getSaveButton() || e.getSource() == metadataPanel.getTitolo() || e.getSource() == metadataPanel.getAutore() || e.getSource() == metadataPanel.getAnno() || e.getSource() == metadataPanel.getPagine()) {
-			for (Entry<Path, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
+		else if (action.getSource() == bookDetailsPage.getSaveButton() || action.getSource() == metadataPanel.getTitolo() || action.getSource() == metadataPanel.getAutore() || action.getSource() == metadataPanel.getAnno() || action.getSource() == metadataPanel.getPagine()) {
+			for (final Entry<Path, BookMetadata> entry : model.getLibrary().getDatabase().entrySet())
 				if (entry.getValue().equals(book)) {
 					String s = metadataPanel.getTitolo().getText();
-					if (Utils.checkString(s) && s.length() <= 20)
+					if (Utils.validString(s) && s.length() <= 20)
 						entry.getValue().setTitolo(s);
 					else
 						view.setStatusText("Titolo non valido o troppo lungo!");
 					s = metadataPanel.getAutore().getText();
-					if (Utils.checkString(s) && s.length() <= 20)
+					if (Utils.validString(s) && s.length() <= 20)
 						entry.getValue().setAutore(s);
 					else
 						view.setStatusText("Autore non valido o troppo lungo!");
 					s = metadataPanel.getAnno().getText();
-					if (Utils.checkString(s) && s.length() <= 4 && s.matches("^\\d+$"))
+					if (Utils.validString(s) && s.length() <= 4 && s.matches("^\\d+$"))
 						entry.getValue().setAnno(String.format("%04d", Integer.parseInt(s)));
 					else
 						view.setStatusText("Anno non valido!");
 					s = metadataPanel.getPagine().getText();
-					if (Utils.checkString(s) && s.length() <= 5 && s.matches("^\\d+$"))
+					if (Utils.validString(s) && s.length() <= 5 && s.matches("^\\d+$"))
 						entry.getValue().setPagine(Integer.parseInt(s));
 					else
 						view.setStatusText("Numero di pagine non valido!");
 				}
-			}
 			view.changeBookPageEditable(Boolean.FALSE);
 			view.getBookDetailsPage().enableSaveButton(false);
 			view.needToSave(true);
-		} else if (e.getSource() == metadataPanel.getOpenCustomButton()) {
-			for (Entry<Path, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
+		} else if (action.getSource() == metadataPanel.getOpenCustomButton()) {
+			for (final Entry<Path, BookMetadata> entry : model.getLibrary().getDatabase().entrySet())
 				if (entry.getValue().equals(book)) {
 					presenter.getReader(entry.getKey());
 					break;
 				}
-			}
-		} else if (e.getSource() == metadataPanel.getOpenDefaultButton()) {
-			for (Entry<Path, BookMetadata> entry : model.getLibrary().getDatabase().entrySet()) {
+		} else if (action.getSource() == metadataPanel.getOpenDefaultButton())
+			for (final Entry<Path, BookMetadata> entry : model.getLibrary().getDatabase().entrySet())
 				if (entry.getValue().equals(book)) {
 					try {
 						Desktop.getDesktop().open(entry.getKey().toFile());
@@ -86,48 +83,45 @@ class BookDetailsPresenter implements ActionListener, DocumentListener {
 					}
 					break;
 				}
-			}
-		}
 	}
-
+	
 	@Override
-	public void insertUpdate(DocumentEvent e) {
-		documentListener(e);
+	public void changedUpdate(final DocumentEvent event) {
+		documentListener(event);
 	}
-
-	@Override
-	public void removeUpdate(DocumentEvent e) {
-		documentListener(e);
-	}
-
-	@Override
-	public void changedUpdate(DocumentEvent e) {
-		documentListener(e);
-	}
-
-	private void documentListener(DocumentEvent e) {
+	
+	private void documentListener(final DocumentEvent event) {
 		view.getBookDetailsPage().enableSaveButton(false);
-		BookMetadata book = view.getMetadataPanel().getBook();
-		JTextField text;
-		text = view.getMetadataPanel().getTitolo();
-		if (text.getDocument() == e.getDocument() && text.getText().length() < 20 && !book.getTitolo().equals(text.getText())) {
+		final BookMetadata book = view.getMetadataPanel().getBook();
+		JTextField text = view.getMetadataPanel().getTitolo();
+		if (text.getDocument() == event.getDocument() && text.getText().length() < 20 && !book.getTitolo().equals(text.getText())) {
 			Utils.log(Utils.Debug.DEBUG, "DOCUMENT LISTENER ON TITOLO");
 			view.getBookDetailsPage().enableSaveButton(true);
 		}
 		text = view.getMetadataPanel().getAutore();
-		if (text.getDocument() == e.getDocument() && text.getText().length() < 20 && !book.getAutore().equals(text.getText())) {
+		if (text.getDocument() == event.getDocument() && text.getText().length() < 20 && !book.getAutore().equals(text.getText())) {
 			Utils.log(Utils.Debug.DEBUG, "DOCUMENT LISTENER ON AUTORE");
 			view.getBookDetailsPage().enableSaveButton(true);
 		}
 		text = view.getMetadataPanel().getAnno();
-		if (text.getDocument() == e.getDocument() && text.getText().matches("^\\d+$") && text.getText().length() < 5 && !book.getAnno().equals(Year.parse(String.format("%04d", Integer.parseInt(text.getText()))))) {
+		if (text.getDocument() == event.getDocument() && text.getText().matches("^\\d+$") && text.getText().length() < 5 && !book.getAnno().equals(Year.parse(String.format("%04d", Integer.parseInt(text.getText()))))) {
 			Utils.log(Utils.Debug.DEBUG, "DOCUMENT LISTENER ON ANNO");
 			view.getBookDetailsPage().enableSaveButton(true);
 		}
 		text = view.getMetadataPanel().getPagine();
-		if (text.getDocument() == e.getDocument() && text.getText().length() < 6 && text.getText().matches("^\\d+$") && book.getPagine() != Integer.parseInt(text.getText())) {
+		if (text.getDocument() == event.getDocument() && text.getText().length() < 6 && text.getText().matches("^\\d+$") && book.getPagine() != Integer.parseInt(text.getText())) {
 			Utils.log(Utils.Debug.DEBUG, "DOCUMENT LISTENER ON PAGINE");
 			view.getBookDetailsPage().enableSaveButton(true);
 		}
+	}
+	
+	@Override
+	public void insertUpdate(final DocumentEvent event) {
+		documentListener(event);
+	}
+	
+	@Override
+	public void removeUpdate(final DocumentEvent event) {
+		documentListener(event);
 	}
 }

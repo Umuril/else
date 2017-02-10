@@ -8,27 +8,25 @@ import javax.swing.JPanel;
 import com.ELSE.model.BookMetadata;
 
 class Center {
-	static Center newInstance(Component parent) {
+	static Center newInstance(final Component parent) {
 		return new Center(parent);
 	}
-
-	private BookDetailsPage bookDetails;
-	private JPanel panel;
-	private SliderPage slider;
-	private EmptyPage emptyPage;
+	
+	private final BookDetailsPage bookDetails;
 	private boolean empty;
-
-	private Center(Component parent) {
+	private final EmptyPage emptyPage;
+	private final JPanel panel;
+	private final SliderPage slider;
+	
+	private Center(final Component parent) {
 		emptyPage = EmptyPage.newInstance();
 		slider = SliderPage.newInstance();
 		bookDetails = BookDetailsPage.newInstance();
 		panel = JInvisiblePanel.newInstance(parent);
-		// panel.add(slider.getContainerPanel());
 		empty = true;
-		// panel.add(emptyPage.getContainerPanel());
 	}
-
-	void change(Image image, BookMetadata book) {
+	
+	void change(final Image image, final BookMetadata book) {
 		panel.removeAll();
 		if (image == null || book == null) {
 			if (empty)
@@ -42,24 +40,24 @@ class Center {
 		panel.revalidate();
 		panel.repaint();
 	}
-
-	public void setEmpty(boolean empty) {
-		this.empty = empty;
-	}
-
+	
 	BookDetailsPage getBookDetailsPage() {
 		return bookDetails;
 	}
-
+	
 	JPanel getPanel() {
 		return panel;
 	}
-
+	
 	SliderPage getSlider() {
 		return slider;
 	}
-
+	
 	public boolean isEmpty() {
 		return empty;
+	}
+	
+	public void setEmpty(final boolean empty) {
+		this.empty = empty;
 	}
 }

@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.prefs.BackingStoreException;
 
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
@@ -24,85 +25,84 @@ import com.ELSE.view.Settings;
 import com.ELSE.view.View;
 
 class SettingsPresenter implements ActionListener, ItemListener {
-	private final View view;
-	private final Settings settings;
+	/**
+	 * Deletes Folder with all of its content
+	 * 
+	 * @param folder
+	 *            path to folder which should be deleted
+	 */
+	private static void deleteFolderAndItsContent(final Path folder) throws IOException {
+		Files.walkFileTree(folder, new SimpleFileVisitor<Path>() {
+			@Override
+			public FileVisitResult postVisitDirectory(final Path dir, final IOException exc) throws IOException {
+				if (exc != null)
+					throw exc;
+				Files.delete(dir);
+				return FileVisitResult.CONTINUE;
+			}
+			
+			@Override
+			public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
+				Files.delete(file);
+				return FileVisitResult.CONTINUE;
+			}
+		});
+	}
+	
 	private final JDialog dialog;
-
-	SettingsPresenter(View view, Model model, CenterPresenter centerPresenter) {
+	private final Settings settings;
+	private final View view;
+	
+	SettingsPresenter(final View view, final Model model, final CenterPresenter centerPresenter) {
 		this.view = view;
 		settings = view.getSettings();
 		dialog = settings.getDialog();
 	}
-
+	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == settings.getColor1()) {
+	public void actionPerformed(final ActionEvent action) {
+		if (action.getSource() == settings.getColor1())
 			Utils.setPreferences("Color1", Integer.toString(JColorChooser.showDialog(null, "Choose a color", new Color(Integer.parseInt(Utils.getPreferences("Color1")))).getRGB()));
-		} else if (e.getSource() == settings.getColor2()) {
+		else if (action.getSource() == settings.getColor2())
 			Utils.setPreferences("Color2", Integer.toString(JColorChooser.showDialog(null, "Choose a color", new Color(Integer.parseInt(Utils.getPreferences("Color2")))).getRGB()));
-		} else if (e.getSource() == settings.getBackcolor()) {
+		else if (action.getSource() == settings.getBackcolor())
 			Utils.setPreferences("BackColor", Integer.toString(JColorChooser.showDialog(null, "Choose a color", new Color(Integer.parseInt(Utils.getPreferences("BackColor")))).getRGB()));
-		} else if (e.getSource() == settings.getPaths()) {
-			JFileChooser fc = new JFileChooser();
+		else if (action.getSource() == settings.getPaths()) {
+			final JFileChooser fc = new JFileChooser();
 			fc.setMultiSelectionEnabled(false);
 			if (fc.showOpenDialog(dialog) == JFileChooser.APPROVE_OPTION)
-				Utils.setPreferences("Pathbase", fc.getSelectedFile().toString());
-		} else if (e.getSource() == settings.getFolder()) {
-			JFileChooser fc = new JFileChooser();
+				Utils.setPreferences("PathTree", fc.getSelectedFile().toString());
+		} else if (action.getSource() == settings.getFolder()) {
+			final JFileChooser fc = new JFileChooser();
 			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			fc.setMultiSelectionEnabled(false);
-			if (fc.showOpenDialog(dialog) == JFileChooser.APPROVE_OPTION) {
+			if (fc.showOpenDialog(dialog) == JFileChooser.APPROVE_OPTION)
 				Utils.setPreferences("Folder", fc.getSelectedFile().toString());
-				// System.out.println(fc.getSelectedFile().toString() + " <= " + Utils.getPreferences("Folder"));
-			}
-		} else if (e.getSource() == settings.getDelete()) {
+		} else if (action.getSource() == settings.getDelete()) {
 			if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(dialog, "Sei sicuro di voler cancellare tutto?", "Cancellazione dati", JOptionPane.YES_NO_OPTION)) {
-				String path = Utils.getPreferences("Folder");
 				try {
-					deleteFolderAndItsContent(Paths.get(path));
-				} catch (IOException e1) {
+					SettingsPresenter.deleteFolderAndItsContent(Paths.get(Utils.getPreferences("Folder")));
+				} catch (final IOException ex) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					ex.printStackTrace();
 				}
 				view.needToSave(false);
 			}
-		} else if (e.getSource() == settings.getRestore()) {
-			Utils.resetPreferences();
-		} else if (e.getSource() == settings.getConferma()) {
+		} else if (action.getSource() == settings.getRestore())
+			try {
+				Utils.resetPreferences();
+			} catch (final BackingStoreException ex) {
+				JOptionPane.showMessageDialog(settings.getDialog(), "Couldn't reset preferences", "Fatal error", JOptionPane.ERROR_MESSAGE);
+			}
+		else if (action.getSource() == settings.getConferma())
 			dialog.dispose();
-		}
 	}
-
+	
 	@Override
-	public void itemStateChanged(ItemEvent e) {
-		if (e.getSource() == settings.getPreview()) {
-			Utils.setPreferences("Preview", Boolean.toString(e.getStateChange() == ItemEvent.SELECTED));
-		} else if (e.getSource() == settings.getSave()) {
-			Utils.setPreferences("Save", Boolean.toString(e.getStateChange() == ItemEvent.SELECTED));
-		}
-	}
-
-	/**
-	 * Deletes Folder with all of its content
-	 * 
-	 * @param folder path to folder which should be deleted
-	 */
-	public static void deleteFolderAndItsContent(final Path folder) throws IOException {
-		Files.walkFileTree(folder, new SimpleFileVisitor<Path>() {
-			@Override
-			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-				Files.delete(file);
-				return FileVisitResult.CONTINUE;
-			}
-
-			@Override
-			public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-				if (exc != null) {
-					throw exc;
-				}
-				Files.delete(dir);
-				return FileVisitResult.CONTINUE;
-			}
-		});
+	public void itemStateChanged(final ItemEvent item) {
+		if (item.getSource() == settings.getPreview())
+			Utils.setPreferences("Preview", Boolean.toString(item.getStateChange() == ItemEvent.SELECTED));
+		else if (item.getSource() == settings.getSave())
+			Utils.setPreferences("Save", Boolean.toString(item.getStateChange() == ItemEvent.SELECTED));
 	}
 }

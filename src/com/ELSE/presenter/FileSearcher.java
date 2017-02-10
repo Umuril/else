@@ -17,45 +17,49 @@ class FileSearcher extends Thread {
 	private final CenterPresenter centerPresenter;
 	private int found, page;
 	private final Object lock = new Object();
-	private int needToSkip;
 	private final Model model;
-	private final View view;
+	private int needToSkip;
 	private boolean updating;
-
-	FileSearcher(Model model, View view, CenterPresenter centerPresenter, int page) {
+	private final View view;
+	
+	FileSearcher(final Model model, final View view, final CenterPresenter centerPresenter, final int page) {
 		this.model = model;
 		this.centerPresenter = centerPresenter;
-		found = 0;
 		this.page = page;
 		this.view = view;
+		found = 0;
 		updating = false;
 	}
-
+	
 	void findNext() {
 		synchronized (lock) {
 			page++;
 			found = 0;
-			lock.notifyAll(); // only notify() ?
+			lock.notifyAll();
 		}
 	}
-
+	
 	public int getFound() {
 		return found;
 	}
-
+	
 	public int getPage() {
 		return page;
 	}
-
+	
+	public boolean getUpdating() {
+		return updating;
+	}
+	
 	@Override
 	public void run() {
-		needToSkip = page * perPage;
-		for (String s : model.getPathbase().getPathsList()) {
-			Path path = Paths.get(s);
+		needToSkip = page * FileSearcher.perPage;
+		for (final String s : model.getPathTree().getPathList()) {
+			final Path path = Paths.get(s);
 			try {
 				Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
 					@Override
-					public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+					public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
 						updating = true;
 						if (model.acceptableFileType(file.toString())) {
 							if (needToSkip > 0) {
@@ -63,18 +67,17 @@ class FileSearcher extends Thread {
 								Utils.log(Utils.Debug.DEBUG, needToSkip + " Skipping book: " + file);
 								return FileVisitResult.CONTINUE;
 							}
-							if (found >= perPage) {
-								// Here there are another books but i still
-								// don't add it
+							if (found >= FileSearcher.perPage) {
+								// Here there are another books but i still don't add it
 								view.enableNextButton(true);
 								updating = false;
 								try {
 									synchronized (lock) {
-										while (found >= perPage)
+										while (found >= FileSearcher.perPage)
 											lock.wait();
 									}
-								} catch (InterruptedException e) {
-									e.printStackTrace();
+								} catch (final InterruptedException ex) {
+									ex.printStackTrace();
 								}
 							}
 							Utils.log(Utils.Debug.DEBUG, "Aggiungendo al centro: " + file);
@@ -88,8 +91,8 @@ class FileSearcher extends Thread {
 						return FileVisitResult.CONTINUE;
 					}
 				});
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (final IOException ex) {
+				ex.printStackTrace();
 			}
 		}
 		updating = false;
@@ -98,13 +101,5 @@ class FileSearcher extends Thread {
 			view.change(null, null);
 		}
 		view.enableNextButton(false);
-	}
-
-	public void setFound(int found) {
-		this.found = found;
-	}
-
-	public boolean getUpdating() {
-		return updating;
 	}
 }

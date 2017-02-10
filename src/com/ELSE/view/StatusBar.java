@@ -13,12 +13,12 @@ public class StatusBar {
 	static StatusBar newInstance() {
 		return new StatusBar();
 	}
-
-	private JButton add, remove, update, save, load, print;
-	private Bar bar;
-	private JLabel statusText;
+	
+	private final JButton add, remove, update, save, load, print;
+	private final Bar bar;
+	private final JLabel statusText;
 	private Thread thread;
-
+	
 	private StatusBar() {
 		bar = Bar.newInstance();
 		statusText = new JLabel();
@@ -36,71 +36,65 @@ public class StatusBar {
 		print = Button.newInstance(StatusBar.class.getResource("/print.png"));
 		bar.getRight().add(print);
 	}
-
-	void needToSave(boolean need) {
-		if (!Boolean.parseBoolean(Utils.getPreferences("Save")))
-			save.setIcon(new ImageIcon(new ImageIcon(StatusBar.class.getResource(need ? "/save_red.png" : "/save.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
+	
+	public JButton getAddButton() {
+		return add;
 	}
-
+	
 	public Bar getBar() {
 		return bar;
 	}
-
-	void setPresenter(Presenter presenter) {
+	
+	public JButton getLoadButton() {
+		return load;
+	}
+	
+	public JButton getPrintButton() {
+		return print;
+	}
+	
+	public JButton getRemoveButton() {
+		return remove;
+	}
+	
+	public JButton getSaveButton() {
+		return save;
+	}
+	
+	public JButton getUpdateButton() {
+		return update;
+	}
+	
+	void needToSave(final boolean need) {
+		if (!Boolean.parseBoolean(Utils.getPreferences("Save")))
+			save.setIcon(new ImageIcon(new ImageIcon(StatusBar.class.getResource(need ? "/save_red.png" : "/save.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
+	}
+	
+	void setPresenter(final Presenter presenter) {
 		add.addActionListener(presenter.getStatusBarPresenter());
 		remove.addActionListener(presenter.getStatusBarPresenter());
 		update.addActionListener(presenter.getStatusBarPresenter());
 		save.addActionListener(presenter.getStatusBarPresenter());
 		load.addActionListener(presenter.getStatusBarPresenter());
 		print.addActionListener(presenter.getStatusBarPresenter());
-		// add.addActionListener(presenter.getStatusBarPresenter().addMainPageButton());
-		// remove.addActionListener(presenter.getStatusBarPresenter().());
-		// update.addActionListener(presenter.getStatusBarPresenter().updateMainPageButton());
-		// save.addActionListener(presenter.getStatusBarPresenter().saveMainPageButton());
-		// load.addActionListener(presenter.getStatusBarPresenter().loadMainPageButton());
-		// print.addActionListener(presenter.getStatusBarPresenter().printMainPageButton());
 	}
-
-	void setStatusText(final String s) {
+	
+	void setStatusText(final String text) {
 		if (thread == null || !thread.isAlive()) {
 			thread = new Thread(new Runnable() {
 				@Override
 				public void run() {
-					statusText.setText(s);
+					statusText.setText(text);
 					try {
 						Thread.sleep(5000);
-					} catch (InterruptedException e) {
+					} catch (final InterruptedException ex) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						ex.printStackTrace();
 					}
 					statusText.setText("");
 				}
 			});
 			thread.start();
 		}
-	}
-
-	public JButton getAddButton() {
-		return add;
-	}
-
-	public JButton getRemoveButton() {
-		return remove;
-	}
-
-	public JButton getUpdateButton() {
-		return update;
-	}
-
-	public JButton getSaveButton() {
-		return save;
-	}
-
-	public JButton getLoadButton() {
-		return load;
-	}
-
-	public JButton getPrintButton() {
-		return print;
 	}
 }

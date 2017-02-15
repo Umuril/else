@@ -16,11 +16,26 @@ import com.ELSE.model.Utils;
 import com.ELSE.view.AdvanceSearch;
 import com.ELSE.view.View;
 
+/**
+ * Classe che gestisce il presenter del dialog per la ricerca avanzata
+ * 
+ * @author eddy
+ */
 class AdvanceSearchPresenter implements ActionListener {
 	private final CenterPresenter centerPresenter;
 	private final Model model;
 	private final View view;
 	
+	/**
+	 * Costruttore
+	 * 
+	 * @param view
+	 *            Vista generale del progetto
+	 * @param model
+	 *            Modello generale
+	 * @param centerPresenter
+	 *            Presenter del pannello centrale
+	 */
 	AdvanceSearchPresenter(final View view, final Model model, final CenterPresenter centerPresenter) {
 		this.view = view;
 		this.model = model;

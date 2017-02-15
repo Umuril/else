@@ -15,6 +15,11 @@ import java.time.Year;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
+/**
+ * Classe contenente principalmente metodi statici di supporto
+ * 
+ * @author eddy
+ */
 public class Utils {
 	private static int debugmask = 0;
 	private static Preferences prefs;
@@ -57,6 +62,13 @@ public class Utils {
 		return new byte[0];
 	}
 	
+	/**
+	 * Metodo che dato un file ne calcola il checksum
+	 * 
+	 * @param path
+	 *            percorso del file
+	 * @return checksum
+	 */
 	public static String getMD5Checksum(final Path path) {
 		final StringBuilder sb = new StringBuilder();
 		for (final byte e : Utils.createChecksum(path))
@@ -64,6 +76,13 @@ public class Utils {
 		return sb.toString();
 	}
 	
+	/**
+	 * Metodo che restituisce le preferenze salvare, se presenti, altrimenti quelle di default
+	 * 
+	 * @param key
+	 *            nome della preferenza da cercare
+	 * @return stringa rappresentante la risorsa richiesta
+	 */
 	public static String getPreferences(final String key) {
 		switch (key) {
 			case "Color1":
@@ -85,19 +104,48 @@ public class Utils {
 		}
 	}
 	
+	/**
+	 * Metodo che stampa su console secondo certi parametri
+	 * 
+	 * @param debug
+	 *            livello di richiesto per la stampa
+	 * @param o
+	 *            oggetto da stampare
+	 */
 	public static void log(final Debug debug, final Object o) {
 		if ((Utils.debugmask >> debug.ordinal() & 1) != 0)
 			System.out.println(o.toString());
 	}
 	
+	/**
+	 * Metodo che cancella le preferenze salvate finora
+	 * 
+	 * @throws BackingStoreException
+	 *             errore nel lettura delle preferenze
+	 */
 	public static void resetPreferences() throws BackingStoreException {
 		Utils.prefs.clear();
 	}
 	
+	/**
+	 * Metodo che aggiuge una nuova preferenza
+	 * 
+	 * @param key
+	 *            nome della preferenza da salvare
+	 * @param value
+	 *            valore
+	 */
 	public static void setPreferences(final String key, final String value) {
 		Utils.prefs.put(key, value);
 	}
 	
+	/**
+	 * Metodo che controlla che nessuna delle stringhe sia nulla o vuota
+	 * 
+	 * @param strings
+	 *            stringhe da controllare
+	 * @return vero solo se tutte le stringhe sono valide
+	 */
 	public static boolean validString(final String... strings) {
 		for (final String string : strings)
 			if (string == null || string.trim().isEmpty())
@@ -105,10 +153,22 @@ public class Utils {
 		return true;
 	}
 	
+	/**
+	 * Metodo che controlla se un anno è valido (non nullo e diverso da zero)
+	 * 
+	 * @param year
+	 *            anno da controllare
+	 * @return boolean se l'anno è valido
+	 */
 	public static boolean validYear(final Year year) {
 		return year != null && !year.equals(Year.of(0));
 	}
 	
+	/**
+	 * Insieme di valori validi per il debug
+	 * 
+	 * @author eddy
+	 */
 	public enum Debug {
 		DEBUG, ERROR, INFO, WARNING
 	}

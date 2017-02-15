@@ -9,7 +9,17 @@ import javax.swing.JLabel;
 import com.ELSE.model.Utils;
 import com.ELSE.presenter.Presenter;
 
+/**
+ * Classe che implementa la visuale della barra inferiore del frame principale
+ * 
+ * @author eddy
+ */
 public class StatusBar {
+	/**
+	 * Metodo statico che restituisce una nuova istanza di MenuBar
+	 * 
+	 * @return un nuovo oggetto
+	 */
 	static StatusBar newInstance() {
 		return new StatusBar();
 	}
@@ -37,39 +47,72 @@ public class StatusBar {
 		bar.getRight().add(print);
 	}
 	
+	/**
+	 * @return bottone che aggiunge un nuovo percorso da seguire
+	 */
 	public JButton getAddButton() {
 		return add;
 	}
 	
+	/**
+	 * @return barra inferiore del frame
+	 */
 	public Bar getBar() {
 		return bar;
 	}
 	
+	/**
+	 * @return bottone che carica nuovi percorsi da file
+	 */
 	public JButton getLoadButton() {
 		return load;
 	}
 	
+	/**
+	 * @return bottone che stampa i libri la lista dei libri presenti
+	 */
 	public JButton getPrintButton() {
 		return print;
 	}
 	
+	/**
+	 * @return bottone che cancella un percorso
+	 */
 	public JButton getRemoveButton() {
 		return remove;
 	}
 	
+	/**
+	 * @return bottone che salva le modifiche su file
+	 */
 	public JButton getSaveButton() {
 		return save;
 	}
 	
+	/**
+	 * @return bottone che aggiorna il frame
+	 */
 	public JButton getUpdateButton() {
 		return update;
 	}
 	
+	/**
+	 * Metodo che indica se c'e bisogno di salvare cambiando il colore del tasto salva
+	 * 
+	 * @param need
+	 *            vero se bisogna salvare
+	 */
 	void needToSave(final boolean need) {
 		if (!Boolean.parseBoolean(Utils.getPreferences("Save")))
 			save.setIcon(new ImageIcon(new ImageIcon(StatusBar.class.getResource(need ? "/save_red.png" : "/save.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
 	}
 	
+	/**
+	 * Metodo che aggiunge i vari action listener ai relativi bottoni
+	 * 
+	 * @param presenter
+	 *            Presenter generale del progetto
+	 */
 	void setPresenter(final Presenter presenter) {
 		add.addActionListener(presenter.getStatusBarPresenter());
 		remove.addActionListener(presenter.getStatusBarPresenter());
@@ -79,6 +122,12 @@ public class StatusBar {
 		print.addActionListener(presenter.getStatusBarPresenter());
 	}
 	
+	/**
+	 * Metodo che imposta il testo da visualizzare in basso per cinque secondi
+	 * 
+	 * @param text
+	 *            testo da visualizzare
+	 */
 	void setStatusText(final String text) {
 		if (thread == null || !thread.isAlive()) {
 			thread = new Thread(new Runnable() {

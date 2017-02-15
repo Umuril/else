@@ -11,10 +11,18 @@ import java.nio.file.attribute.BasicFileAttributes;
 
 import com.ELSE.presenter.reader.EbookReader;
 
+/**
+ * Classe che gestisce il backend del progetto
+ * 
+ * @author eddy
+ */
 public class Model {
 	private final MetadataLibrary library;
 	private final PathTree pathtree;
 	
+	/**
+	 * Costruttore
+	 */
 	public Model() {
 		pathtree = PathTree.newInstance(Paths.get(Utils.getPreferences("PathTree")));
 		Utils.log(Utils.Debug.DEBUG, "BEGIN: " + pathtree.getPathList());
@@ -27,26 +35,39 @@ public class Model {
 		}).start();
 	}
 	
+	/**
+	 * @param path
+	 *            Percorso di un file
+	 * @return boolean che indica se il formato del file è supportato dal programma
+	 */
 	public boolean acceptableFileType(final String path) {
 		return path.endsWith(".pdf") || path.endsWith(".html") || path.endsWith(".epub");
 	}
 	
+	/**
+	 * @return oggetto che gestisce i libri presenti
+	 */
 	public MetadataLibrary getLibrary() {
 		return library;
 	}
 	
+	/**
+	 * @return oggetto che gestisce i percorsi delle cartelle/file da seguire
+	 */
 	public PathTree getPathTree() {
 		return pathtree;
 	}
 	
+	/**
+	 * Metodo che cerca nuovi libri nella lista dei percorsi e li aggiunge alla libreria
+	 */
 	public void searchForNewBooks() {
 		for (final String filename : pathtree.getPathList()) {
 			final Path path = Paths.get(filename);
 			if (Files.isRegularFile(path)) {
-				Path file = path.getFileName();
-				if (file != null) {
+				final Path file = path.getFileName();
+				if (file != null)
 					library.getDatabase().put(path, new BookMetadata.Builder(Utils.getMD5Checksum(path)).titolo(file.toString().replaceFirst("[.][^.]+$", "")).pagine(EbookReader.newInstance(path).getPageNumber()).build());
-				}
 			} else if (Files.isDirectory(path))
 				try {
 					Files.walkFileTree(path, new CustomFileVisitor());
@@ -62,7 +83,7 @@ public class Model {
 		public FileVisitResult visitFile(final Path path, final BasicFileAttributes attrs) {
 			if (acceptableFileType(path.toString()))
 				try {
-					Path filename = path.getFileName();
+					final Path filename = path.getFileName();
 					if (filename != null && !library.getDatabase().containsKey(path))
 						library.getDatabase().put(path, new BookMetadata.Builder(Utils.getMD5Checksum(path)).titolo(filename.toString().replaceFirst("[.][^.]+$", "")).pagine(EbookReader.newInstance(path).getPageNumber()).build());
 				} catch (final Exception ex) {

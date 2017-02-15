@@ -24,13 +24,12 @@ import com.ELSE.model.Utils;
 import com.ELSE.view.Settings;
 import com.ELSE.view.View;
 
+/**
+ * Classe che gestisce il presenter del pannello impostazioni
+ * 
+ * @author eddy
+ */
 class SettingsPresenter implements ActionListener, ItemListener {
-	/**
-	 * Deletes Folder with all of its content
-	 * 
-	 * @param folder
-	 *            path to folder which should be deleted
-	 */
 	private static void deleteFolderAndItsContent(final Path folder) throws IOException {
 		Files.walkFileTree(folder, new SimpleFileVisitor<Path>() {
 			@Override
@@ -53,6 +52,16 @@ class SettingsPresenter implements ActionListener, ItemListener {
 	private final Settings settings;
 	private final View view;
 	
+	/**
+	 * Costruttore
+	 * 
+	 * @param view
+	 *            Vista generale del progetto
+	 * @param model
+	 *            Modello generale del progetto
+	 * @param centerPresenter
+	 *            Presenter del pannello centrale
+	 */
 	SettingsPresenter(final View view, final Model model, final CenterPresenter centerPresenter) {
 		this.view = view;
 		settings = view.getSettings();

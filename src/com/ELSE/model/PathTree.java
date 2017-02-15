@@ -19,7 +19,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Classe che gestisce i percorsi dei file e/o cartelle da seguire dove cercare la presenza dei libri
+ * 
+ * @author eddy
+ */
 public class PathTree {
+	/**
+	 * Metodo statico che restituisce una nuova istanza di PathTree
+	 * 
+	 * @param path
+	 *            percorso del file da dove caricare i percorsi nella libreria
+	 * @return un nuovo oggetto
+	 */
 	static PathTree newInstance(final Path path) {
 		final PathTree pathtree = new PathTree();
 		if (Files.isRegularFile(path))
@@ -41,14 +53,31 @@ public class PathTree {
 		add("");
 	}
 	
+	/**
+	 * Metodo che aggiunge un percorso alla lista dei percorsi
+	 * 
+	 * @param path
+	 *            percorso da aggiungere
+	 */
 	public void add(final String path) {
 		root.add(Arrays.asList(path.split("\\\\|/")), 0);
 	}
 	
+	/**
+	 * Metodo che cancella tutti i percorsi presenti
+	 */
 	public void clear() {
 		root.clear();
 	}
 	
+	/**
+	 * Metodo che salva tutti percorsi su un certo file
+	 * 
+	 * @param path
+	 *            percorso del file dove salvare
+	 * @throws IOException
+	 *             errore nella lettura del file
+	 */
 	public void createPathTreeFile(final Path path) throws IOException {
 		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path.toFile()), Charset.defaultCharset()))) {
 			for (final String pathlist : getPathList()) {
@@ -58,12 +87,23 @@ public class PathTree {
 		}
 	}
 	
+	/**
+	 * @return lista dei percorsi presenti nella libreria
+	 */
 	public List<String> getPathList() {
 		final ArrayList<String> list = new ArrayList<>();
 		root.listPaths(list, "");
 		return list;
 	}
 	
+	/**
+	 * Metodo che legge da file una lista di percorsi
+	 * 
+	 * @param path
+	 *            percorso del file da leggere
+	 * @throws IOException
+	 *             errore nella lettura del file
+	 */
 	public void loadFromFile(final Path path) throws IOException {
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path.toFile()), Charset.defaultCharset()))) {
 			String line;
@@ -73,6 +113,12 @@ public class PathTree {
 		}
 	}
 	
+	/**
+	 * Metodo che cancella un percorso dalla libreria
+	 * 
+	 * @param path
+	 *            percorso da cancellare
+	 */
 	public void remove(final String path) {
 		final ArrayList<String> list = new ArrayList<String>();
 		list.addAll(Arrays.asList(path.split("\\\\|/")));
@@ -80,6 +126,9 @@ public class PathTree {
 			list.remove(list.size() - 1);
 	}
 	
+	/**
+	 * @return il numero di percorsi presenti
+	 */
 	public int size() {
 		final List<String> list = getPathList();
 		if (list.get(0).length() == 0)

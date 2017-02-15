@@ -19,12 +19,23 @@ import javax.swing.WindowConstants;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
+/**
+ * Classe che usa una libreria esterna per leggere i pdf
+ * 
+ * @author eddy
+ */
 class PDFReader extends EbookReader {
 	private JButton back, forward;
 	private JFrame frame;
 	private JLabel label;
 	private int page, totpages;
 	
+	/**
+	 * Costruttore
+	 * 
+	 * @param path
+	 *            percorso del libro
+	 */
 	PDFReader(final Path path) {
 		super(path);
 	}

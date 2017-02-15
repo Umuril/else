@@ -10,7 +10,17 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+/**
+ * Classe che implementa un pannello con una barra di ricerca e un bottone
+ * 
+ * @author eddy
+ */
 class SearchBar {
+	/**
+	 * Metodo statico che restituisce una nuova istanza di SearchBar
+	 * 
+	 * @return un nuovo oggetto
+	 */
 	static SearchBar newInstance() {
 		return new SearchBar();
 	}
@@ -31,14 +41,23 @@ class SearchBar {
 		panel.add(icona);
 	}
 	
+	/**
+	 * @return bottone del tasto di ricerca
+	 */
 	JButton getIcona() {
 		return icona;
 	}
 	
+	/**
+	 * @return pannello contenitore
+	 */
 	JPanel getPanel() {
 		return panel;
 	}
 	
+	/**
+	 * @return JtextField relativo alla ricerca
+	 */
 	JTextField getTesto() {
 		return testo;
 	}

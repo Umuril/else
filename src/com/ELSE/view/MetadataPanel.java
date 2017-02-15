@@ -18,7 +18,19 @@ import com.ELSE.model.BookMetadata;
 import com.ELSE.model.Utils;
 import com.ELSE.presenter.Presenter;
 
+/**
+ * Classe che gestisce il pannello superiore del pannello centrale quando si visualizza un certo libro
+ * 
+ * @author eddy
+ */
 public class MetadataPanel {
+	/**
+	 * Metodo statico che restituisce una nuova istanza di MetadataPanel
+	 * 
+	 * @param parent
+	 *            pannello padre
+	 * @return un nuovo oggetto
+	 */
 	static MetadataPanel newInstance(final JPanel parent) {
 		return new MetadataPanel(parent);
 	}
@@ -39,6 +51,16 @@ public class MetadataPanel {
 		openDefault = new JButton("External Open");
 	}
 	
+	/**
+	 * Metodo che cambia il pannello con i dati di un certo libro e con i campi editabili o meno *
+	 * 
+	 * @param image
+	 *            copertina del libro
+	 * @param book
+	 *            dati del libro da visualizzare
+	 * @param editable
+	 *            boolean che indica sei i campi devono essere editabili
+	 */
 	void change(final Image image, final BookMetadata book, final boolean editable) {
 		// TODO Needs full refactory
 		Utils.log(Utils.Debug.DEBUG, "CHANGING TO " + book + " - " + editable);
@@ -99,34 +121,61 @@ public class MetadataPanel {
 		parent.repaint();
 	}
 	
+	/**
+	 * @return JTextField del nuovo anno inserito
+	 */
 	public JTextField getAnno() {
 		return anno;
 	}
 	
+	/**
+	 * @return JTextField del nuovo autore inserito
+	 */
 	public JTextField getAutore() {
 		return autore;
 	}
 	
+	/**
+	 * @return libro visualizzato
+	 */
 	public BookMetadata getBook() {
 		return book;
 	}
 	
+	/**
+	 * @return bottone che apre il visualizzatore personalizzato
+	 */
 	public JButton getOpenCustomButton() {
 		return openCustom;
 	}
 	
+	/**
+	 * @return botone che apre il visualizzatore di default del sistema
+	 */
 	public JButton getOpenDefaultButton() {
 		return openDefault;
 	}
 	
+	/**
+	 * @return JTextField del nuovo numero di pagine inserite
+	 */
 	public JTextField getPagine() {
 		return pagine;
 	}
 	
+	/**
+	 * @return JTextField del nuovo titolo inserito
+	 */
 	public JTextField getTitolo() {
 		return titolo;
 	}
 	
+	/**
+	 * Metodo che aggiunge tutto gli action listener necessari al pannello centrale quando si visualizza un libro
+	 * 
+	 * @param presenter
+	 *            Presenter generale del progetto
+	 */
 	void setPresenter(final Presenter presenter) {
 		titolo.addActionListener(presenter.getCenterPresenter().getBookDetailsPresenter());
 		autore.addActionListener(presenter.getCenterPresenter().getBookDetailsPresenter());

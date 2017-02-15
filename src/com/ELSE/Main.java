@@ -7,11 +7,13 @@ import com.ELSE.presenter.Presenter;
 import com.ELSE.view.View;
 
 /**
+ * Libreria digitale che permette di leggere e gestire i libri in formato Ebook
+ * 
  * @author Eduard Rubio Cholbi
  */
 public class Main {
+	@SuppressWarnings("javadoc")
 	public static void main(final String[] args) {
-		System.out.println(com.sun.javafx.runtime.VersionInfo.getRuntimeVersion());
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

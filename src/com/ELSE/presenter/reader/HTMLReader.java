@@ -8,6 +8,11 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.web.WebView;
+
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -15,15 +20,21 @@ import javax.swing.WindowConstants;
 
 import com.ELSE.view.MenuBar;
 
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Scene;
-import javafx.scene.web.WebView;
-
+/**
+ * * Classe che usa una libreria per leggere i file HTML
+ * 
+ * @author eddy
+ */
 class HTMLReader extends EbookReader {
 	private String content;
 	private JFXPanel jfxPanel;
 	
+	/**
+	 * Costruttore
+	 * 
+	 * @param path
+	 *            percorso del libro
+	 */
 	HTMLReader(final Path path) {
 		super(path);
 	}

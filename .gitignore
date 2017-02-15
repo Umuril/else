@@ -72,5 +72,8 @@ local.properties
 *.ps
 *.txt
 
+# Javadoc
+doc/
+
 # Libraries
 !lib/*.jar 

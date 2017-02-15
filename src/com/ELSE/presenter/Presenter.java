@@ -15,6 +15,11 @@ import com.ELSE.model.Utils;
 import com.ELSE.presenter.reader.EbookReader;
 import com.ELSE.view.View;
 
+/**
+ * Classe generale che si occupa di gestire gli eventi della vista
+ * 
+ * @author eddy
+ */
 public class Presenter implements WindowListener {
 	private final CenterPresenter centerPresenter;
 	private final MenuBarPresenter menuBarPresenter;
@@ -22,6 +27,14 @@ public class Presenter implements WindowListener {
 	private final StatusBarPresenter statusBarPresenter;
 	private final View view;
 	
+	/**
+	 * Costruttore
+	 * 
+	 * @param view
+	 *            Vista generale del progetto
+	 * @param model
+	 *            Modello generale del progetto
+	 */
 	public Presenter(final View view, final Model model) {
 		this.view = view;
 		this.model = model;
@@ -31,10 +44,20 @@ public class Presenter implements WindowListener {
 		updateAllColors();
 	}
 	
+	/**
+	 * @return Classe che gestisce il presenter del pannello centrale
+	 */
 	public CenterPresenter getCenterPresenter() {
 		return centerPresenter;
 	}
 	
+	/**
+	 * Metodo che ritorna la copertina di un libro utilizzando le librerie esterne
+	 * 
+	 * @param path
+	 *            percorso del libro
+	 * @return copertina del libro
+	 */
 	BufferedImage getCover(final Path path) {
 		try {
 			return EbookReader.newInstance(path).getCover();
@@ -44,10 +67,19 @@ public class Presenter implements WindowListener {
 		}
 	}
 	
+	/**
+	 * @return oggetto che gestisce il presenter dei bottoni della barra superiore
+	 */
 	public MenuBarPresenter getMenuBarPresenter() {
 		return menuBarPresenter;
 	}
 	
+	/**
+	 * Metodo che tramite una libreria esterna addatta apre un visualizzatore personalizzato
+	 * 
+	 * @param path
+	 *            percorso del libro da leggere
+	 */
 	void getReader(final Path path) {
 		Utils.log(Utils.Debug.DEBUG, path);
 		try {
@@ -57,6 +89,9 @@ public class Presenter implements WindowListener {
 		}
 	}
 	
+	/**
+	 * @return classe che gestisce gli eventi dei bottoni nella barra inferiore
+	 */
 	public StatusBarPresenter getStatusBarPresenter() {
 		return statusBarPresenter;
 	}
@@ -98,11 +133,9 @@ public class Presenter implements WindowListener {
 				// TODO Need checks
 				view.setStatusText("Errore salvataggio prima di chiudere");
 			}
-		else {
-			if (JOptionPane.showConfirmDialog(null, "Sei sicuro di voler uscire senza salvare?", "Chiudi senza salvare", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-				view.getFrame().dispose();
-				System.exit(0);
-			}
+		else if (JOptionPane.showConfirmDialog(null, "Sei sicuro di voler uscire senza salvare?", "Chiudi senza salvare", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+			view.getFrame().dispose();
+			System.exit(0);
 		}
 	}
 	

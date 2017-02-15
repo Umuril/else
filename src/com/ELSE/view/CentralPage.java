@@ -11,7 +11,19 @@ import javax.swing.border.LineBorder;
 
 import com.ELSE.model.Utils;
 
+/**
+ * Classe generica di un pannello centrale
+ * 
+ * @author eddy
+ */
 class CentralPage {
+	/**
+	 * Metodo statico che restituisce una nuova istanza di CentralPage
+	 * 
+	 * @param centralProperties
+	 *            Pannello con delle proprieta particolare addatte per il pannello centrale
+	 * @return un nuovo oggetto
+	 */
 	static JPanel newInstance(final CentralProperties centralProperties) {
 		final JPanel container = new JPanel();
 		container.setBackground(new Color(Integer.parseInt(Utils.getPreferences("BackColor"))));

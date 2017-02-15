@@ -19,11 +19,26 @@ import com.ELSE.view.BookDetailsPage;
 import com.ELSE.view.MetadataPanel;
 import com.ELSE.view.View;
 
+/**
+ * Classe che gestisce il presenter del pannello centrale quando si visualizza un libro
+ * 
+ * @author eddy
+ */
 class BookDetailsPresenter implements ActionListener, DocumentListener {
 	private final Model model;
 	private final Presenter presenter;
 	private final View view;
 	
+	/**
+	 * Costruttore
+	 * 
+	 * @param view
+	 *            Vista generale del progetto
+	 * @param model
+	 *            Modello generale del progetto
+	 * @param presenter
+	 *            Presenter generale del progetto
+	 */
 	BookDetailsPresenter(final View view, final Model model, final Presenter presenter) {
 		this.view = view;
 		this.model = model;

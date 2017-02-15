@@ -9,6 +9,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.web.WebView;
+
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,17 +21,18 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
+import nl.siegmann.epublib.domain.Book;
+import nl.siegmann.epublib.epub.EpubReader;
+
 import com.github.mertakdut.Reader;
 import com.github.mertakdut.exception.OutOfPagesException;
 import com.github.mertakdut.exception.ReadingException;
 
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Scene;
-import javafx.scene.web.WebView;
-import nl.siegmann.epublib.domain.Book;
-import nl.siegmann.epublib.epub.EpubReader;
-
+/**
+ * Classe che usa una libreria esterna per leggere gli epub
+ * 
+ * @author eddy
+ */
 class EPUBReader extends EbookReader {
 	private JButton back, forward;
 	private String content;
@@ -36,6 +42,12 @@ class EPUBReader extends EbookReader {
 	private Reader reader;
 	private int totpages;
 	
+	/**
+	 * Costruttore
+	 * 
+	 * @param path
+	 *            percorso del libro
+	 */
 	EPUBReader(final Path path) {
 		super(path);
 	}
@@ -83,7 +95,7 @@ class EPUBReader extends EbookReader {
 		reader.setIsIncludingTextContent(true);
 		try {
 			reader.setFullContent(getPath().toString());
-		} catch (ReadingException ex) {
+		} catch (final ReadingException ex) {
 			// TODO Auto-generated catch block
 			ex.printStackTrace();
 		}

@@ -11,7 +11,17 @@ import javax.swing.JPanel;
 
 import com.ELSE.presenter.Presenter;
 
+/**
+ * Classe che implementa la visuale della visualizzazione dei libri presenti nella biblioteca nel pannello centrale
+ * 
+ * @author eddy
+ */
 public class SliderPage implements CentralProperties {
+	/**
+	 * Metodo statico che restituisce una nuova istanza di SliderPage
+	 * 
+	 * @return un nuovo oggetto
+	 */
 	static SliderPage newInstance() {
 		return new SliderPage();
 	}
@@ -25,6 +35,10 @@ public class SliderPage implements CentralProperties {
 		parent = CentralPage.newInstance(this);
 	}
 	
+	/**
+	 * @param enable
+	 *            boolean che abilita o disabilita il tasto per vedere i libri precedenti
+	 */
 	void enableBackButton(final boolean enable) {
 		back.setEnabled(enable);
 		back.setIcon(new ImageIcon(new ImageIcon(SliderPage.class.getResource(enable ? "/back.png" : "/back_gray.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
@@ -32,6 +46,10 @@ public class SliderPage implements CentralProperties {
 		down.repaint();
 	}
 	
+	/**
+	 * @param enable
+	 *            boolean che abilita o disabilita il tasto per vedere i libri successivi
+	 */
 	void enableNextButton(final boolean enable) {
 		forward.setEnabled(enable);
 		forward.setIcon(new ImageIcon(new ImageIcon(SliderPage.class.getResource(enable ? "/forward.png" : "/forward_gray.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
@@ -39,6 +57,9 @@ public class SliderPage implements CentralProperties {
 		down.repaint();
 	}
 	
+	/**
+	 * @return bottone per tornare alla pagina dei libri precedente
+	 */
 	public JButton getBackButton() {
 		return back;
 	}
@@ -48,18 +69,30 @@ public class SliderPage implements CentralProperties {
 		return parent;
 	}
 	
+	/**
+	 * @return bottone per andare alla pagina dei libri successiva
+	 */
 	public JButton getForwardButton() {
 		return forward;
 	}
 	
+	/**
+	 * @return bottone che imposta la visualizzazzione a griglia
+	 */
 	public JButton getGridButton() {
 		return grid;
 	}
 	
+	/**
+	 * @return bottone che imposta la visualizzazzione a lista
+	 */
 	public JButton getListButton() {
 		return list;
 	}
 	
+	/**
+	 * @return metodo che restituisce la parte superiore del pannello
+	 */
 	public JPanel getUp() {
 		return up;
 	}
@@ -91,6 +124,12 @@ public class SliderPage implements CentralProperties {
 		return up;
 	}
 	
+	/**
+	 * Metodo che imposta gli action listener dei bottoni nella parte inferiore del pannello di vusalizzazione dei libri
+	 * 
+	 * @param presenter
+	 *            Presentere generale del progetto
+	 */
 	public void setPresenter(final Presenter presenter) {
 		back.addActionListener(presenter.getCenterPresenter().getSliderPresenter());
 		grid.addActionListener(presenter.getCenterPresenter().getSliderPresenter());
@@ -98,6 +137,12 @@ public class SliderPage implements CentralProperties {
 		forward.addActionListener(presenter.getCenterPresenter().getSliderPresenter());
 	}
 	
+	/**
+	 * Metodo che aggiorna il colore di sfondo del pannello di visualizzazzione dei libri
+	 * 
+	 * @param color
+	 *            nuovo colore
+	 */
 	public void updateColor(final Color color) {
 		parent.setBackground(color);
 		parent.revalidate();

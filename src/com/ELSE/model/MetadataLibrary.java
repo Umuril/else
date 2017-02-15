@@ -17,7 +17,19 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+/**
+ * Classe che gestisce la lista dei libri presenti nella libreria
+ * 
+ * @author eddy
+ */
 public class MetadataLibrary implements Printable {
+	/**
+	 * Metodo statico che restituisce una nuova istanza di MetadataLibrary
+	 * 
+	 * @param path
+	 *            Percorso del file dove verrà salvato il database
+	 * @return un nuovo oggetto
+	 */
 	static MetadataLibrary newInstance(final Path path) {
 		return new MetadataLibrary(path);
 	}
@@ -38,6 +50,12 @@ public class MetadataLibrary implements Printable {
 			database = new HashMap<Path, BookMetadata>();
 	}
 	
+	/**
+	 * Metodo che salva i dati della libreria su file
+	 * 
+	 * @throws IOException
+	 *             errore nella lettura del file
+	 */
 	public void createLibraryFile() throws IOException {
 		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path.toFile()))) {
 			oos.writeObject(database.size());
@@ -48,10 +66,16 @@ public class MetadataLibrary implements Printable {
 		}
 	}
 	
+	/**
+	 * @return database dei libri
+	 */
 	public HashMap<Path, BookMetadata> getDatabase() {
 		return database;
 	}
 	
+	/**
+	 * Metodo che stampa i dati dei libri contenuti nel database
+	 */
 	public void print() {
 		final PrinterJob job = PrinterJob.getPrinterJob();
 		job.setPrintable(this);

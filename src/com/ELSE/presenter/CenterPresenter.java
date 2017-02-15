@@ -23,6 +23,11 @@ import com.ELSE.model.Model;
 import com.ELSE.model.Utils;
 import com.ELSE.view.View;
 
+/**
+ * Classe presenter che si occupa della gestione dei pannelli centrali
+ * 
+ * @author eddy
+ */
 public class CenterPresenter implements KeyEventDispatcher {
 	private final BookDetailsPresenter bookDetailsPresenter;
 	private FileSearcher fileSearcher;
@@ -31,6 +36,16 @@ public class CenterPresenter implements KeyEventDispatcher {
 	private final SliderPresenter sliderPresenter;
 	private final View view;
 	
+	/**
+	 * Costruttore
+	 * 
+	 * @param view
+	 *            Vista generale del progetto
+	 * @param model
+	 *            Modello generale del progetto
+	 * @param presenter
+	 *            Presenter generale del progetto
+	 */
 	CenterPresenter(final View view, final Model model, final Presenter presenter) {
 		this.view = view;
 		this.model = model;
@@ -42,6 +57,14 @@ public class CenterPresenter implements KeyEventDispatcher {
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 	}
 	
+	/**
+	 * Metodo che aggiunge dato il percorso di un libro l'immagine al pannello centrale della libreria. Se l'immagine non esiste la crea.
+	 * 
+	 * @param bookPath
+	 *            percorso del libro
+	 * @throws IOException
+	 *             Errore nella lettura del file
+	 */
 	void addImage(final Path bookPath) throws IOException {
 		final Path imagePath = Paths.get(Utils.getPreferences("Folder") + FileSystems.getDefault().getSeparator() + Utils.getMD5Checksum(bookPath) + ".jpg");
 		BufferedImage image = null;
@@ -64,6 +87,12 @@ public class CenterPresenter implements KeyEventDispatcher {
 		picLabel.repaint();
 	}
 	
+	/**
+	 * Metodo che aggiorna la visuallizzazione dei libri
+	 * 
+	 * @param page
+	 *            numero di pagina che si vuole visualizzare
+	 */
 	void aggiorna(int page) {
 		if (isUpdating())
 			return;
@@ -78,6 +107,14 @@ public class CenterPresenter implements KeyEventDispatcher {
 		view.getSliderPage().getUp().repaint();
 	}
 	
+	/**
+	 * Metodo che cambia la vista centrale
+	 * 
+	 * @param image
+	 *            immagine del libro (se presente, altrimenti null)
+	 * @param book
+	 *            libro (se presente, altrimenti null)
+	 */
 	void change(final Image image, final BookMetadata book) {
 		view.change(image, book);
 	}
@@ -91,18 +128,30 @@ public class CenterPresenter implements KeyEventDispatcher {
 		return false;
 	}
 	
+	/**
+	 * @return presenter del pannello di visualizzazione di un libro
+	 */
 	public BookDetailsPresenter getBookDetailsPresenter() {
 		return bookDetailsPresenter;
 	}
 	
+	/**
+	 * @return presenter del pannello di visuallizzazione dei libri nella libreria
+	 */
 	public SliderPresenter getSliderPresenter() {
 		return sliderPresenter;
 	}
 	
+	/**
+	 * @return boolean che indica se il filesearcher è in uso
+	 */
 	public boolean isUpdating() {
 		return fileSearcher.getUpdating();
 	}
 	
+	/**
+	 * Metodo che carica la pagina successiva di libri da visualizzare
+	 */
 	void loadNextBooks() {
 		if (isUpdating())
 			return;
@@ -114,6 +163,9 @@ public class CenterPresenter implements KeyEventDispatcher {
 		panel.repaint();
 	}
 	
+	/**
+	 * Metodo che carica la pagina precendente dei libri da visualizzare
+	 */
 	void loadPreviousBooks() {
 		if (isUpdating())
 			return;
@@ -131,6 +183,9 @@ public class CenterPresenter implements KeyEventDispatcher {
 		}
 	}
 	
+	/**
+	 * Metodo che rimuove tutti i libri nel pannello centrale
+	 */
 	void removeAllBooks() {
 		final JPanel panel = view.getSliderPage().getUp();
 		panel.removeAll();
@@ -144,7 +199,7 @@ public class CenterPresenter implements KeyEventDispatcher {
 			return null;
 		final BufferedImage image = presenter.getCover(bookPath);
 		Utils.log(Utils.Debug.INFO, "Creating again image of " + image);
-		if (Boolean.parseBoolean(Utils.getPreferences("Preview"))) {
+		if (Boolean.parseBoolean(Utils.getPreferences("Preview")))
 			// Need an asyncronus way
 			new Thread(new Runnable() {
 				@Override
@@ -156,7 +211,6 @@ public class CenterPresenter implements KeyEventDispatcher {
 					}
 				}
 			}).start();
-		}
 		return image;
 	}
 	

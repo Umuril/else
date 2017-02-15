@@ -20,7 +20,19 @@ import javax.swing.border.LineBorder;
 import com.ELSE.model.Utils;
 import com.ELSE.presenter.Presenter;
 
+/**
+ * Classe che gestisce la grafica del pannello di ricerca avanzata
+ * 
+ * @author eddy
+ */
 public class AdvanceSearch implements KeyEventDispatcher {
+	/**
+	 * Metodo statico che restituisce una nuova istanza di AdvanceSearch
+	 * 
+	 * @param view
+	 *            Vista generale del progetto
+	 * @return un nuovo oggetto
+	 */
 	static AdvanceSearch newInstance(final View view) {
 		return new AdvanceSearch(view);
 	}
@@ -88,38 +100,68 @@ public class AdvanceSearch implements KeyEventDispatcher {
 		return false;
 	}
 	
+	/**
+	 * @return la jtextfield relativa al anno
+	 */
 	public JTextField getAnno() {
 		return anno;
 	}
 	
+	/**
+	 * @return la jtextfield relativa al autore
+	 */
 	public JTextField getAutore() {
 		return autore;
 	}
 	
+	/**
+	 * @return il dialog di tutto il popup
+	 */
 	public JDialog getDialog() {
 		return dialog;
 	}
 	
+	/**
+	 * @return checkbox che indica se si stanno cercando degli epub
+	 */
 	public JCheckBox getEpub() {
 		return epub;
 	}
 	
+	/**
+	 * @return checkbox che indica se si stanno cercando dei file html
+	 */
 	public JCheckBox getHtml() {
 		return html;
 	}
 	
+	/**
+	 * @return la jtextfield relativa alle pagine cercate
+	 */
 	public JTextField getPagine() {
 		return pagine;
 	}
 	
+	/**
+	 * @return checkbox che indica se si stanno cercando dei pdf
+	 */
 	public JCheckBox getPdf() {
 		return pdf;
 	}
 	
+	/**
+	 * @return la jtextfield relativa al titolo cercato
+	 */
 	public JTextField getTitolo() {
 		return titolo;
 	}
 	
+	/**
+	 * Metodo che setta i vari action listener
+	 * 
+	 * @param presenter
+	 *            presenter generico del progetto
+	 */
 	public void setPresenter(final Presenter presenter) {
 		titolo.addActionListener(presenter.getMenuBarPresenter().getAdvanceSearchPresenter());
 		autore.addActionListener(presenter.getMenuBarPresenter().getAdvanceSearchPresenter());
@@ -128,10 +170,22 @@ public class AdvanceSearch implements KeyEventDispatcher {
 		conferma.addActionListener(presenter.getMenuBarPresenter().getAdvanceSearchPresenter());
 	}
 	
+	/**
+	 * Metodo che rende visibile/invisibile il dialog
+	 * 
+	 * @param visible
+	 *            vero se il dialog dovrebbe essere visibile
+	 */
 	public void setVisible(final boolean visible) {
 		dialog.setVisible(visible);
 	}
 	
+	/**
+	 * Metodo che aggiorna i colori del dialog
+	 * 
+	 * @param color
+	 *            colore di sfondo
+	 */
 	public void updateColor(final Color color) {
 		dialog.setBackground(color);
 		dialog.revalidate();

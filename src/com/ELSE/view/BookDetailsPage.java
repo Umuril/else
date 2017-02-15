@@ -13,7 +13,17 @@ import javax.swing.JPanel;
 import com.ELSE.model.BookMetadata;
 import com.ELSE.presenter.Presenter;
 
+/**
+ * Classe che implementa la visualizzazione di un libro al interno del pannello centrale
+ * 
+ * @author eddy
+ */
 public class BookDetailsPage implements CentralProperties {
+	/**
+	 * Metodo statico che restituisce una nuova istanza di BookDetailsPage
+	 * 
+	 * @return un nuovo oggetto
+	 */
 	static BookDetailsPage newInstance() {
 		return new BookDetailsPage();
 	}
@@ -32,6 +42,12 @@ public class BookDetailsPage implements CentralProperties {
 		parent = CentralPage.newInstance(this);
 	}
 	
+	/**
+	 * Metodo che abilita/disabilita il tasto di salvataggio e ne cambia il colore(immagine)
+	 * 
+	 * @param enable
+	 *            boolean che indica se deve essere abilitato
+	 */
 	public void enableSaveButton(final boolean enable) {
 		save.setEnabled(enable);
 		save.setIcon(new ImageIcon(new ImageIcon(SliderPage.class.getResource(enable ? "/save.png" : "/save_gray.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
@@ -39,6 +55,9 @@ public class BookDetailsPage implements CentralProperties {
 		down.repaint();
 	}
 	
+	/**
+	 * @return JButton del tasto indietro
+	 */
 	public JButton getBackButton() {
 		return back;
 	}
@@ -48,14 +67,23 @@ public class BookDetailsPage implements CentralProperties {
 		return parent;
 	}
 	
+	/**
+	 * @return JButton del tasto di modifica
+	 */
 	public JButton getEditButton() {
 		return edit;
 	}
 	
+	/**
+	 * @return Pannello contente i metadati del libro che si sta visualizzando
+	 */
 	MetadataPanel getMetadataPanel() {
 		return metadataPanel;
 	}
 	
+	/**
+	 * @return JButton del tasto salva
+	 */
 	public JButton getSaveButton() {
 		return save;
 	}
@@ -86,25 +114,47 @@ public class BookDetailsPage implements CentralProperties {
 		return up;
 	}
 	
+	/**
+	 * @return boolean che indica se i dati possono essere editati o meno
+	 */
 	public boolean isEditable() {
 		return editable;
 	}
 	
+	/**
+	 * @param editable
+	 *            boolean che setta se i dati del pannello devono essere editabili
+	 */
 	public void setEditable(final boolean editable) {
 		this.editable = editable;
 	}
 	
+	/**
+	 * Metodo che setta il presenter e aggiunge gli action listener nei vari bottoni
+	 * 
+	 * @param presenter
+	 *            Presenter generale del progetto
+	 */
 	void setPresenter(final Presenter presenter) {
 		this.presenter = presenter;
 		back.addActionListener(presenter.getCenterPresenter().getBookDetailsPresenter());
 		edit.addActionListener(presenter.getCenterPresenter().getBookDetailsPresenter());
 	}
 	
+	/**
+	 * Metodo che aggiorna il pannello centrale
+	 */
 	void update() {
 		if (image != null && book != null)
 			metadataPanel.change(image, book, editable);
 	}
 	
+	/**
+	 * Metodo che aggiorna il colore di sfondo del pannello centrale
+	 * 
+	 * @param color
+	 *            nuovo colore di sfondo
+	 */
 	public void updateColor(final Color color) {
 		parent.setBackground(color);
 		parent.revalidate();
@@ -114,6 +164,14 @@ public class BookDetailsPage implements CentralProperties {
 		up.repaint();
 	}
 	
+	/**
+	 * Metodo che aggiorna il pannello centrale con una data immagine e libro
+	 * 
+	 * @param image
+	 *            copertina del libro
+	 * @param book
+	 *            metadati del libro da visualizzare
+	 */
 	void updateUpWith(final Image image, final BookMetadata book) {
 		this.image = image;
 		this.book = book;

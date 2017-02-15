@@ -3,7 +3,17 @@ package com.ELSE.view;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * Classe che implemente un pannello centrale per quando non ci sono libri presenti nella libreria
+ * 
+ * @author eddy
+ */
 class EmptyPage implements CentralProperties {
+	/**
+	 * Metodo statico che restituisce una nuova istanza di EmptyPage
+	 * 
+	 * @return un nuovo oggetto
+	 */
 	static EmptyPage newInstance() {
 		return new EmptyPage();
 	}

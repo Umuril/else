@@ -15,11 +15,26 @@ import com.ELSE.model.Utils;
 import com.ELSE.view.StatusBar;
 import com.ELSE.view.View;
 
+/**
+ * Classe che gestisce gli eventi dei bottoni nella barra inferiore
+ * 
+ * @author eddy
+ */
 class StatusBarPresenter implements ActionListener {
 	private final CenterPresenter centerPresenter;
 	private final Model model;
 	private final View view;
 	
+	/**
+	 * Costruttore
+	 * 
+	 * @param view
+	 *            Vista generale del progetto
+	 * @param model
+	 *            Modello generale del progetto
+	 * @param centerPresenter
+	 *            Presenter del pannello centrale
+	 */
 	StatusBarPresenter(final View view, final Model model, final CenterPresenter centerPresenter) {
 		this.view = view;
 		this.model = model;

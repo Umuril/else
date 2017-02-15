@@ -21,7 +21,19 @@ import javax.swing.border.LineBorder;
 import com.ELSE.model.Utils;
 import com.ELSE.presenter.Presenter;
 
+/**
+ * Classe che implementa la visuale del pannello delle impostazioni
+ * 
+ * @author eddy
+ */
 public class Settings implements KeyEventDispatcher {
+	/**
+	 * Metodo statico che restituisce una nuova istanza di Settings
+	 * 
+	 * @param view
+	 *            Vista generale del progetto
+	 * @return un nuovo oggetto
+	 */
 	static Settings newInstance(final View view) {
 		return new Settings(view);
 	}
@@ -102,50 +114,89 @@ public class Settings implements KeyEventDispatcher {
 		return false;
 	}
 	
+	/**
+	 * @return bottone per cambiare il colore di sfondo
+	 */
 	public JButton getBackcolor() {
 		return backcolor;
 	}
 	
+	/**
+	 * @return bottone per cambiare il colore principale
+	 */
 	public JButton getColor1() {
 		return color1;
 	}
 	
+	/**
+	 * @return bottone per cambiare il colore secondario
+	 */
 	public JButton getColor2() {
 		return color2;
 	}
 	
+	/**
+	 * @return bottone di conferma delle impostazioni
+	 */
 	public JButton getConferma() {
 		return conferma;
 	}
 	
+	/**
+	 * @return bottone che cancella tutti i dati salvati
+	 */
 	public JButton getDelete() {
 		return delete;
 	}
 	
+	/**
+	 * @return dialog del pannello delle impostazioni
+	 */
 	public JDialog getDialog() {
 		return dialog;
 	}
 	
+	/**
+	 * @return bottone che permettere di scegliere una nuova cartella di lavoro
+	 */
 	public JButton getFolder() {
 		return folder;
 	}
 	
+	/**
+	 * @return bottone che permette di cambiare il file con i percorsi
+	 */
 	public JButton getPaths() {
 		return paths;
 	}
 	
+	/**
+	 * @return JCheckBox che indica se si voglio salvare le anteprime delle copertine
+	 */
 	public JCheckBox getPreview() {
 		return preview;
 	}
 	
+	/**
+	 * @return bottone che ripristina le impostazioni ai valori di default
+	 */
 	public JButton getRestore() {
 		return restore;
 	}
 	
+	/**
+	 * @return JCheckBox che indica se si vuole salvare in automatico prima di uscire
+	 */
 	public JCheckBox getSave() {
 		return save;
 	}
 	
+	/**
+	 * Metodo che aggiunge i vari action listener a i relativi bottoni
+	 * 
+	 * @param presenter
+	 *            Presenter generale del progetto
+	 */
 	public void setPresenter(final Presenter presenter) {
 		color1.addActionListener(presenter.getMenuBarPresenter().getSettingsPresenter());
 		color2.addActionListener(presenter.getMenuBarPresenter().getSettingsPresenter());
@@ -159,10 +210,20 @@ public class Settings implements KeyEventDispatcher {
 		conferma.addActionListener(presenter.getMenuBarPresenter().getSettingsPresenter());
 	}
 	
+	/**
+	 * @param visible
+	 *            boolean che indica se si vuole il dialog visibile
+	 */
 	public void setVisible(final boolean visible) {
 		dialog.setVisible(visible);
 	}
 	
+	/**
+	 * Metodo che cambia il colore di sfondo del dialog
+	 * 
+	 * @param color
+	 *            nuovo colore di sfondo
+	 */
 	public void updateColor(final Color color) {
 		dialog.setBackground(color);
 		dialog.revalidate();

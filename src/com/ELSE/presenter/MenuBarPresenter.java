@@ -16,6 +16,11 @@ import com.ELSE.model.Utils;
 import com.ELSE.view.MenuBar;
 import com.ELSE.view.View;
 
+/**
+ * Classe che gestisce il presenter dei bottoni nella barra superiore
+ * 
+ * @author eddy
+ */
 public class MenuBarPresenter implements ActionListener, DocumentListener {
 	private final AdvanceSearchPresenter advanceSearchPresenter;
 	private final CenterPresenter centerPresenter;
@@ -23,6 +28,16 @@ public class MenuBarPresenter implements ActionListener, DocumentListener {
 	private final SettingsPresenter settingsPresenter;
 	private final View view;
 	
+	/**
+	 * Costruttore
+	 * 
+	 * @param view
+	 *            Vista generica del progetto
+	 * @param model
+	 *            Modello generico del progetto
+	 * @param centerPresenter
+	 *            Presenter relativo al pannello centrale
+	 */
 	MenuBarPresenter(final View view, final Model model, final CenterPresenter centerPresenter) {
 		this.model = model;
 		this.view = view;
@@ -92,10 +107,16 @@ public class MenuBarPresenter implements ActionListener, DocumentListener {
 		cerca();
 	}
 	
+	/**
+	 * @return Presenter del bottone di ricerca avanzata
+	 */
 	public AdvanceSearchPresenter getAdvanceSearchPresenter() {
 		return advanceSearchPresenter;
 	}
 	
+	/**
+	 * @return Presenter del bottone di impostazioni
+	 */
 	public SettingsPresenter getSettingsPresenter() {
 		return settingsPresenter;
 	}

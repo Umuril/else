@@ -6,10 +6,23 @@ import java.awt.event.ActionListener;
 import com.ELSE.view.SliderPage;
 import com.ELSE.view.View;
 
+/**
+ * Classe che gestisce il presenter del pannello centrale per la visualizzazzione dei libri
+ * 
+ * @author eddy
+ */
 class SliderPresenter implements ActionListener {
 	private final CenterPresenter centerPresenter;
 	private final View view;
 	
+	/**
+	 * Costruttore
+	 * 
+	 * @param view
+	 *            Vista generale del progetto
+	 * @param centerPresenter
+	 *            Presenter del pannello centrale
+	 */
 	SliderPresenter(final View view, final CenterPresenter centerPresenter) {
 		this.view = view;
 		this.centerPresenter = centerPresenter;

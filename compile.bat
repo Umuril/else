@@ -1,4 +1,3 @@
-#!/bin/bash
 mkdir -p bin
 cp resources/* bin
 cp -r lib bin/

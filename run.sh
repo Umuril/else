@@ -1,4 +1,4 @@
 #!/bin/bash
 cd bin
-java com.ELSE.Main
+java -cp "lib/*:." com.ELSE.Main
 cd ..

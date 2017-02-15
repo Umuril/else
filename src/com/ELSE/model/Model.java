@@ -1,122 +1,95 @@
 package com.ELSE.model;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
+import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.prefs.Preferences;
 
+import com.ELSE.presenter.reader.EbookReader;
+
+/**
+ * Classe che gestisce il backend del progetto
+ * 
+ * @author eddy
+ */
 public class Model {
-
-	private Preferences prefs;
-	private MetadataLibrary library;
-	private Pathbase pathbase;
-
+	private final MetadataLibrary library;
+	private final PathTree pathtree;
+	
+	/**
+	 * Costruttore
+	 */
 	public Model() {
-		prefs = Preferences.userRoot().node(this.getClass().getName());
-		String filename = prefs.get("MetadataLibrary", "metadata.txt");
-		// Need to check the names
-
-		library = new MetadataLibrary(filename);
-
-		setPathbase(new Pathbase());
-
-		// Read from the stored file
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-				new FileInputStream(new File("db.txt")),
-				Charset.defaultCharset()))) {
-
-			String line;
-			while ((line = reader.readLine()) != null) {
-				Path path = Paths.get(line).toRealPath();
-				getPathbase().add(path.toString());
+		pathtree = PathTree.newInstance(Paths.get(Utils.getPreferences("PathTree")));
+		Utils.log(Utils.Debug.DEBUG, "BEGIN: " + pathtree.getPathList());
+		library = MetadataLibrary.newInstance(Paths.get(Utils.getPreferences("Folder") + FileSystems.getDefault().getSeparator() + "metadata.else"));
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				searchForNewBooks();
 			}
-		} catch (IOException e) {
-		}
-
-		for (String s : pathbase.getPathsList()) {
-			File path = new File(s);
-			try {
-				if (path.isDirectory())
-					Files.walkFileTree(Paths.get(s),
-							new SimpleFileVisitor<Path>() {
-								@Override
-								public FileVisitResult visitFile(Path file,
-										BasicFileAttributes attrs)
-										throws IOException {
-									if (file.toString().endsWith(".pdf")) {
-										BookMetadata book = new BookMetadata();
-										// book.setPercorso(file.toString());
-										try {
-											book.setChecksum(MD5Checksum
-													.getMD5Checksum(file
-															.toString()));
-										} catch (Exception e) {
-											e.printStackTrace();
-										}
-									}
-									return FileVisitResult.CONTINUE;
-								}
-							});
-				else {
-					BookMetadata book = new BookMetadata();
-					// book.setPercorso(path.toString());
-					try {
-						book.setChecksum(MD5Checksum.getMD5Checksum(path
-								.toString()));
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					library.getDatabase().put(book.getChecksum(), book);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-		}
-
+		}).start();
 	}
-
-	public Pathbase getPathbase() {
-		return pathbase;
+	
+	/**
+	 * @param path
+	 *            Percorso di un file
+	 * @return boolean che indica se il formato del file è supportato dal programma
+	 */
+	public boolean acceptableFileType(final String path) {
+		return path.endsWith(".pdf") || path.endsWith(".html") || path.endsWith(".epub");
 	}
-
-	public void setPathbase(Pathbase pathbase) {
-		this.pathbase = pathbase;
-	}
-
+	
+	/**
+	 * @return oggetto che gestisce i libri presenti
+	 */
 	public MetadataLibrary getLibrary() {
 		return library;
 	}
-
-	public void setLibrary(MetadataLibrary library) {
-		this.library = library;
+	
+	/**
+	 * @return oggetto che gestisce i percorsi delle cartelle/file da seguire
+	 */
+	public PathTree getPathTree() {
+		return pathtree;
 	}
-
-	public void createPathbaseFile() {
-		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-				new FileOutputStream(new File("db.txt")),
-				Charset.defaultCharset()))) {
-
-			for (String p : pathbase.getPathsList()) {
-				writer.append(p);
-				writer.newLine();
-			}
-
-		} catch (IOException e) {
-			// TODO
+	
+	/**
+	 * Metodo che cerca nuovi libri nella lista dei percorsi e li aggiunge alla libreria
+	 */
+	public void searchForNewBooks() {
+		for (final String filename : pathtree.getPathList()) {
+			final Path path = Paths.get(filename);
+			if (Files.isRegularFile(path)) {
+				final Path file = path.getFileName();
+				if (file != null)
+					library.getDatabase().put(path, new BookMetadata.Builder(Utils.getMD5Checksum(path)).titolo(file.toString().replaceFirst("[.][^.]+$", "")).pagine(EbookReader.newInstance(path).getPageNumber()).build());
+			} else if (Files.isDirectory(path))
+				try {
+					Files.walkFileTree(path, new CustomFileVisitor());
+				} catch (final IOException ex) {
+					// TODO Auto-generated catch block
+					ex.printStackTrace();
+				}
 		}
 	}
-
+	
+	private class CustomFileVisitor extends SimpleFileVisitor<Path> {
+		@Override
+		public FileVisitResult visitFile(final Path path, final BasicFileAttributes attrs) {
+			if (acceptableFileType(path.toString()))
+				try {
+					final Path filename = path.getFileName();
+					if (filename != null && !library.getDatabase().containsKey(path))
+						library.getDatabase().put(path, new BookMetadata.Builder(Utils.getMD5Checksum(path)).titolo(filename.toString().replaceFirst("[.][^.]+$", "")).pagine(EbookReader.newInstance(path).getPageNumber()).build());
+				} catch (final Exception ex) {
+					ex.printStackTrace();
+				}
+			return FileVisitResult.CONTINUE;
+		}
+	}
 }

@@ -69,7 +69,11 @@ local.properties
 
 # Generated files
 .metadata
+*.ps
 *.txt
+
+# Javadoc
+doc/
 
 # Libraries
 !lib/*.jar 
